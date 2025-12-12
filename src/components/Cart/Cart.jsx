@@ -13,6 +13,7 @@ export default function Cart() {
     } = useCart();
     const navigate = useNavigate();
 
+    // 付款
     const handlePayment = () => {
         if (cartItems.length === 0) {
             alert('购物车为空！');
@@ -23,6 +24,7 @@ export default function Cart() {
         navigate('/');
     };
 
+    // 空购物车渲染逻辑
     if (cartItems.length === 0) {
         return (
             <div className="text-center py-5">
@@ -60,7 +62,7 @@ export default function Cart() {
             <div className="cart-summary">
                 <div className="d-flex justify-content-between mb-3">
                     <h5>总计:</h5>
-                    <h4 className="text-primary fw-bold">¥{getTotalPrice()}</h4>
+                    <h4 className="text-primary fw-bold">¥ {getTotalPrice()}</h4>
                 </div>
                 <div className="d-flex gap-2">
                     <button

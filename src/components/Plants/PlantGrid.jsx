@@ -35,7 +35,7 @@ export const plantsData = [
         id: 1,
         name: '大王蚁堡',
         latinName: 'Squamellaria major',
-        price: 5000,
+        price: 5000.54,
         images: [
             squamellariaMajorImg1,
             squamellariaMajorImg2,
