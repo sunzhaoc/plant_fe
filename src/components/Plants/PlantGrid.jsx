@@ -1,6 +1,7 @@
 import PlantCard from './PlantCard';
 
 // 模拟植物数据
+// eslint-disable-next-line react-refresh/only-export-components
 export const plantsData = [
     {
         id: 1,
@@ -41,7 +42,7 @@ export const plantsData = [
         id: 4,
         name: '格雷蚁堡',
         latinName: 'Squamellaria grayi',
-        price: 98,
+        price: 5800,
         images: [
             '/src/assets/images/Squamellaria/Squamellaria grayi/img.png',
             '/src/assets/images/Squamellaria/Squamellaria grayi/img_1.png',
@@ -65,7 +66,7 @@ export const plantsData = [
         id: 6,
         name: '海参蚁堡',
         latinName: 'Squamellaria imberbis',
-        price: 118,
+        price: 3600,
         images: [
             '/src/assets/images/Squamellaria/Squamellaria imberbis/img.png',
             '/src/assets/images/Squamellaria/Squamellaria imberbis/img_1.png',
@@ -77,11 +78,10 @@ export const plantsData = [
         id: 8,
         name: '特基蚁堡',
         latinName: 'Squamellaria thekii',
-        price: 138,
+        price: 4800,
         images: [
-            '/src/assets/images/plant8-1.jpg',
-            '/src/assets/images/plant8-2.jpg',
-            '/src/assets/images/plant8-3.jpg'
+            '/src/assets/images/Squamellaria/Squamellaria thekii/img.png',
+            '/src/assets/images/Squamellaria/Squamellaria thekii/img_1.png',
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -89,7 +89,7 @@ export const plantsData = [
         id: 9,
         name: '杰布蚁堡',
         latinName: 'Squamellaria jebbiana',
-        price: 138,
+        price: 8000,
         images: [
             '/src/assets/images/Squamellaria/Squamellaria jebbiana/img.png',
             '/src/assets/images/Squamellaria/Squamellaria jebbiana/img_1.png',
@@ -101,7 +101,7 @@ export const plantsData = [
         id: 10,
         name: '细花蚁堡',
         latinName: 'Squamellaria tenuiflora',
-        price: 138,
+        price: 3500,
         images: [
             '/src/assets/images/Squamellaria/Squamellaria tenuiflora/img.png',
             '/src/assets/images/Squamellaria/Squamellaria tenuiflora/img_1.png',
@@ -114,7 +114,7 @@ export const plantsData = [
         id: 11,
         name: '瓦努阿图蚁堡',
         latinName: 'Squamellaria vanuatuensis',
-        price: 138,
+        price: 3500,
         images: [
             '/src/assets/images/plant8-1.jpg',
             '/src/assets/images/plant8-2.jpg',
@@ -126,11 +126,9 @@ export const plantsData = [
         id: 12,
         name: '威尔逊蚁堡',
         latinName: 'Squamellaria vanuatuensis',
-        price: 138,
+        price: 4000,
         images: [
-            '/src/assets/images/plant8-1.jpg',
-            '/src/assets/images/plant8-2.jpg',
-            '/src/assets/images/plant8-3.jpg'
+            '/src/assets/images/Squamellaria/Squamellaria vanuatuensis/img.png',
         ],
         sizes: ['S', 'M', 'L', 'XL']
     }
