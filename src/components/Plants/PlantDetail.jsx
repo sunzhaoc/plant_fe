@@ -5,8 +5,11 @@ import QuantitySelector from '/src/components/UI/QuantitySelector';
 import {useCart} from '/src/context/CartContext';
 
 export default function PlantDetail({plant}) {
-    const [selectedSize, setSelectedSize] = useState(plant.sizes[0]);
+    // 规格
+    const [selectedSize, setSelectedSize] = useState(plant.sizes[0])
+    // 数量
     const [quantity, setQuantity] = useState(1);
+
     const {addToCart} = useCart();
     const navigate = useNavigate();
 
@@ -22,29 +25,26 @@ export default function PlantDetail({plant}) {
         navigate('/cart');
     };
 
-    return (
-        <div className="row">
+    return (<div className="row">
             <div className="col-md-6">
-                <ImageGallery images={plant.images}/>
+                <ImageGallery images={plant.images} />
             </div>
             <div className="col-md-6">
                 <h1 className="mb-2">{plant.name}</h1>
                 <p className="text-muted fs-5">{plant.latinName}</p>
-                <hr/>
+                <hr />
                 <p className="fs-4 text-primary fw-bold">¥{plant.price}</p>
 
                 <div className="mb-4">
                     <h5>规格选择</h5>
                     <div className="d-flex gap-2 mb-3">
-                        {plant.sizes.map(size => (
-                            <button
+                        {plant.sizes.map(size => (<button
                                 key={size}
                                 className={`btn ${selectedSize === size ? 'btn-primary' : 'btn-outline-primary'}`}
                                 onClick={() => setSelectedSize(size)}
                             >
                                 {size}
-                            </button>
-                        ))}
+                            </button>))}
                     </div>
                 </div>
 
@@ -62,13 +62,15 @@ export default function PlantDetail({plant}) {
                         className="btn btn-primary btn-lg"
                         onClick={handleAddToCart}
                     >
-                        <i className="bi bi-cart-plus me-2"></i>加入购物车
+                        <i className="bi bi-cart-plus me-2"></i>
+                        加入购物车
                     </button>
                     <button
                         className="btn btn-outline-primary btn-lg"
                         onClick={handleViewCart}
                     >
-                        <i className="bi bi-cart3 me-2"></i>查看购物车
+                        <i className="bi bi-cart3 me-2"></i>
+                        查看购物车
                     </button>
                 </div>
 
@@ -81,6 +83,5 @@ export default function PlantDetail({plant}) {
                     </p>
                 </div>
             </div>
-        </div>
-    );
+        </div>);
 }
