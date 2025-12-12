@@ -21,9 +21,7 @@ export const plantsData = [
         latinName: 'Squamellaria kajewskli',
         price: 2800,
         images: [
-            '/src/assets/images/plant2-1.jpg',
-            '/src/assets/images/plant2-2.jpg',
-            '/src/assets/images/plant2-3.jpg'
+            '/src/assets/images/Squamellaria/Squamellaria kajewskli/img.png',
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -116,19 +114,18 @@ export const plantsData = [
         latinName: 'Squamellaria vanuatuensis',
         price: 3500,
         images: [
-            '/src/assets/images/plant8-1.jpg',
-            '/src/assets/images/plant8-2.jpg',
-            '/src/assets/images/plant8-3.jpg'
+            '/src/assets/images/Squamellaria/Squamellaria vanuatuensis/img.png',
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
     {
         id: 12,
         name: '威尔逊蚁堡',
-        latinName: 'Squamellaria vanuatuensis',
+        latinName: 'Squamellaria wilsonii',
         price: 4000,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria vanuatuensis/img.png',
+            '/src/assets/images/Squamellaria/Squamellaria wilsonii/img.png',
+            '/src/assets/images/Squamellaria/Squamellaria wilsonii/img_1.png',
         ],
         sizes: ['S', 'M', 'L', 'XL']
     }
