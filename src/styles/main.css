@@ -137,6 +137,9 @@ body {
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .plant-card img {
@@ -272,3 +275,10 @@ body {
     color: white;
     border-color: var(--primary-color);
 }
+/* 在 main.css 中添加 */
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+

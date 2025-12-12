@@ -5,9 +5,7 @@ export default function PlantCard({plant}) {
     return (<>
         <div className="col-md-3 mb-5">
             <div className="plant-card-container">
-                {/* 竖向长方形扁平卡片 */}
-                <div className="plant-card">
-                    {/* 图片容器 - 竖向长方形比例 */}
+                <div className="plant-card h-100">
                     <div className="plant-img-container">
                         <Link to={`/detail/${plant.id}`}>
                             <img
@@ -19,18 +17,18 @@ export default function PlantCard({plant}) {
                         </Link>
                     </div>
 
-                    <div className="plant-card-body">
+                    <div className="plant-card-body d-flex flex-column">
                         {/* 中文名 */}
                         <Link to={`/detail/${plant.id}`} className="plant-name-link">
-                            <h5 className="plant-card-title">{plant.name}</h5>
+                            <h5 className="plant-card-title text-truncate">{plant.name}</h5>
                         </Link>
 
                         {/* 拉丁学名 */}
-                        <p className="latin-name-text">{plant.latinName}</p>
+                        <p className="latin-name-text text-truncate">{plant.latinName}</p>
 
                         {/* 价格按钮区 */}
-                        <div className="plant-card-footer">
-                            <span className="plant-card-footer-purchase-button">¥{plant.price}</span>
+                        <div className="plant-card-footer mt-auto">
+                            <span className="plant-card-footer-purchase-button">¥ {plant.price}</span>
                             <Link to={`/detail/${plant.id}`} className="add-to-cart-btn">
                                 购买
                             </Link>
