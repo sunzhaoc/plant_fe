@@ -1,6 +1,6 @@
 import {useNavigate} from 'react-router-dom';
-import CartItem from './CartItem';
-import {useCart} from '../../context/CartContext';
+import CartItem from '/src/components/Cart/CartItem';
+import {useCart} from '/src/context/CartContext';
 
 export default function Cart() {
     const {
@@ -43,7 +43,7 @@ export default function Cart() {
         <div>
             <div className="mb-4">
                 <h3>我的购物车 ({getTotalItems()} 件商品)</h3>
-                <hr/>
+                <hr />
             </div>
 
             <div className="cart-list mb-5">
