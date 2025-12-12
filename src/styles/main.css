@@ -38,12 +38,6 @@ body {
     padding: 1rem 0;
 }
 
-.cart-summary {
-    background-color: var(--accent-color);
-    border-radius: 8px;
-    padding: 1.5rem;
-}
-
 /* 快速购物车样式 */
 .quick-cart {
     position: fixed;
