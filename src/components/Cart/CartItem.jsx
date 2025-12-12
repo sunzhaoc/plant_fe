@@ -1,4 +1,4 @@
-import QuantitySelector from '../UI/QuantitySelector';
+import QuantitySelector from '/src/components/UI/QuantitySelector';
 
 export default function CartItem({ item, onUpdate, onRemove }) {
     const handleIncrease = () => {

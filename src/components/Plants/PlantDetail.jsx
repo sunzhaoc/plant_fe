@@ -1,8 +1,8 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import ImageGallery from '../UI/ImageGallery';
-import QuantitySelector from '../UI/QuantitySelector';
-import {useCart} from '../../context/CartContext';
+import ImageGallery from '/src/components/UI/ImageGallery';
+import QuantitySelector from '/src/components/UI/QuantitySelector';
+import {useCart} from '/src/context/CartContext';
 
 export default function PlantDetail({plant}) {
     const [selectedSize, setSelectedSize] = useState(plant.sizes[0]);

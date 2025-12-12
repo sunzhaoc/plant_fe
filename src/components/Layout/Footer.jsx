@@ -9,7 +9,7 @@ export default function Footer() {
                     </div>
                     <div className="col-md-6 text-md-end">
                         <p>© 2025 蚁栖植物 (antplant.store) 版权所有</p>
-                        <p>联系方式：antplant@antplant.com</p>
+                        <p>联系方式：antplantstore@gmail.com</p>
                     </div>
                 </div>
             </div>

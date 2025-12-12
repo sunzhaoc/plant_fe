@@ -1,12 +1,12 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import {CartProvider} from './context/CartContext.jsx';
-import Header from './components/Layout/Header.jsx';
-import Footer from './components/Layout/Footer.jsx';
-import Home from './pages/Home.jsx';
-import Detail from './pages/Detail.jsx';
-import CartPage from './pages/CartPage.jsx';
-import QuickCart from './components/Cart/QuickCart.jsx'; // 快速购物车
-import './styles/main.css';
+import {CartProvider} from '/src/context/CartContext.jsx';
+import Header from '/src/components/Layout/Header.jsx';
+import Footer from '/src/components/Layout/Footer.jsx';
+import Home from '/src/pages/Home.jsx';
+import Detail from '/src/pages/Detail.jsx';
+import CartPage from '/src/pages/CartPage.jsx';
+import QuickCart from '/src/components/Cart/QuickCart.jsx'; // 快速购物车
+import '/src/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {

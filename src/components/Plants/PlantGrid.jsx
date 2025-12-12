@@ -1,4 +1,4 @@
-import PlantCard from './PlantCard';
+import PlantCard from '/src/components/Plants/PlantCard';
 
 // 模拟植物数据
 // eslint-disable-next-line react-refresh/only-export-components
