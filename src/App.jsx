@@ -1,4 +1,5 @@
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import {useEffect} from 'react';
+import {BrowserRouter, Route, Routes, useLocation} from 'react-router-dom';
 import {CartProvider} from '/src/context/CartContext.jsx';
 import Header from '/src/components/Layout/Header.jsx';
 import Footer from '/src/components/Layout/Footer.jsx';
@@ -9,10 +10,26 @@ import QuickCart from '/src/components/Cart/QuickCart.jsx';
 import '/src/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+function ScrollToTop() {
+    const location = useLocation();
+    useEffect(() => {
+        setTimeout(() => {
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            });
+        }, 0);
+    }, [location.pathname]);
+
+    return null;
+}
+
 function App() {
     return (
         <CartProvider>
-            <Router>
+            <BrowserRouter>
+                <ScrollToTop/>
                 <Header />
                 <main className="content">
                     <div className="container">
@@ -25,7 +42,7 @@ function App() {
                 </main>
                 <Footer />
                 <QuickCart />
-            </Router>
+            </BrowserRouter>
         </CartProvider>
     );
 }
