@@ -29,7 +29,7 @@ export default function PlantCard({plant}) {
 
                         {/* 价格按钮区 */}
                         <div className="plant-card-footer">
-                            <span className="plant-price">¥{plant.price}</span>
+                            <span className="plant-card-footer-purchase-button">¥{plant.price}</span>
                             <Link to={`/detail/${plant.id}`} className="add-to-cart-btn">
                                 购买
                             </Link>

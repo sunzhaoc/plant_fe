@@ -1,0 +1,150 @@
+/* 容器设置 */
+.plant-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1rem;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* 顶部两栏布局 */
+.plant-main-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem; /* 图片和信息之间的间距 */
+    margin-bottom: 5rem;
+}
+
+.plant-gallery-col {
+    flex: 1;
+    min-width: 300px;
+}
+
+.plant-info-col {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* 字体排印 */
+.plant-title {
+    font-size: 2.25rem;
+    font-weight: 300; /* 细字体显得更清冷 */
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    color: #1a1a1a;
+}
+
+.plant-latin {
+    font-family: "Times New Roman", serif; /* 拉丁名用衬线体，增加学术感 */
+    font-style: italic;
+    color: #888;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.plant-price {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #2c3e50; /* 深灰蓝，不刺眼 */
+    margin-bottom: 2.5rem;
+    display: inline-block;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.section-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #999;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* 规格按钮 - 扁平化 */
+.size-btn {
+    border: 1px solid #e0e0e0;
+    background: white;
+    color: #555;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 0; /* 直角 */
+    font-size: 0.9rem;
+}
+
+.size-btn:hover {
+    border-color: #333;
+    color: #333;
+}
+
+.size-btn.active {
+    background: #333; /* 选中变黑 */
+    color: white;
+    border-color: #333;
+}
+
+/* 购买按钮组 */
+.action-buttons {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.btn-flat-primary {
+    background: #1a1a1a;
+    color: white;
+    border: 1px solid #1a1a1a;
+    padding: 12px 30px;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    border-radius: 0;
+    transition: opacity 0.2s;
+    flex: 1;
+}
+
+.btn-flat-primary:hover {
+    opacity: 0.8;
+    color: white;
+}
+
+.btn-flat-outline {
+    background: transparent;
+    color: #1a1a1a;
+    border: 1px solid #1a1a1a;
+    padding: 12px 30px;
+    font-size: 1rem;
+    border-radius: 0;
+    transition: background 0.2s;
+    flex: 0 0 auto;
+}
+
+.btn-flat-outline:hover {
+    background: #f5f5f5;
+}
+
+/* 底部商品介绍 */
+.plant-description-section {
+    border-top: 1px solid #eaeaea;
+    padding-top: 3rem;
+    max-width: 800px; /* 限制宽度以提高阅读体验 */
+}
+
+.desc-title {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.desc-text {
+    color: #666;
+    font-size: 0.95rem; /* 字体调小 */
+    line-height: 1.8;   /* 增加行高，显得透气 */
+    text-align: justify;
+}
