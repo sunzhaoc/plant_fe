@@ -13,11 +13,6 @@ body {
 }
 
 
-.plant-card img {
-    height: 200px;
-    object-fit: cover;
-}
-
 .plant-detail-img {
     height: 400px;
     object-fit: cover;
@@ -150,25 +145,14 @@ body {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* 悬停效果 - 极简扁平 */
+.plant-card img {
+    object-fit: cover;
+}
+
 .plant-card:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     border-color: #d8d8d8;
     transform: translateY(-2px);
-}
-
-.plant-card:hover .plant-card-img {
-    transform: scale(1.02);
-}
-
-
-/* 图片容器 - 竖向长方形 (高度更大) */
-.plant-img-container {
-    position: relative;
-    height: 260px; /* 竖向长方形核心：增加图片高度 */
-    width: 100%;
-    overflow: hidden;
-    flex-shrink: 0; /* 固定图片高度，保证竖向比例 */
 }
 
 .plant-card-img {
@@ -178,28 +162,21 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* 完全扁平的按钮 */
-.view-detail-btn {
-    background: rgba(45, 106, 79, 0.9); /* 轻微半透明，不影响图片 */
-    color: white;
-    padding: 6px 16px;
-    border-radius: 3px; /* 几乎直角，扁平 */
-    font-weight: 500;
-    font-size: 13px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 轻微阴影，增加可读性 */
+.plant-card:hover .plant-card-img {
+    transform: scale(1.02);
 }
 
-.view-detail-btn:hover {
-    background: #2d6a4f; /* 完全不透明，增强交互 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+.plant-img-container {
+    position: relative;
+    height: 260px;
+    width: 100%;
+    overflow: hidden;
+    flex-shrink: 0;
 }
 
-/* 卡片内容区 - 填充竖向空间 */
 .plant-card-body {
     padding: 12px 14px;
-    flex: 1; /* 自动填充剩余空间，保证竖向比例 */
+    flex: 1;
     display: flex;
     flex-direction: column;
 }
@@ -229,7 +206,6 @@ body {
     line-height: 1.2;
 }
 
-/* 底部价格按钮区 - 靠底显示 */
 .plant-card-footer {
     display: flex;
     align-items: center;
