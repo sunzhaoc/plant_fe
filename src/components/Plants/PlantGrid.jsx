@@ -1,8 +1,35 @@
 import PlantCard from '/src/components/Plants/PlantCard';
-import img1 from '@/assets/images/Squamellaria/Squamellaria major/img.png';
+// 统一导入所有图片资源（解决打包后路径问题的核心）
+import squamellariaMajorImg1 from '@/assets/images/Squamellaria/Squamellaria major/img_1.png';
+import squamellariaMajorImg2 from '@/assets/images/Squamellaria/Squamellaria major/img_2.png';
+import squamellariaMajorImg from '@/assets/images/Squamellaria/Squamellaria major/img.png';
+import squamellariaKajewskliImg from '@/assets/images/Squamellaria/Squamellaria kajewskli/img.png';
+import squamellariaKajewskliImg1 from '@/assets/images/Squamellaria/Squamellaria kajewskli/img_1.png';
+import squamellariaHuxleyanaImg from '@/assets/images/Squamellaria/Squamellaria huxleyana/img.png';
+import squamellariaHuxleyanaImg1 from '@/assets/images/Squamellaria/Squamellaria huxleyana/img_1.png';
+import squamellariaGrayiImg from '@/assets/images/Squamellaria/Squamellaria grayi/img.png';
+import squamellariaGrayiImg1 from '@/assets/images/Squamellaria/Squamellaria grayi/img_1.png';
+import squamellariaGuppyanumImg from '@/assets/images/Squamellaria/Squamellaria guppyanum/img.png';
+import squamellariaGuppyanumImg1 from '@/assets/images/Squamellaria/Squamellaria guppyanum/img_1.png';
+import squamellariaGuppyanumImg2 from '@/assets/images/Squamellaria/Squamellaria guppyanum/img_2.png';
+import squamellariaGuppyanumImg3 from '@/assets/images/Squamellaria/Squamellaria guppyanum/img_3.png';
+import squamellariaImberbisImg from '@/assets/images/Squamellaria/Squamellaria imberbis/img.png';
+import squamellariaImberbisImg1 from '@/assets/images/Squamellaria/Squamellaria imberbis/img_1.png';
+import squamellariaImberbisImg2 from '@/assets/images/Squamellaria/Squamellaria imberbis/img_2.png';
+import squamellariaThekiiImg from '@/assets/images/Squamellaria/Squamellaria thekii/img.png';
+import squamellariaThekiiImg1 from '@/assets/images/Squamellaria/Squamellaria thekii/img_1.png';
+import squamellariaJebbianaImg from '@/assets/images/Squamellaria/Squamellaria jebbiana/img.png';
+import squamellariaJebbianaImg1 from '@/assets/images/Squamellaria/Squamellaria jebbiana/img_1.png';
+import squamellariaJebbianaImg2 from '@/assets/images/Squamellaria/Squamellaria jebbiana/img_2.png';
+import squamellariaTenuifloraImg from '@/assets/images/Squamellaria/Squamellaria tenuiflora/img.png';
+import squamellariaTenuifloraImg1 from '@/assets/images/Squamellaria/Squamellaria tenuiflora/img_1.png';
+import squamellariaTenuifloraImg2 from '@/assets/images/Squamellaria/Squamellaria tenuiflora/img_2.png';
+import squamellariaTenuifloraImg3 from '@/assets/images/Squamellaria/Squamellaria tenuiflora/img_3.png';
+import squamellariaVanuatuensisImg from '@/assets/images/Squamellaria/Squamellaria vanuatuensis/img.png';
+import squamellariaWilsoniiImg from '@/assets/images/Squamellaria/Squamellaria wilsonii/img.png';
+import squamellariaWilsoniiImg1 from '@/assets/images/Squamellaria/Squamellaria wilsonii/img_1.png';
 
-// 模拟植物数据
-// eslint-disable-next-line react-refresh/only-export-components
+// 植物数据常量（使用导入的图片变量，确保打包后路径正确）
 export const plantsData = [
     {
         id: 1,
@@ -10,10 +37,10 @@ export const plantsData = [
         latinName: 'Squamellaria major',
         price: 5000,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria major/img_1.png',
-            '/src/assets/images/Squamellaria/Squamellaria major/img_2.png',
-            img1,
-            '/src/assets/images/Squamellaria/Squamellaria major/img.png',
+            squamellariaMajorImg1,
+            squamellariaMajorImg2,
+            squamellariaMajorImg,
+            squamellariaMajorImg,
         ],
         sizes: ['S', 'M', 'L']
     },
@@ -23,8 +50,8 @@ export const plantsData = [
         latinName: 'Squamellaria kajewskli',
         price: 2000,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria kajewskli/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria kajewskli/img_1.png',
+            squamellariaKajewskliImg,
+            squamellariaKajewskliImg1,
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -34,8 +61,8 @@ export const plantsData = [
         latinName: 'Squamellaria huxleyana',
         price: 3500,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria huxleyana/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria huxleyana/img_1.png',
+            squamellariaHuxleyanaImg,
+            squamellariaHuxleyanaImg1,
         ],
         sizes: ['S', 'M']
     },
@@ -45,8 +72,8 @@ export const plantsData = [
         latinName: 'Squamellaria grayi',
         price: 7000,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria grayi/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria grayi/img_1.png',
+            squamellariaGrayiImg,
+            squamellariaGrayiImg1,
         ],
         sizes: ['M', 'L', 'XL']
     },
@@ -56,10 +83,10 @@ export const plantsData = [
         latinName: 'Squamellaria guppyanum',
         price: 3500,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria guppyanum/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria guppyanum/img_1.png',
-            '/src/assets/images/Squamellaria/Squamellaria guppyanum/img_2.png',
-            '/src/assets/images/Squamellaria/Squamellaria guppyanum/img_3.png',
+            squamellariaGuppyanumImg,
+            squamellariaGuppyanumImg1,
+            squamellariaGuppyanumImg2,
+            squamellariaGuppyanumImg3,
         ],
         sizes: ['S', 'M', 'L']
     },
@@ -69,9 +96,9 @@ export const plantsData = [
         latinName: 'Squamellaria imberbis',
         price: 3600,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria imberbis/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria imberbis/img_1.png',
-            '/src/assets/images/Squamellaria/Squamellaria imberbis/img_2.png',
+            squamellariaImberbisImg,
+            squamellariaImberbisImg1,
+            squamellariaImberbisImg2,
         ],
         sizes: ['M', 'L', 'XL']
     },
@@ -81,8 +108,8 @@ export const plantsData = [
         latinName: 'Squamellaria thekii',
         price: 4800,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria thekii/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria thekii/img_1.png',
+            squamellariaThekiiImg,
+            squamellariaThekiiImg1,
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -92,9 +119,9 @@ export const plantsData = [
         latinName: 'Squamellaria jebbiana',
         price: 8000,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria jebbiana/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria jebbiana/img_1.png',
-            '/src/assets/images/Squamellaria/Squamellaria jebbiana/img_2.png',
+            squamellariaJebbianaImg,
+            squamellariaJebbianaImg1,
+            squamellariaJebbianaImg2,
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -104,10 +131,10 @@ export const plantsData = [
         latinName: 'Squamellaria tenuiflora',
         price: 3500,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria tenuiflora/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria tenuiflora/img_1.png',
-            '/src/assets/images/Squamellaria/Squamellaria tenuiflora/img_2.png',
-            '/src/assets/images/Squamellaria/Squamellaria tenuiflora/img_3.png',
+            squamellariaTenuifloraImg,
+            squamellariaTenuifloraImg1,
+            squamellariaTenuifloraImg2,
+            squamellariaTenuifloraImg3,
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -117,7 +144,7 @@ export const plantsData = [
         latinName: 'Squamellaria vanuatuensis',
         price: 6500,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria vanuatuensis/img.png',
+            squamellariaVanuatuensisImg,
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -127,8 +154,8 @@ export const plantsData = [
         latinName: 'Squamellaria wilsonii',
         price: 5000,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria wilsonii/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria wilsonii/img_1.png',
+            squamellariaWilsoniiImg,
+            squamellariaWilsoniiImg1,
         ],
         sizes: ['S', 'M', 'L', 'XL']
     },
@@ -138,8 +165,8 @@ export const plantsData = [
         latinName: 'Squamellaria wilkinsonii',
         price: 8000,
         images: [
-            '/src/assets/images/Squamellaria/Squamellaria wilkinsonii/img.png',
-            '/src/assets/images/Squamellaria/Squamellaria wilkinsonii/img_1.png',
+            // squamellariaWilkinsoniiImg,
+            // squamellariaWilkinsoniiImg1,
         ],
         sizes: ['S', 'M', 'L', 'XL']
     }
