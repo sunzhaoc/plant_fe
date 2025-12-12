@@ -2,6 +2,7 @@ import PlantCard from '/src/components/Plants/PlantCard';
 import {useState} from 'react';
 
 // 统一导入所有图片资源（解决打包后路径问题的核心）
+// 蚁堡
 import squamellariaMajorImg1 from '@/assets/images/Squamellaria/Squamellaria major/img_1.png';
 import squamellariaMajorImg2 from '@/assets/images/Squamellaria/Squamellaria major/img_2.png';
 import squamellariaMajorImg from '@/assets/images/Squamellaria/Squamellaria major/img.png';
@@ -30,10 +31,56 @@ import squamellariaTenuifloraImg3 from '@/assets/images/Squamellaria/Squamellari
 import squamellariaVanuatuensisImg from '@/assets/images/Squamellaria/Squamellaria vanuatuensis/img.png';
 import squamellariaWilsoniiImg from '@/assets/images/Squamellaria/Squamellaria wilsonii/img.png';
 import squamellariaWilsoniiImg1 from '@/assets/images/Squamellaria/Squamellaria wilsonii/img_1.png';
+// 蚁巢木
 import myrmecodiaLamiiImg from '@/assets/images/Myrmecodia/Myrmecodia lamii/img.png';
-import anthorrhizaChrysacanthaImg from  '@/assets/images/Anthorrhiza/Anthorrhiza chrysacantha/img.png';
+import myrmecodiaBrassiiImg from '@/assets/images/Myrmecodia/Myrmecodia brassii/img.png';
+
+// 蚁茎玉
+import anthorrhizaChrysacanthaImg from '@/assets/images/Anthorrhiza/Anthorrhiza chrysacantha/img.png';
+import anthorrhizaBracteosaImg from '@/assets/images/Anthorrhiza/Anthorrhiza bracteosa/img.png';
+
+// 蚁寨
+import hydnophytumCaminiferumImg from '@/assets/images/Hydnophytum/Hydnophytum caminiferum/img.png';
+
 // 植物数据常量（使用导入的图片变量，确保打包后路径正确）
 export const plantsData = [
+    {
+        id: 19,
+        name: '烟囱蚁寨',
+        latinName: 'Hydnophytum caminiferum',
+        price: 800,
+        images: [hydnophytumCaminiferumImg],
+        sizes: ['S', 'M', 'L']
+    },
+    {
+        id: 17,
+        name: '曲脊蚁茎玉（？）',
+        latinName: 'Anthorrhiza recurvispina (?) (Missima Island, PNG)',
+        price: 2800,
+        images: [],
+        sizes: ['S', 'M', 'L']
+    },
+
+    {
+        id: 18,
+        name: '巴氏蚁巢木',
+        latinName: 'Myrmecodia brassii',
+        price: 3000,
+        images: [
+            myrmecodiaBrassiiImg
+        ],
+        sizes: ['S', 'M', 'L']
+    },
+    {
+        id: 16,
+        name: '方茎蚁茎玉',
+        latinName: 'Anthorrhiza bracteosa (Normanby, PNG)',
+        price: 450,
+        images: [
+            anthorrhizaBracteosaImg
+        ],
+        sizes: ['S', 'M', 'L']
+    },
     {
         id: 1,
         name: '大王蚁堡',
@@ -177,7 +224,7 @@ export const plantsData = [
         id: 14,
         name: '蓝姆蚁巢木',
         latinName: 'Myrmecodia lamii',
-        price: 8000,
+        price: 4500,
         images: [
             myrmecodiaLamiiImg,
         ],
@@ -187,7 +234,7 @@ export const plantsData = [
         id: 15,
         name: '金刺蚁茎玉',
         latinName: 'Anthorrhiza chrysacantha Mt. Kaindi, PNG',
-        price: 8000,
+        price: 1200,
         images: [
             anthorrhizaChrysacanthaImg,
         ],
@@ -237,7 +284,7 @@ export default function PlantGrid() {
             {/* 植物网格 */}
             <div className="row">
                 {filteredPlants.map(plant => (
-                    <PlantCard key={plant.id} plant={plant} />
+                    <PlantCard key={plant.id} plant={plant}/>
                 ))}
             </div>
         </div>

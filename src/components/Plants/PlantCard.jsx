@@ -1,6 +1,7 @@
 import {Link} from 'react-router-dom';
 
 export default function PlantCard({plant}) {
+    const DEFAULT_PLANT_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTUwIDE0MGMwIDEwLjktOC45IDIwLTIwIDIwaC02MGMtMTEuMSAwLTIwLTkuMS0yMC0yMFY4MGMwLTExLjEgOC45LTIwIDIwLTIwaDYwYzExLjEgMCAyMCA4LjkgMjAgMjB2NjB6bTAtODBDMTUwIDQwIDEyMCAxMCA4MCAxMEg2MGMtNDAgMC03MCAzMCIgZmlsbD0iIzcwQTk1OSIvPjxwYXRoIGQ9Ik04MCA0MGMtMjcuNiAwLTUwIDIyLjQtNTAgNTB2NjBjMCAyNy42IDIyLjQgNTAgNTAgNTBoNjBjMjcuNiAwIDUwLTIyLjQgNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMTBjLTI3LjYgMC01MCAyMi40LTUwIDUwdjYwYzAgMjcuNiAyMi40IDUwIDUwIDUwaDYwYzI3LjYgMCA1MC0yMi40IDUwLTUwdjYwYzAgMjcuNi0yMi40IDUwLTUwIDUwaC02MGMtMjcuNiAwLTUwLTIyLjQtNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMCIgZmlsbD0iIzgwYjc2NSIvPjwvc3ZnPg==';
     return (<>
         <div className="col-md-3 mb-5">
             <div className="plant-card-container">
@@ -10,7 +11,7 @@ export default function PlantCard({plant}) {
                     <div className="plant-img-container">
                         <Link to={`/detail/${plant.id}`}>
                             <img
-                                src={plant.images[0]}
+                                src={plant.images?.[0] || DEFAULT_PLANT_IMAGE}
                                 className="plant-card-img"
                                 alt={plant.name}
                                 loading="lazy"
