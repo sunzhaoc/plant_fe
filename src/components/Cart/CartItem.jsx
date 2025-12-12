@@ -62,7 +62,7 @@ export default function CartItem({item, onUpdate, onRemove}) {
 
             {/* 总价列 */}
             <div className="col-2 pe-1" style={{fontSize: '0.85rem'}}>
-                ¥ {item.price * item.quantity}
+                ¥ {(item.price * item.quantity).toFixed(2)}
             </div>
 
             {/* 删除按钮优化 */}

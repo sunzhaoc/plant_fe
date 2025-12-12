@@ -89,10 +89,13 @@ export const CartProvider = ({children}) => {
 
     // 计算总价
     const getTotalPrice = () => {
-        return cartItems.reduce(
-            (total, item) => total + item.price * item.quantity,
-            0
+        const totalInCents = cartItems.reduce(
+            (total, item) => {
+                const itemTotal = Math.round((item.price * item.quantity) * 100);
+                return total + itemTotal;
+            }, 0
         );
+        return (totalInCents / 100).toFixed(2);
     };
 
     // 计算商品总数
