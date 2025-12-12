@@ -187,8 +187,8 @@ body {
 
 .plant-card-title {
     font-size: 15px;
-    font-weight: 500;
-    color: #333;
+    font-weight: 600;
+    color: #444;
     margin-bottom: 6px;
     line-height: 1.3;
 }
@@ -197,9 +197,8 @@ body {
     color: var(--primary-color);
 }
 
-/* 扁平风格拉丁学名 */
 .latin-name-text {
-    font-size: 11px;
+    font-size: 12px;
     font-style: italic;
     color: #666;
     margin-bottom: 12px;
@@ -221,10 +220,10 @@ body {
 
 /* 完全扁平的选购按钮 */
 .add-to-cart-btn {
-    background: var(--primary-color);
+    background: #407d64;
     color: white;
     padding: 4px 10px;
-    border-radius: 3px; /* 扁平小圆角 */
+    border-radius: 3px;
     font-size: 12px;
     font-weight: 500;
     text-decoration: none;
