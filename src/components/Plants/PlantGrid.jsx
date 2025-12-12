@@ -1,4 +1,5 @@
 import PlantCard from '/src/components/Plants/PlantCard';
+import img1 from '@/assets/images/Squamellaria/Squamellaria major/img.png';
 
 // 模拟植物数据
 // eslint-disable-next-line react-refresh/only-export-components
@@ -9,6 +10,7 @@ export const plantsData = [
         latinName: 'Squamellaria major',
         price: 2000,
         images: [
+            img1,
             '/src/assets/images/Squamellaria/Squamellaria major/img.png',
             '/src/assets/images/Squamellaria/Squamellaria major/img_1.png',
             '/src/assets/images/Squamellaria/Squamellaria major/img_2.png',
