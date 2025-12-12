@@ -1,4 +1,6 @@
 import PlantCard from '/src/components/Plants/PlantCard';
+import {useState} from 'react';
+
 // 统一导入所有图片资源（解决打包后路径问题的核心）
 import squamellariaMajorImg1 from '@/assets/images/Squamellaria/Squamellaria major/img_1.png';
 import squamellariaMajorImg2 from '@/assets/images/Squamellaria/Squamellaria major/img_2.png';
@@ -28,7 +30,8 @@ import squamellariaTenuifloraImg3 from '@/assets/images/Squamellaria/Squamellari
 import squamellariaVanuatuensisImg from '@/assets/images/Squamellaria/Squamellaria vanuatuensis/img.png';
 import squamellariaWilsoniiImg from '@/assets/images/Squamellaria/Squamellaria wilsonii/img.png';
 import squamellariaWilsoniiImg1 from '@/assets/images/Squamellaria/Squamellaria wilsonii/img_1.png';
-
+import myrmecodiaLamiiImg from '@/assets/images/Myrmecodia/Myrmecodia lamii/img.png';
+import anthorrhizaChrysacanthaImg from  '@/assets/images/Anthorrhiza/Anthorrhiza chrysacantha/img.png';
 // 植物数据常量（使用导入的图片变量，确保打包后路径正确）
 export const plantsData = [
     {
@@ -169,15 +172,74 @@ export const plantsData = [
             // squamellariaWilkinsoniiImg1,
         ],
         sizes: ['S', 'M', 'L', 'XL']
+    },
+    {
+        id: 14,
+        name: '蓝姆蚁巢木',
+        latinName: 'Myrmecodia lamii',
+        price: 8000,
+        images: [
+            myrmecodiaLamiiImg,
+        ],
+        sizes: ['S', 'M', 'L', 'XL']
+    },
+    {
+        id: 15,
+        name: '金刺蚁茎玉',
+        latinName: 'Anthorrhiza chrysacantha Mt. Kaindi, PNG',
+        price: 8000,
+        images: [
+            anthorrhizaChrysacanthaImg,
+        ],
+        sizes: ['S', 'M', 'L', 'XL']
     }
 ];
 
+// 提取所有独特的属名（从拉丁名中提取第一个单词）
+const getGenera = (plants) => {
+    const genera = new Set();
+    plants.forEach(plant => {
+        const genus = plant.latinName.split(' ')[0];
+        genera.add(genus);
+    });
+    return ['全部', ...Array.from(genera)];
+};
+
+
 export default function PlantGrid() {
+    const [selectedGenus, setSelectedGenus] = useState('全部');
+    const genera = getGenera(plantsData);
+
+    // 根据选中的属名筛选植物
+    const filteredPlants = selectedGenus === '全部'
+        ? plantsData
+        : plantsData.filter(plant =>
+            plant.latinName.split(' ')[0] === selectedGenus
+        );
+
     return (
-        <div className="row">
-            {plantsData.map(plant => (
-                <PlantCard key={plant.id} plant={plant} />
-            ))}
+        <div>
+            {/* 属名筛选栏 */}
+            <div className="mb-4 genus-filter">
+                <div className="d-flex flex-wrap gap-2">
+                    {genera.map(genus => (
+                        <button
+                            key={genus}
+                            className={`btn genus-btn ${selectedGenus === genus ? 'active' : ''}`}
+                            onClick={() => setSelectedGenus(genus)}
+                        >
+                            {genus}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* 植物网格 */}
+            <div className="row">
+                {filteredPlants.map(plant => (
+                    <PlantCard key={plant.id} plant={plant} />
+                ))}
+            </div>
         </div>
     );
 }

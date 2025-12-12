@@ -245,3 +245,30 @@ body {
         font-size: 15px;
     }
 }
+
+/* 属名筛选按钮样式 */
+.genus-filter {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.genus-btn {
+    background: transparent;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.genus-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.genus-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
