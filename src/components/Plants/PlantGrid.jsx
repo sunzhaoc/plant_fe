@@ -41,9 +41,18 @@ import anthorrhizaBracteosaImg from '@/assets/images/Anthorrhiza/Anthorrhiza bra
 
 // 蚁寨
 import hydnophytumCaminiferumImg from '@/assets/images/Hydnophytum/Hydnophytum caminiferum/img.png';
+import hydnophytum_sp_aff_ovatum__aimas_sorong_west_papua_Img from '@/assets/images/Hydnophytum/hydnophytum_sp_aff_ovatum__aimas_sorong_west_papua/img.png';
 
 // 植物数据常量（使用导入的图片变量，确保打包后路径正确）
 export const plantsData = [
+    {
+        id: 20,
+        name: '与卵形蚁寨相似的未定种蚁寨',
+        latinName: 'Hydnophytum sp. aff. ovatum Aimas, Sorong, West Papua',
+        price: 800,
+        images: [hydnophytum_sp_aff_ovatum__aimas_sorong_west_papua_Img],
+        sizes: ['S', 'M', 'L']
+    },
     {
         id: 19,
         name: '烟囱蚁寨',
@@ -97,7 +106,7 @@ export const plantsData = [
     {
         id: 2,
         name: '发动机蚁堡',
-        latinName: 'Squamellaria kajewskli',
+        latinName: 'Squamellaria kajewskli (Bugainville Island, PNG)',
         price: 2000,
         images: [
             squamellariaKajewskliImg,
@@ -108,7 +117,7 @@ export const plantsData = [
     {
         id: 3,
         name: '赫胥黎蚁堡',
-        latinName: 'Squamellaria huxleyana',
+        latinName: 'Squamellaria huxleyana (Vanua Levu, Fiji)',
         price: 3500,
         images: [
             squamellariaHuxleyanaImg,
@@ -119,7 +128,7 @@ export const plantsData = [
     {
         id: 4,
         name: '格雷蚁堡',
-        latinName: 'Squamellaria grayi',
+        latinName: 'Squamellaria grayi (Taveuni Island, Fiji)',
         price: 7000,
         images: [
             squamellariaGrayiImg,
@@ -130,7 +139,7 @@ export const plantsData = [
     {
         id: 5,
         name: '古皮蚁堡',
-        latinName: 'Squamellaria guppyanum',
+        latinName: 'Squamellaria guppyanum (Bugainville Island, PNG)',
         price: 3500,
         images: [
             squamellariaGuppyanumImg,
@@ -143,7 +152,7 @@ export const plantsData = [
     {
         id: 6,
         name: '海参蚁堡',
-        latinName: 'Squamellaria imberbis',
+        latinName: 'Squamellaria imberbis (Vanua Levu, Fiji)',
         price: 3600,
         images: [
             squamellariaImberbisImg,
@@ -155,7 +164,7 @@ export const plantsData = [
     {
         id: 8,
         name: '特基蚁堡',
-        latinName: 'Squamellaria thekii',
+        latinName: 'Squamellaria thekii (Taveuni, Fiji)',
         price: 4800,
         images: [
             squamellariaThekiiImg,
@@ -201,7 +210,7 @@ export const plantsData = [
     {
         id: 12,
         name: '威尔逊蚁堡',
-        latinName: 'Squamellaria wilsonii',
+        latinName: 'Squamellaria wilsonii (Taveuni, Fiji)',
         price: 5000,
         images: [
             squamellariaWilsoniiImg,
