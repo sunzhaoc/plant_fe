@@ -37,16 +37,18 @@ export const plantsData = [
     //     ],
     //     sizes: ['S', 'M', 'L']
     // },
-    // {
-    //     id: 16,
-    //     name: '方茎蚁茎玉',
-    //     latinName: 'Anthorrhiza bracteosa (Normanby, PNG)',
-    //     price: 450,
-    //     imgUrl: [
-    //         "plant/anthorrhiza/anthorrhiza_bracteosa/img.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L']
-    // },
+    {
+        id: 16,
+        name: '方茎蚁茎玉',
+        latinName: 'Anthorrhiza bracteosa (Normanby, PNG)',
+        imgUrl: [
+            "plant/anthorrhiza/anthorrhiza_bracteosa/img.png",
+        ],
+        sizes: [
+            {size: 'S', price: 450.00},
+            {size: 'M', price: 500.00},
+        ]
+    },
     // {
     //     id: 1,
     //     name: '大王蚁堡',
@@ -93,18 +95,19 @@ export const plantsData = [
             {size: 'L', price: 6800.03},
         ]
     },
-    // {
-    //     id: 5,
-    //     name: '古皮蚁堡',
-    //     latinName: 'Squamellaria guppyanum (Bugainville Island, PNG)',
-    //     price: 3500,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_guppyanum/img.png",
-    //         "plant/squamellaria/squamellaria_guppyanum/img_1.png",
-    //         "plant/squamellaria/squamellaria_guppyanum/img_2.png"
-    //     ],
-    //     sizes: ['S', 'M', 'L']
-    // },
+    {
+        id: 5,
+        name: '古皮蚁堡',
+        latinName: 'Squamellaria guppyanum (Bugainville Island, PNG)',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_guppyanum/img.png",
+            "plant/squamellaria/squamellaria_guppyanum/img_1.png",
+            "plant/squamellaria/squamellaria_guppyanum/img_2.png"
+        ],
+        sizes: [
+            {size: 'S', price: 2000.00},
+        ]
+    },
     // {
     //     id: 6,
     //     name: '海参蚁堡',
