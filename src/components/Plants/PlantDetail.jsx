@@ -33,7 +33,7 @@ export default function PlantDetail({plant}) {
                 {/* 左侧：图片展示 */}
                 <div className="plant-gallery-col">
                     {/* 确保 ImageGallery 内部样式也尽量简洁，不要有太厚的边框 */}
-                    <ImageGallery images={plant.images} />
+                    <ImageGallery imgUrls={plant.imgUrl} />
                 </div>
 
                 {/* 右侧：信息面板 */}

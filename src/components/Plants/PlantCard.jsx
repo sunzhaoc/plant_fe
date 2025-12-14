@@ -1,7 +1,24 @@
 import {Link} from 'react-router-dom';
+import {useState, useEffect} from "react";
+import {plantApi} from "@/services/api.jsx";
 
 export default function PlantCard({plant}) {
     const DEFAULT_PLANT_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTUwIDE0MGMwIDEwLjktOC45IDIwLTIwIDIwaC02MGMtMTEuMSAwLTIwLTkuMS0yMC0yMFY4MGMwLTExLjEgOC45LTIwIDIwLTIwaDYwYzExLjEgMCAyMCA4LjkgMjAgMjB2NjB6bTAtODBDMTUwIDQwIDEyMCAxMCA4MCAxMEg2MGMtNDAgMC03MCAzMCIgZmlsbD0iI0VFRkVGRiIvPjxwYXRoIGQ9Ik04MCA0MGMtMjcuNiAwLTUwIDIyLjQtNTAgNTB2NjBjMCAyNy42IDIyLjQgNTAgNTAgNTBoNjBjMjcuNiAwIDUwLTIyLjQgNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMTBjLTI3LjYgMC01MCAyMi40LTUwIDUwdjYwYzAgMjcuNiAyMi40IDUwIDUwIDUwaDYwYzI3LjYgMCA1MC0yMi40IDUwLTUwdjYwYzAgMjcuNi0yMi40IDUwLTUwIDUwaC02MGMtMjcuNiAwLTUwLTIyLjQtNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMCIgZmlsbD0iI0RkRURFRCIvPjwvc3ZnPg==';
+    const [imageUrl, setImageUrl] = useState('');
+    useEffect(() => {
+        let isEffectValid = true;
+        if (plant.imgUrl && plant.imgUrl.length > 0) {
+            plantApi.getPlantImage(plant.imgUrl[0])
+                .then(url => {
+                    if (isEffectValid) {
+                        setImageUrl(url);
+                    }
+                });
+        }
+        return () => {
+            isEffectValid = false;
+        };
+    }, [plant]);
     return (<>
         <div className="col-md-3 mb-5">
             <div className="plant-card-container">
@@ -9,7 +26,7 @@ export default function PlantCard({plant}) {
                     <div className="plant-img-container">
                         <Link to={`/detail/${plant.id}`}>
                             <img
-                                src={plant.images?.[0] || DEFAULT_PLANT_IMAGE}
+                                src={imageUrl || DEFAULT_PLANT_IMAGE}
                                 className="plant-card-img"
                                 alt={plant.name}
                                 loading="lazy"

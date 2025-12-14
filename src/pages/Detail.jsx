@@ -9,6 +9,5 @@ export default function Detail() {
     if (!plant) {
         return <Navigate to="/" replace />;
     }
-
     return <PlantDetail plant={plant} />;
 }
