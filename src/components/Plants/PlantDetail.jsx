@@ -16,14 +16,22 @@ export default function PlantDetail({plant}) {
     const handleDecrease = () => setQuantity(prev => Math.max(1, prev - 1));
 
     const handleAddToCart = () => {
-        addToCart(plant, selectedSize, quantity);
-        // 这里建议以后换成一个轻量级的 Toast 提示，而不是 alert
+        addToCart(
+            {...plant, price: selectedSize.price},
+            selectedSize.size,
+            quantity
+        );
         alert('已添加到购物车');
     };
 
     const handleViewCart = () => {
         navigate('/cart');
     };
+
+    const handleSizeChange = (sizeItem) => {
+        setSelectedSize(sizeItem);
+    }
+
 
     return (
         <div className="plant-detail-container">
@@ -41,19 +49,19 @@ export default function PlantDetail({plant}) {
                     <header>
                         <h1 className="plant-title">{plant.name}</h1>
                         <p className="plant-latin">{plant.latinName}</p>
-                        <div className="plant-price">¥ {plant.price}</div>
+                        <div className="plant-price">¥ {selectedSize.price}</div>
                     </header>
 
                     <div className="mb-4">
                         <span className="section-label">选择规格</span>
                         <div className="d-flex flex-wrap">
-                            {plant.sizes.map(size => (
+                            {plant.sizes.map(_ => (
                                 <button
-                                    key={size}
-                                    className={`size-btn ${selectedSize === size ? 'active' : ''}`}
-                                    onClick={() => setSelectedSize(size)}
+                                    key={_.size}
+                                    className={`size-btn ${selectedSize.size === _.size ? 'active' : ''}`}
+                                    onClick={() => handleSizeChange(_)}
                                 >
-                                    {size}
+                                    {_.size}
                                 </button>
                             ))}
                         </div>

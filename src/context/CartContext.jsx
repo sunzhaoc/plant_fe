@@ -19,17 +19,15 @@ export const CartProvider = ({children}) => {
     // 添加商品到购物车
     const addToCart = (plant, size, quantity) => {
         const existingItem = cartItems.find(
-            item => item.id === plant.id && item.size === size
+            _ => _.id === plant.id && _.size === size
         );
-
-
 
         if (existingItem) {
             setCartItems(
-                cartItems.map(item =>
-                    item.id === plant.id && item.size === size
-                        ? {...item, quantity: item.quantity + quantity}
-                        : item
+                cartItems.map(_ =>
+                    _.id === plant.id && _.size === size
+                        ? {..._, quantity: _.quantity + quantity}
+                        : _
                 )
             );
         } else {
