@@ -19,14 +19,17 @@ export const plantsData = [
     //     imgUrl: ['plant/squamellaria/squamellaria_grayi/img.png'],
     //     sizes: ['S', 'M', 'L']
     // },
-    // {
-    //     id: 17,
-    //     name: '曲脊蚁茎玉（？）',
-    //     latinName: 'Anthorrhiza recurvispina (?) (Missima Island, PNG)',
-    //     price: 2800,
-    //     imgUrl: [],
-    //     sizes: ['S', 'M', 'L']
-    // },
+    {
+        id: 17,
+        name: '曲脊蚁茎玉（？）',
+        latinName: 'Anthorrhiza recurvispina (?) (Missima Island, PNG)',
+        price: 2800,
+        imgUrl: [],
+        sizes: [
+            {size: 'S', price: 450.00},
+            {size: 'M', price: 500.00},
+        ]
+    },
     // {
     //     id: 18,
     //     name: '巴氏蚁巢木',

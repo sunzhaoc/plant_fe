@@ -38,7 +38,7 @@ export const CartProvider = ({children}) => {
                     name: plant.name,
                     latinName: plant.latinName,
                     price: plant.price,
-                    image: plant.imgUrl[0],
+                    imgUrl: plant.imgUrl[0],
                     size,
                     quantity,
                 },

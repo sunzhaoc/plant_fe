@@ -1,6 +1,11 @@
 import QuantitySelector from '/src/components/UI/QuantitySelector';
+import {useEffect, useState} from 'react';
+import {plantApi} from "@/services/api.jsx";
 
 export default function CartItem({item, onUpdate, onRemove}) {
+    const [imageUrl, setImageUrl] = useState('');
+
+
     const handleIncrease = () => {
         onUpdate(item.id, item.size, item.quantity + 1);
     };
@@ -10,6 +15,26 @@ export default function CartItem({item, onUpdate, onRemove}) {
             onUpdate(item.id, item.size, item.quantity - 1);
         }
     };
+
+    // 初始加载和原始路径变化时，获取有效 URL
+    useEffect(() => {
+        const fetchImage = async () => {
+            if (!item.imgUrl) {
+                setImageUrl('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTUwIDE0MGMwIDEwLjktOC45IDIwLTIwIDIwaC02MGMtMTEuMSAwLTIwLTkuMS0yMC0yMFY4MGMwLTExLjEgOC45LTIwIDIwLTIwaDYwYzExLjEgMCAyMCA4LjkgMjAgMjB2NjB6bTAtODBDMTUwIDQwIDEyMCAxMCA4MCAxMEg2MGMtNDAgMC03MCAzMCIgZmlsbD0iI0VFRkVGRiIvPjxwYXRoIGQ9Ik04MCA0MGMtMjcuNiAwLTUwIDIyLjQtNTAgNTB2NjBjMCAyNy42IDIyLjQgNTAgNTAgNTBoNjBjMjcuNiAwIDUwLTIyLjQgNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMTBjLTI3LjYgMC01MCAyMi40LTUwIDUwdjYwYzAgMjcuNiAyMi40IDUwIDUwIDUwaDYwYzI3LjYgMCA1MC0yMi40IDUwLTUwdjYwYzAgMjcuNi0yMi40IDUwLTUwIDUwaC02MGMtMjcuNiAwLTUwLTIyLjQtNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMCIgZmlsbD0iI0RkRURFRCIvPjwvc3ZnPg==');
+                return;
+            }
+            const validUrl = await plantApi.getPlantImage(item.imgUrl);
+            setImageUrl(validUrl);
+        };
+        fetchImage();
+    }, [item.imgUrl]);
+
+    // 图片加载失败时（可能 URL 过期），重新请求
+    const handleImageError = async () => {
+        const newUrl = await plantApi.getPlantImage(item.imgUrl);
+        setImageUrl(newUrl);
+    };
+
 
     return (
         <div
@@ -21,8 +46,9 @@ export default function CartItem({item, onUpdate, onRemove}) {
             {/*图片*/}
             <div className="col-2 pe-1">
                 <img
-                    src={item.image}
+                    src={imageUrl}
                     alt={item.name}
+                    onError={handleImageError} // 过期时自动重试
                     className="img-fluid rounded"
                     style={{
                         height: '65px',
