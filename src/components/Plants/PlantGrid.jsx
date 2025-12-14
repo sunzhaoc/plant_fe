@@ -19,35 +19,34 @@ export const plantsData = [
     //     imgUrl: ['plant/squamellaria/squamellaria_grayi/img.png'],
     //     sizes: ['S', 'M', 'L']
     // },
-    // {
-    //     id: 17,
-    //     name: '曲脊蚁茎玉（？）',
-    //     latinName: 'Anthorrhiza recurvispina (?) (Missima Island, PNG)',
-    //     price: 2800,
-    //     imgUrl: ['plant/squamellaria/squamellaria_grayi/img.png'],
-    //     sizes: ['S', 'M', 'L']
-    // },
-    //
-    // {
-    //     id: 18,
-    //     name: '巴氏蚁巢木',
-    //     latinName: 'Myrmecodia brassii',
-    //     price: 3000,
-    //     imgUrl: [
-    //         myrmecodiaBrassiiImg
-    //     ],
-    //     sizes: ['S', 'M', 'L']
-    // },
-    // {
-    //     id: 16,
-    //     name: '方茎蚁茎玉',
-    //     latinName: 'Anthorrhiza bracteosa (Normanby, PNG)',
-    //     price: 450,
-    //     imgUrl: [
-    //         anthorrhizaBracteosaImg
-    //     ],
-    //     sizes: ['S', 'M', 'L']
-    // },
+    {
+        id: 17,
+        name: '曲脊蚁茎玉（？）',
+        latinName: 'Anthorrhiza recurvispina (?) (Missima Island, PNG)',
+        price: 2800,
+        imgUrl: [],
+        sizes: ['S', 'M', 'L']
+    },
+    {
+        id: 18,
+        name: '巴氏蚁巢木',
+        latinName: 'Myrmecodia brassii',
+        price: 3000,
+        imgUrl: [
+            "plant/myrmecodia/myrmecodia_brassii/img.png",
+        ],
+        sizes: ['S', 'M', 'L']
+    },
+    {
+        id: 16,
+        name: '方茎蚁茎玉',
+        latinName: 'Anthorrhiza bracteosa (Normanby, PNG)',
+        price: 450,
+        imgUrl: [
+            "plant/anthorrhiza/anthorrhiza_bracteosa/img.png",
+        ],
+        sizes: ['S', 'M', 'L']
+    },
     {
         id: 1,
         name: '大王蚁堡',
@@ -180,26 +179,26 @@ export const plantsData = [
         imgUrl: [],
         sizes: ['S', 'M', 'L', 'XL']
     },
-    // {
-    //     id: 14,
-    //     name: '蓝姆蚁巢木',
-    //     latinName: 'Myrmecodia lamii',
-    //     price: 4500,
-    //     imgUrl: [
-    //         myrmecodiaLamiiImg,
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 15,
-    //     name: '金刺蚁茎玉',
-    //     latinName: 'Anthorrhiza chrysacantha Mt. Kaindi, PNG',
-    //     price: 1200,
-    //     imgUrl: [
-    //         anthorrhizaChrysacanthaImg,
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // }
+    {
+        id: 14,
+        name: '蓝姆蚁巢木',
+        latinName: 'Myrmecodia lamii',
+        price: 4500,
+        imgUrl: [
+            "plant/myrmecodia/myrmecodia_lamii/img.png",
+        ],
+        sizes: ['S', 'M', 'L', 'XL']
+    },
+    {
+        id: 15,
+        name: '金刺蚁茎玉',
+        latinName: 'Anthorrhiza chrysacantha Mt. Kaindi, PNG',
+        price: 1200,
+        imgUrl: [
+            "plant/anthorrhiza/anthorrhiza_chrysacantha/img.png",
+        ],
+        sizes: ['S', 'M', 'L', 'XL']
+    }
 ];
 
 // 提取所有独特的属名（从拉丁名中提取第一个单词）
