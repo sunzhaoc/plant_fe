@@ -22,6 +22,8 @@ export const CartProvider = ({children}) => {
             item => item.id === plant.id && item.size === size
         );
 
+
+
         if (existingItem) {
             setCartItems(
                 cartItems.map(item =>
@@ -38,11 +40,12 @@ export const CartProvider = ({children}) => {
                     name: plant.name,
                     latinName: plant.latinName,
                     price: plant.price,
-                    image: plant.images[0],
+                    image: plant.imgUrl[0],
                     size,
                     quantity,
                 },
             ]);
+            console.log(cartItems)
         }
     };
 
