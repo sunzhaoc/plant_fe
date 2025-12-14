@@ -111,102 +111,119 @@ export const plantsData = [
             {size: 'S', price: 2000.00},
         ]
     },
-    // {
-    //     id: 6,
-    //     name: '海参蚁堡',
-    //     latinName: 'Squamellaria imberbis (Vanua Levu, Fiji)',
-    //     price: 3600,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_imberbis/img.png",
-    //         "plant/squamellaria/squamellaria_imberbis/img_1.png",
-    //     ],
-    //     sizes: ['M', 'L', 'XL']
-    // },
-    // {
-    //     id: 8,
-    //     name: '特基蚁堡',
-    //     latinName: 'Squamellaria thekii (Taveuni, Fiji)',
-    //     price: 4800,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_thekii/img.png",
-    //         "plant/squamellaria/squamellaria_thekii/img_1.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 9,
-    //     name: '杰布蚁堡',
-    //     latinName: 'Squamellaria jebbiana',
-    //     price: 8000,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_jebbiana/img.png",
-    //         "plant/squamellaria/squamellaria_jebbiana/img_1.png",
-    //         "plant/squamellaria/squamellaria_jebbiana/img_2.png"
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 10,
-    //     name: '细花蚁堡',
-    //     latinName: 'Squamellaria tenuiflora',
-    //     price: 3500,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_tenuiflora/img.png",
-    //         "plant/squamellaria/squamellaria_tenuiflora/img_1.png",
-    //         "plant/squamellaria/squamellaria_tenuiflora/img_2.png",
-    //         "plant/squamellaria/squamellaria_tenuiflora/img_3.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 11,
-    //     name: '瓦努阿图蚁堡',
-    //     latinName: 'Squamellaria vanuatuensis',
-    //     price: 6500,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_vanuatuensis/img.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 12,
-    //     name: '威尔逊蚁堡',
-    //     latinName: 'Squamellaria wilsonii (Taveuni, Fiji)',
-    //     price: 5000,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_wilsonii/img.png",
-    //         "plant/squamellaria/squamellaria_wilsonii/img_1.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 13,
-    //     name: '威尔金森蚁堡',
-    //     latinName: 'Squamellaria wilkinsonii',
-    //     price: 8000,
-    //     imgUrl: [],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 14,
-    //     name: '蓝姆蚁巢木',
-    //     latinName: 'Myrmecodia lamii',
-    //     price: 4500,
-    //     imgUrl: [
-    //         "plant/myrmecodia/myrmecodia_lamii/img.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 15,
-    //     name: '金刺蚁茎玉',
-    //     latinName: 'Anthorrhiza chrysacantha Mt. Kaindi, PNG',
-    //     price: 1200,
-    //     imgUrl: [
-    //         "plant/anthorrhiza/anthorrhiza_chrysacantha/img.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // }
+    {
+        id: 6,
+        name: '海参蚁堡',
+        latinName: 'Squamellaria imberbis (Vanua Levu, Fiji)',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_imberbis/img.png",
+            "plant/squamellaria/squamellaria_imberbis/img_1.png",
+        ],
+        sizes: [
+            {size: 'S', price: 2000.00},
+        ]
+    },
+    {
+        id: 8,
+        name: '特基蚁堡',
+        latinName: 'Squamellaria thekii (Taveuni, Fiji)',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_thekii/img.png",
+            "plant/squamellaria/squamellaria_thekii/img_1.png",
+        ],
+        sizes: [
+            {size: 'S', price: 2000.00},
+        ]
+    },
+    {
+        id: 9,
+        name: '杰布蚁堡',
+        latinName: 'Squamellaria jebbiana',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_jebbiana/img.png",
+            "plant/squamellaria/squamellaria_jebbiana/img_1.png",
+            "plant/squamellaria/squamellaria_jebbiana/img_2.png"
+        ],
+        sizes: [
+            {size: 'S', price: 2000.00},
+        ]
+    },
+    {
+        id: 10,
+        name: '细花蚁堡',
+        latinName: 'Squamellaria tenuiflora',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_tenuiflora/img.png",
+            "plant/squamellaria/squamellaria_tenuiflora/img_1.png",
+            "plant/squamellaria/squamellaria_tenuiflora/img_2.png",
+            "plant/squamellaria/squamellaria_tenuiflora/img_3.png",
+        ],
+        sizes: [
+            {size: 'S', price: 2000.00},
+        ]
+    },
+    {
+        id: 11,
+        name: '瓦努阿图蚁堡',
+        latinName: 'Squamellaria vanuatuensis',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_vanuatuensis/img.png",
+        ],
+        sizes: [
+            {size: 'S', price: 2000.00},
+        ]
+    },
+    {
+        id: 12,
+        name: '威尔逊蚁堡',
+        latinName: 'Squamellaria wilsonii (Taveuni, Fiji)',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_wilsonii/img.png",
+            "plant/squamellaria/squamellaria_wilsonii/img_1.png",
+        ],
+        sizes: [
+            {size: 'S', price: 4500.00},
+            {size: 'M', price: 5000.03},
+            {size: 'L', price: 6800.03},
+        ]
+    },
+    {
+        id: 13,
+        name: '威尔金森蚁堡',
+        latinName: 'Squamellaria wilkinsonii',
+        imgUrl: [],
+        sizes: [
+            {size: 'S', price: 4500.00},
+            {size: 'M', price: 5000.03},
+            {size: 'L', price: 6800.03},
+        ]
+    },
+    {
+        id: 14,
+        name: '蓝姆蚁巢木',
+        latinName: 'Myrmecodia lamii',
+        imgUrl: [
+            "plant/myrmecodia/myrmecodia_lamii/img.png",
+        ],
+        sizes: [
+            {size: 'S', price: 4500.00},
+            {size: 'M', price: 5000.03},
+            {size: 'L', price: 6800.03},
+        ]
+    },
+    {
+        id: 15,
+        name: '金刺蚁茎玉',
+        latinName: 'Anthorrhiza chrysacantha Mt. Kaindi, PNG',
+        imgUrl: [
+            "plant/anthorrhiza/anthorrhiza_chrysacantha/img.png",
+        ],
+        sizes: [
+            {size: 'S', price: 4500.00},
+            {size: 'M', price: 5000.03},
+            {size: 'L', price: 6800.03},
+        ]
+    }
 ];
 
 // 提取所有独特的属名（从拉丁名中提取第一个单词）
