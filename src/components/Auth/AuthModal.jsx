@@ -1,5 +1,4 @@
-// src/components/Auth/AuthModal.jsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; // 新增导入useEffect
 import { useAuth } from '/src/context/AuthContext';
 import './AuthModal.css';
 
@@ -19,6 +18,56 @@ export default function AuthModal() {
         password: ''
     });
     const [error, setError] = useState('');
+
+    // 核心：背景滚动锁定逻辑
+    useEffect(() => {
+        const body = document.body;
+        if (authModalOpen) {
+            // 1. 保存当前滚动位置，防止锁定后页面跳顶
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            // 2. 保存原始overflow样式，用于恢复
+            const originalOverflow = body.style.overflow;
+
+            // 3. 锁定背景：禁止滚动 + 固定定位防止位移
+            body.style.overflow = 'hidden';
+            body.style.position = 'fixed';
+            body.style.width = '100%';
+            body.style.top = `-${scrollTop}px`;
+
+            // 4. 把原始状态存到body的data属性里，方便恢复
+            body.dataset.originalOverflow = originalOverflow;
+            body.dataset.scrollTop = scrollTop;
+        } else {
+            // 恢复背景滚动
+            const originalOverflow = body.dataset.originalOverflow || '';
+            const scrollTop = parseInt(body.dataset.scrollTop || '0', 10);
+
+            // 重置body样式
+            body.style.overflow = originalOverflow;
+            body.style.position = '';
+            body.style.width = '';
+            body.style.top = '';
+
+            // 恢复之前的滚动位置
+            window.scrollTo(0, scrollTop);
+
+            // 清理data属性
+            delete body.dataset.originalOverflow;
+            delete body.dataset.scrollTop;
+        }
+
+        // 组件卸载时兜底恢复（防止异常情况导致背景一直锁定）
+        return () => {
+            const body = document.body;
+            body.style.overflow = body.dataset.originalOverflow || '';
+            body.style.position = '';
+            body.style.width = '';
+            body.style.top = '';
+            window.scrollTo(0, parseInt(body.dataset.scrollTop || '0', 10));
+            delete body.dataset.originalOverflow;
+            delete body.dataset.scrollTop;
+        };
+    }, [authModalOpen]); // 仅监听弹窗显示状态变化
 
     if (!authModalOpen) return null;
 
