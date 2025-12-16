@@ -9,7 +9,7 @@ export default function Header() {
             <div className="container">
                 <nav className="navbar navbar-expand-lg navbar-light">
                     <Link className="navbar-brand" to="/" style={{color: 'var(--primary-color)', fontWeight: 'bold'}}>
-                        <i className="bi bi-leaf me-2"></i>蚁栖植物商城
+                        <i className="bi bi-leaf me-2"></i>ANT PLANT 蚁栖植物商城
                     </Link>
 
                     <div className="ms-auto">
