@@ -9,6 +9,8 @@ import CartPage from '/src/pages/CartPage.jsx';
 import QuickCart from '/src/components/Cart/QuickCart.jsx';
 import '/src/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {AuthProvider} from '/src/context/AuthContext';
+import AuthModal from '/src/components/Auth/AuthModal';
 
 function ScrollToTop() {
     const location = useLocation();
@@ -28,21 +30,24 @@ function ScrollToTop() {
 function App() {
     return (
         <CartProvider>
-            <BrowserRouter>
-                <ScrollToTop/>
-                <Header />
-                <main className="content">
-                    <div className="container">
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/detail/:id" element={<Detail />} />
-                            <Route path="/cart" element={<CartPage />} />
-                        </Routes>
-                    </div>
-                </main>
-                <Footer />
-                <QuickCart />
-            </BrowserRouter>
+            <AuthProvider>
+                <BrowserRouter>
+                    <ScrollToTop />
+                    <Header />
+                    <main className="content">
+                        <div className="container">
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/detail/:id" element={<Detail />} />
+                                <Route path="/cart" element={<CartPage />} />
+                            </Routes>
+                        </div>
+                    </main>
+                    <Footer />
+                    <QuickCart />
+                    <AuthModal />
+                </BrowserRouter>
+            </AuthProvider>
         </CartProvider>
     );
 }
