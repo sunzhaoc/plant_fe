@@ -1,5 +1,6 @@
 // src/context/AuthContext.jsx
 import {createContext, useContext, useState, useEffect} from 'react';
+import api from '/src/utils/api';
 
 const AuthContext = createContext(null);
 
@@ -12,27 +13,31 @@ export const AuthProvider = ({children}) => {
     useEffect(() => {
         const savedUser = localStorage.getItem('user');
         if (savedUser) {
-            setUser(JSON.parse(savedUser));
+            try {
+                setUser(JSON.parse(savedUser));
+            } catch (e) {
+                console.error("解析本地用户信息失败", e);
+                localStorage.removeItem('user');
+            }
         }
     }, []);
 
     // 登录函数
     const login = async (email, password) => {
         try {
-            const response = await fetch('/api/login', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({email, password})
-            });
+            // 使用 api.post 代替 fetch
+            // 注意：Axios 会自动处理 JSON.stringify
+            const response = await api.post('/api/login', {email, password});
 
-            if (!response.ok) throw new Error('登录失败');
+            // Axios 默认认为 2xx 状态码为成功，数据在 response.data 中
+            const userData = response.data.user;
 
-            const data = await response.json();
-            setUser(data.user);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            setUser(userData);
+            localStorage.setItem('user', JSON.stringify(userData));
             return true;
         } catch (error) {
-            console.error('登录失败:', error);
+            // Axios 的错误对象包含更多信息，如 error.response
+            console.error('登录失败:', error.response?.data?.message || error.message);
             return false;
         }
     };
@@ -40,27 +45,24 @@ export const AuthProvider = ({children}) => {
     // 注册函数
     const register = async (username, email, password) => {
         try {
-            const response = await fetch('/api/register', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, email, password})
-            });
-
-            if (!response.ok) throw new Error('注册失败');
-
-            const data = await response.json();
-            return data.success;
+            const response = await api.post('/api/register', {username, email, password});
+            return response.data.success;
         } catch (error) {
-            console.error('注册失败:', error);
+            console.error('注册失败:', error.response?.data?.message || error.message);
             return false;
         }
     };
 
     // 退出登录
-    const logout = () => {
-        setUser(null);
-        localStorage.removeItem('user');
-        fetch('/api/logout', {method: 'POST'});
+    const logout = async () => {
+        try {
+            setUser(null);
+            localStorage.removeItem('user');
+            // 建议也使用 api 实例，以保持 base URL 和 headers 的一致性
+            await api.post('/api/logout');
+        } catch (error) {
+            console.error('退出登录请求失败:', error);
+        }
     };
 
     return (
