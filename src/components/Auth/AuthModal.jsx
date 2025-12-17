@@ -99,14 +99,11 @@ export default function AuthModal() {
                 setError('请输入账号和密码');
                 return;
             }
-
-
-            const success = await login(formData.account, formData.password);
-
+            const {success, message} = await login(formData.account, formData.password);
             if (success) {
                 setAuthModalOpen(false);
             } else {
-                setError('账号或密码错误');
+                setError(message);
             }
         } else {
             // --- 注册逻辑保持不变 ---

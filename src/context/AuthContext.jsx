@@ -1,26 +1,26 @@
 // src/context/AuthContext.jsx
-import {createContext, useContext, useState, useEffect} from 'react';
+import {createContext, useContext, useState} from 'react';
 import api from '/src/utils/api';
+import {message} from "antd";
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null);
-    const [authModalOpen, setAuthModalOpen] = useState(false);
-    const [isLoginMode, setIsLoginMode] = useState(true);
-
-    // 检查本地存储中的用户状态
-    useEffect(() => {
+    const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('user');
         if (savedUser) {
             try {
-                setUser(JSON.parse(savedUser));
+                return JSON.parse(savedUser);
             } catch (e) {
                 console.error("解析本地用户信息失败", e);
                 localStorage.removeItem('user');
+                return null;
             }
         }
-    }, []);
+        return null;
+    });
+    const [authModalOpen, setAuthModalOpen] = useState(false);
+    const [isLoginMode, setIsLoginMode] = useState(true);
 
     // 登录函数
     const login = async (account, password) => {
@@ -29,10 +29,16 @@ export const AuthProvider = ({children}) => {
             const userData = response.data.user;
             setUser(userData);
             localStorage.setItem('user', JSON.stringify(userData));
-            return true;
+            return {
+                success: true,
+                message: response.data.message,
+            };
         } catch (error) {
-            console.error('登录失败:', error.response?.data?.message || error.message);
-            return false;
+            const errMsg = error.response?.data?.message || "登录失败，请稍后重试！";
+            return {
+                success: false,
+                message: errMsg,
+            };
         }
     };
 
