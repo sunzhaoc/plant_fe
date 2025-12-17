@@ -11,6 +11,7 @@ import '/src/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {AuthProvider} from '/src/context/AuthContext';
 import AuthModal from '/src/components/Auth/AuthModal';
+import ProtectedRoute from '/src/components/Auth/ProtectedRoute.jsx';
 
 function ScrollToTop() {
     const location = useLocation();
@@ -29,9 +30,9 @@ function ScrollToTop() {
 
 function App() {
     return (
+        <BrowserRouter>
             <AuthProvider>
                 <CartProvider>
-                <BrowserRouter>
                     <ScrollToTop />
                     <Header />
                     <main className="content">
@@ -39,16 +40,24 @@ function App() {
                             <Routes>
                                 <Route path="/" element={<Home />} />
                                 <Route path="/detail/:id" element={<Detail />} />
-                                <Route path="/cart" element={<CartPage />} />
+
+                                <Route
+                                    path="/cart"
+                                    element={
+                                        <ProtectedRoute>
+                                            <CartPage />
+                                        </ProtectedRoute>
+                                    }
+                                />
                             </Routes>
                         </div>
                     </main>
                     <Footer />
                     <QuickCart />
                     <AuthModal />
-                </BrowserRouter>
                 </CartProvider>
             </AuthProvider>
+        </BrowserRouter>
     );
 }
 

@@ -2,10 +2,12 @@
 import {createContext, useContext, useState} from 'react';
 import api from '/src/utils/api';
 import {message} from "antd";
+import {useNavigate} from 'react-router-dom';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({children}) => {
+    const navigate = useNavigate();
     const [user, setUser] = useState(() => {
         const savedUser = localStorage.getItem('user');
         if (savedUser) {
@@ -63,6 +65,8 @@ export const AuthProvider = ({children}) => {
     const logout = async () => {
         setUser(null);
         localStorage.removeItem('user');
+        message.success("已退出成功");
+        navigate('/'); // 退出后强制跳转到首页，防止停留在敏感页面
     };
 
     return (<AuthContext.Provider
