@@ -69,7 +69,6 @@ export default function AuthModal() {
 
     // 切换模式时清空错误信息和表单（可选优化）
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setError('');
         setFormData({
             identifier: '',

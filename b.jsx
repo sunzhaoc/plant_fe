@@ -17,11 +17,11 @@ export default function AuthModal() {
 
 
     const [formData, setFormData] = useState({
-        identifier: '', // 用于登录（用户名/手机/邮箱）
         username: '',   // 用于注册
         email: '',      // 用于注册
         password: '',   // 通用
         phone: ''       // 用于注册
+        identifier: '' // 登录专用账号字段
     });
 
     const [error, setError] = useState('');
@@ -67,19 +67,6 @@ export default function AuthModal() {
         };
     }, [authModalOpen]);
 
-    // 切换模式时清空错误信息和表单（可选优化）
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setError('');
-        setFormData({
-            identifier: '',
-            username: '',
-            email: '',
-            password: '',
-            phone: ''
-        });
-    }, [isLoginMode, authModalOpen]);
-
     if (!authModalOpen) return null;
 
     const handleChange = (e) => {
@@ -100,8 +87,7 @@ export default function AuthModal() {
                 return;
             }
 
-            // 这里假设 login 函数的第一个参数已经调整为接收 "账号"（不仅是 email）
-            // 如果后端区分接口，你需要在这里做判断，或者由 AuthContext 内部处理
+            // 传递账号（用户名/邮箱/手机号）和密码到登录函数
             const success = await login(formData.identifier, formData.password);
 
             if (success) {
@@ -208,7 +194,6 @@ export default function AuthModal() {
                                 />
                             </div>
 
-                            {/* 手机号 */}
                             <div className="form-group">
                                 <label htmlFor="phone">手机号</label>
                                 <input
@@ -272,7 +257,7 @@ export default function AuthModal() {
                                 type={showPassword ? "text" : "password"}
                                 id="password"
                                 name="password"
-                                autoComplete={isLoginMode ? "current-password" : "new-password"}
+                                autoComplete="current-password"
                                 value={formData.password}
                                 onChange={handleChange}
                                 placeholder={isLoginMode ? "请输入密码" : "6-20位密码（支持字母、数字、符号）"}
@@ -290,8 +275,7 @@ export default function AuthModal() {
                                     top: '50%',
                                     transform: 'translateY(-50%)',
                                     border: 'none',
-                                    background: 'none',
-                                    cursor: 'pointer'
+                                    background: 'none'
                                 }}
                             >
                                 {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
