@@ -67,9 +67,16 @@ export default function AuthModal() {
         };
     }, [authModalOpen]);
 
-    // 切换模式时清空错误信息和表单（可选优化）
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!authModalOpen) return null;
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const resetForm = () => {
         setError('');
         setFormData({
             account: '',
@@ -77,15 +84,6 @@ export default function AuthModal() {
             email: '',
             password: '',
             phone: ''
-        });
-    }, [isLoginMode, authModalOpen]);
-
-    if (!authModalOpen) return null;
-
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
         });
     };
 
@@ -149,7 +147,7 @@ export default function AuthModal() {
 
                 {error && <div className="auth-error">{error}</div>}
 
-                <form onSubmit={handleSubmit} className="auth-form">
+                <form onSubmit={handleSubmit} className="auth-form" key={isLoginMode ? 'login-form' : 'register-form'}>
                     {/* 登录模式：仅显示账号 + 密码 */}
                     {isLoginMode ? (
                         <div className="form-group">
@@ -305,7 +303,10 @@ export default function AuthModal() {
                         <>
                             还没有账号？{' '}
                             <button
-                                onClick={() => setIsLoginMode(false)}
+                                onClick={() => {
+                                    setIsLoginMode(false);
+                                    resetForm();
+                                }}
                                 className="switch-link"
                             >
                                 立即注册
@@ -315,7 +316,10 @@ export default function AuthModal() {
                         <>
                             已有账号？{' '}
                             <button
-                                onClick={() => setIsLoginMode(true)}
+                                onClick={() => {
+                                    setIsLoginMode(true);
+                                    resetForm();
+                                }}
                                 className="switch-link"
                             >
                                 立即登录
