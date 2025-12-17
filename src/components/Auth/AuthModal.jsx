@@ -17,7 +17,7 @@ export default function AuthModal() {
 
 
     const [formData, setFormData] = useState({
-        identifier: '', // 用于登录（用户名/手机/邮箱）
+        account: '', // 用于登录（用户名/手机/邮箱）
         username: '',   // 用于注册
         email: '',      // 用于注册
         password: '',   // 通用
@@ -72,7 +72,7 @@ export default function AuthModal() {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setError('');
         setFormData({
-            identifier: '',
+            account: '',
             username: '',
             email: '',
             password: '',
@@ -95,14 +95,13 @@ export default function AuthModal() {
 
         if (isLoginMode) {
             // 登录逻辑：校验账号和密码
-            if (!formData.identifier || !formData.password) {
+            if (!formData.account || !formData.password) {
                 setError('请输入账号和密码');
                 return;
             }
 
-            // 这里假设 login 函数的第一个参数已经调整为接收 "账号"（不仅是 email）
-            // 如果后端区分接口，你需要在这里做判断，或者由 AuthContext 内部处理
-            const success = await login(formData.identifier, formData.password);
+
+            const success = await login(formData.account, formData.password);
 
             if (success) {
                 setAuthModalOpen(false);
@@ -157,12 +156,12 @@ export default function AuthModal() {
                     {/* 登录模式：仅显示账号 + 密码 */}
                     {isLoginMode ? (
                         <div className="form-group">
-                            <label htmlFor="identifier">账号</label>
+                            <label htmlFor="account">账号</label>
                             <input
                                 type="text"
-                                id="identifier"
-                                name="identifier"
-                                value={formData.identifier}
+                                id="account"
+                                name="account"
+                                value={formData.account}
                                 onChange={handleChange}
                                 required
                                 placeholder="请输入用户名/邮箱/手机号"

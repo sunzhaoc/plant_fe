@@ -23,9 +23,9 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     // 登录函数
-    const login = async (email, password) => {
+    const login = async (account, password) => {
         try {
-            const response = await api.post('/api/login', {email, password});
+            const response = await api.post('/api/login', {account, password});
             const userData = response.data.user;
             setUser(userData);
             localStorage.setItem('user', JSON.stringify(userData));
