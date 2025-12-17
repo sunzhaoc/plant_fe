@@ -110,3 +110,17 @@
     font-weight: 400;
     margin: 0;
 }
+
+.brand {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    /* ... your existing styles ... */
+}
+
+.logoIcon {
+    height: 40px; /* Adjust height to match your nav bar */
+    width: auto; /* Maintain aspect ratio */
+    margin-right: 0px; /* Space between logo and text */
+    border-radius: 4px; /* Optional: if you want rounded corners */
+}

@@ -2,6 +2,7 @@ import {Link} from 'react-router-dom';
 import {useCart} from '/src/context/CartContext';
 import {useAuth} from '/src/context/AuthContext';
 import styles from '/src/components/Layout/Header.module.css';
+import logoImg from '/src/assets/images/logo.jpg';
 
 export default function Header() {
     const {getTotalItems} = useCart();
@@ -13,6 +14,12 @@ export default function Header() {
                 <nav className={styles.nav}>
                     {/* 品牌 Logo */}
                     <Link className={styles.brand} to="/">
+                        {/* 2. Insert the img tag before the text */}
+                        <img
+                            src={logoImg}
+                            alt="ANT PLANT Logo"
+                            className={styles.logoIcon}
+                        />
                         <i className="bi bi-leaf me-2"></i>ANT PLANT | 蚁栖植物商城
                     </Link>
 
