@@ -18,27 +18,28 @@ export default function Header() {
 
                     {/* 右侧操作组 */}
                     <div className={styles.navGroup}>
-                        {/* 购物车按钮 */}
-                        <div className={styles.badgeContainer}>
-                            <Link to="/cart" className={styles.cartBtn}>
-                                <i className="bi bi-cart3"></i>
-                                <span>购物车</span>
-                            </Link>
-                            {/* 购物车数量徽章 */}
-                            {getTotalItems() > 0 && (
-                                <span className={styles.badge}>{getTotalItems()}</span>
-                            )}
-                        </div>
-
-                        {/* 用户登录状态 */}
                         {user ? (
-                            <div className={styles.navGroup}>
-                                <p className={styles.userText}>您好，{user.username}</p>
-                                <button className={styles.logoutBtn} onClick={logout}>
-                                    退出登录
-                                </button>
-                            </div>
+                            /* 登录状态：显示购物车 + 用户信息 + 退出按钮 */
+                            <>
+                                <div className={styles.badgeContainer}>
+                                    <Link to="/cart" className={styles.cartBtn}>
+                                        <i className="bi bi-cart3"></i>
+                                        <span>购物车</span>
+                                    </Link>
+                                    {getTotalItems() > 0 && (
+                                        <span className={styles.badge}>{getTotalItems()}</span>
+                                    )}
+                                </div>
+
+                                <div className={styles.navGroup}>
+                                    <p className={styles.userText}>您好，{user.username}</p>
+                                    <button className={styles.logoutBtn} onClick={logout}>
+                                        退出登录
+                                    </button>
+                                </div>
+                            </>
                         ) : (
+                            /* 未登录状态：仅显示登录/注册按钮 */
                             <button
                                 className={styles.authBtn}
                                 onClick={() => setAuthModalOpen(true)}

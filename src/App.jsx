@@ -29,8 +29,8 @@ function ScrollToTop() {
 
 function App() {
     return (
-        <CartProvider>
             <AuthProvider>
+                <CartProvider>
                 <BrowserRouter>
                     <ScrollToTop />
                     <Header />
@@ -47,8 +47,8 @@ function App() {
                     <QuickCart />
                     <AuthModal />
                 </BrowserRouter>
+                </CartProvider>
             </AuthProvider>
-        </CartProvider>
     );
 }
 
