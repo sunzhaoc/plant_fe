@@ -61,14 +61,8 @@ export const AuthProvider = ({children}) => {
 
     // 退出登录
     const logout = async () => {
-        try {
-            setUser(null);
-            localStorage.removeItem('user');
-            // 建议也使用 api 实例，以保持 base URL 和 headers 的一致性
-            await api.post('/api/logout');
-        } catch (error) {
-            console.error('退出登录请求失败:', error);
-        }
+        setUser(null);
+        localStorage.removeItem('user');
     };
 
     return (<AuthContext.Provider
