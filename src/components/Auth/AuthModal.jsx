@@ -110,10 +110,11 @@ export default function AuthModal() {
                 return;
             }
 
-            const success = await register(
+            const {success, message} = await register(
                 formData.username,
                 formData.email,
-                formData.password
+                formData.password,
+                formData.phone
             );
 
             if (success) {
@@ -121,7 +122,7 @@ export default function AuthModal() {
                 setIsLoginMode(true);
                 alert('注册成功，请登录');
             } else {
-                setError('注册失败，请稍后再试');
+                setError(message);
             }
         }
     };

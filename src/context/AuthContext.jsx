@@ -43,13 +43,19 @@ export const AuthProvider = ({children}) => {
     };
 
     // 注册函数
-    const register = async (username, email, password) => {
+    const register = async (username, email, password, phone) => {
         try {
-            const response = await api.post('/api/register', {username, email, password});
-            return response.data.success;
+            const response = await api.post('/api/register', {username, email, password, phone});
+            return {
+                success: true,
+                message: response.data.message
+            };
         } catch (error) {
-            console.error('注册失败:', error.response?.data?.message || error.message);
-            return false;
+            const errMsg = error.response?.data?.message || "注册失败，请稍后重试！";
+            return {
+                success: false,
+                message: errMsg,
+            };
         }
     };
 
@@ -65,21 +71,12 @@ export const AuthProvider = ({children}) => {
         }
     };
 
-    return (
-        <AuthContext.Provider
-            value={{
-                user,
-                authModalOpen,
-                setAuthModalOpen,
-                isLoginMode,
-                setIsLoginMode,
-                login,
-                register,
-                logout
-            }}>
-            {children}
-        </AuthContext.Provider>
-    );
+    return (<AuthContext.Provider
+        value={{
+            user, authModalOpen, setAuthModalOpen, isLoginMode, setIsLoginMode, login, register, logout
+        }}>
+        {children}
+    </AuthContext.Provider>);
 };
 
 export const useAuth = () => useContext(AuthContext);
