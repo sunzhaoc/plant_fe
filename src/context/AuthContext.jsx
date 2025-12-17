@@ -25,18 +25,12 @@ export const AuthProvider = ({children}) => {
     // 登录函数
     const login = async (email, password) => {
         try {
-            // 使用 api.post 代替 fetch
-            // 注意：Axios 会自动处理 JSON.stringify
             const response = await api.post('/api/login', {email, password});
-
-            // Axios 默认认为 2xx 状态码为成功，数据在 response.data 中
             const userData = response.data.user;
-
             setUser(userData);
             localStorage.setItem('user', JSON.stringify(userData));
             return true;
         } catch (error) {
-            // Axios 的错误对象包含更多信息，如 error.response
             console.error('登录失败:', error.response?.data?.message || error.message);
             return false;
         }

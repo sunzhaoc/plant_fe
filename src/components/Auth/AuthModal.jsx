@@ -157,6 +157,16 @@ export default function AuthModal() {
                                 maxLength={20}
                                 placeholder="请输入用户名"
                                 autoComplete="username"
+                                pattern="[a-zA-Z_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5]{2,19}"
+                                onInvalid={(e) => {
+                                    if (e.target.validity.valueMissing) {
+                                        e.target.setCustomValidity('请输入用户名');
+                                    } else if (e.target.validity.patternMismatch) {
+                                        e.target.setCustomValidity("请输入用户名（3-20位，支持中文/字母/数字/下划线，不能纯数字、不能数字开头）");
+                                    } else {
+                                        e.target.setCustomValidity('');
+                                    }
+                                }}
                             />
                         </div>
                     )}
