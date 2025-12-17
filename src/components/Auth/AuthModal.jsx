@@ -123,9 +123,16 @@ export default function AuthModal() {
             );
 
             if (success) {
+                // 注册成功则自动登录
                 setError('');
-                setIsLoginMode(true);
-                alert('注册成功，请登录');
+                const loginRes = await login(formData.email, formData.password);
+                if (loginRes.success) {
+                    setAuthModalOpen(false); // 登录成功，关闭弹窗
+                } else {
+                    // 如果自动登录失败（理论上概率极低），则跳转到登录界面让用户手动登录
+                    setIsLoginMode(true);
+                    setError('注册成功，请手动登录');
+                }
             } else {
                 setError(message);
             }
