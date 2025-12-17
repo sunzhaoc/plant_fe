@@ -1,0 +1,112 @@
+/* Header.module.css */
+
+.header {
+    padding: 16px 0;
+    border-bottom: 1px solid #e1e4e8;
+    background-color: #ffffff;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.navGroup {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+/* 品牌 Logo */
+.brand {
+    color: var(--primary-color);
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+/* 购物车容器 */
+.badgeContainer {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* 基础按钮样式 - 模仿 GitHub 按钮基础 */
+.btnBase {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+/* 购物车按钮样式 */
+.cartBtn {
+    composes: btnBase;
+    border-color: #ddd;
+    background-color: transparent;
+    color: #24292e;
+}
+
+.cartBtn:hover {
+    background-color: #f6f8fa;
+    border-color: #d0d7de;
+}
+
+/* 徽章样式 */
+.badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    padding: 0 6px;
+    font-size: 12px;
+    line-height: 18px;
+    border-radius: 9px;
+    background-color: #d1242f;
+    color: white;
+    font-weight: 600;
+}
+
+/* 登录/注册按钮（主按钮） */
+.authBtn {
+    composes: btnBase;
+    padding: 6px 16px;
+    border-color: #2ea44f;
+    background-color: #2ea44f;
+    color: white;
+    font-weight: 500;
+}
+
+.authBtn:hover {
+    background-color: #2c974b;
+    border-color: #2a8f47;
+}
+
+/* 退出按钮（次要按钮） */
+.logoutBtn {
+    composes: btnBase;
+    padding: 6px 16px;
+    border-color: #d0d7de;
+    background-color: transparent;
+    color: #24292e;
+}
+
+.logoutBtn:hover {
+    background-color: #f6f8fa;
+    border-color: #c9d1d9;
+}
+
+.userText {
+    font-size: 14px;
+    color: #24292e;
+    font-weight: 400;
+    margin: 0;
+}
