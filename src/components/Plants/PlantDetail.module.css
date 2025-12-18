@@ -1,5 +1,5 @@
 /* 容器设置 */
-.plant-detail-container {
+.plantDetailContainer {
     max-width: 1200px;
     margin: 0 auto;
     padding: 4rem 1rem;
@@ -8,19 +8,19 @@
 }
 
 /* 顶部两栏布局 */
-.plant-main-section {
+.plantMainSection {
     display: flex;
     flex-wrap: wrap;
     gap: 4rem; /* 图片和信息之间的间距 */
     margin-bottom: 5rem;
 }
 
-.plant-gallery-col {
+.plantGalleryCol {
     flex: 1;
     min-width: 300px;
 }
 
-.plant-info-col {
+.plantInfoCol {
     flex: 1;
     min-width: 300px;
     display: flex;
@@ -29,7 +29,7 @@
 }
 
 /* 字体排印 */
-.plant-title {
+.plantTitle {
     font-size: 2.25rem;
     font-weight: 300; /* 细字体显得更清冷 */
     letter-spacing: 1px;
@@ -37,7 +37,7 @@
     color: #1a1a1a;
 }
 
-.plant-latin {
+.plantLatin {
     font-family: "Times New Roman", serif; /* 拉丁名用衬线体，增加学术感 */
     font-style: italic;
     color: #888;
@@ -45,7 +45,7 @@
     margin-bottom: 2rem;
 }
 
-.plant-price {
+.plantPrice {
     font-size: 1.5rem;
     font-weight: 500;
     color: #2c3e50; /* 深灰蓝，不刺眼 */
@@ -56,7 +56,7 @@
     width: 100%;
 }
 
-.section-label {
+.sectionLabel {
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 2px;
@@ -66,7 +66,7 @@
 }
 
 /* 规格按钮 - 扁平化 */
-.size-btn {
+.sizeBtn {
     border: 1px solid #e0e0e0;
     background: white;
     color: #555;
@@ -78,25 +78,25 @@
     font-size: 0.9rem;
 }
 
-.size-btn:hover {
+.sizeBtn:hover {
     border-color: #333;
     color: #333;
 }
 
-.size-btn.active {
+.sizeBtn.active {
     background: #333; /* 选中变黑 */
     color: white;
     border-color: #333;
 }
 
 /* 购买按钮组 */
-.action-buttons {
+.actionButtons {
     margin-top: 3rem;
     display: flex;
     gap: 1.5rem;
 }
 
-.btn-flat-primary {
+.btnFlatPrimary {
     background: #1a1a1a;
     color: white;
     border: 1px solid #1a1a1a;
@@ -108,12 +108,12 @@
     flex: 1;
 }
 
-.btn-flat-primary:hover {
+.btnFlatPrimary:hover {
     opacity: 0.8;
     color: white;
 }
 
-.btn-flat-outline {
+.btnFlatOutline {
     background: transparent;
     color: #1a1a1a;
     border: 1px solid #1a1a1a;
@@ -124,27 +124,27 @@
     flex: 0 0 auto;
 }
 
-.btn-flat-outline:hover {
+.btnFlatOutline:hover {
     background: #f5f5f5;
 }
 
 /* 底部商品介绍 */
-.plant-description-section {
+.plantDescriptionSection {
     border-top: 1px solid #eaeaea;
     padding-top: 3rem;
     max-width: 800px; /* 限制宽度以提高阅读体验 */
 }
 
-.desc-title {
+.descTitle {
     font-size: 1.2rem;
     font-weight: 400;
     margin-bottom: 1.5rem;
     color: #333;
 }
 
-.desc-text {
+.descText {
     color: #666;
     font-size: 0.95rem; /* 字体调小 */
-    line-height: 1.8;   /* 增加行高，显得透气 */
+    line-height: 1.8; /* 增加行高，显得透气 */
     text-align: justify;
 }
