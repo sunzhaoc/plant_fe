@@ -84,7 +84,7 @@
 }
 
 .sizeBtn.active {
-    background: #333; /* 选中变黑 */
+    background: #333 ; /* 选中变黑 */
     color: white;
     border-color: #333;
 }

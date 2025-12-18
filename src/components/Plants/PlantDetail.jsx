@@ -59,7 +59,7 @@ export default function PlantDetail({plant}) {
                             {plant.sizes.map(_ => (
                                 <button
                                     key={_.size}
-                                    className={`${styles.sizeBtn} ${selectedSize.size === _.size ? 'active' : ''}`}
+                                    className={`${styles.sizeBtn} ${selectedSize.size === _.size ? styles.active : ''}`}
                                     onClick={() => handleSizeChange(_)}
                                 >
                                     {_.size}
