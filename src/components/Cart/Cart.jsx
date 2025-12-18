@@ -1,7 +1,7 @@
 import {useNavigate} from 'react-router-dom';
 import CartItem from '/src/components/Cart/CartItem';
 import {useCart} from '/src/context/CartContext';
-import '/src/components/Cart/Cart.css';
+import styles from '/src/components/Cart/Cart.module.css';
 
 export default function Cart() {
     const {
@@ -72,20 +72,20 @@ export default function Cart() {
                     borderTopWidth: '1px',
                     margin: '0.75rem 0'
                 }} />
-            <div className="cart-summary">
-                <div className="cart-summary__total d-flex justify-content-between align-items-center mb-4">
+            <div className={styles.cartSummary}>
+                <div className={`${styles.cartSummaryTotal} d-flex justify-content-between align-items-center mb-4`}>
                     <h5 className="mb-0 fw-medium">总计:</h5>
-                    <h4 className="cart-summary__price mb-0 text-primary fw-bold">¥ {getTotalPrice()}</h4>
+                    <h4 className={`${styles.cartSummaryPrice} mb-0 text-primary fw-bold`}>¥ {getTotalPrice()}</h4>
                 </div>
-                <div className="cart-summary__actions d-flex gap-3">
+                <div className={`${styles.cartSummaryActions} d-flex gap-3`}>
                     <button
-                        className="btn btn-outline-danger btn-sm-hover flex-grow-1"
+                        className={`btn ${styles.btnOutlineDanger} btn-sm-hover flex-grow-1`}
                         onClick={clearCart}
                     >
                         <i className="bi bi-trash3 me-2"></i>清空购物车
                     </button>
                     <button
-                        className="btn btn-primary btn-lg-hover flex-grow-2"
+                        className={`btn ${styles.btnPrimary} btn-lg-hover flex-grow-2`}
                         onClick={handlePayment}
                     >
                         <i className="bi bi-credit-card me-2"></i>立即付款

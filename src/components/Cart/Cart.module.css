@@ -1,42 +1,43 @@
 /* 基础容器：柔和背景+立体质感+合理间距 */
-.cart-summary {
+.cartSummary {
     /* 替换单一纯色，用浅渐变/浅底色提升质感（兼容自定义变量） */
     background-color: var(--accent-color, #f8f9fa);
     /* 轻微渐变增加层次感（可选，无自定义变量也能生效） */
-    background-image: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.8));
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
     border-radius: 12px; /* 略大圆角更柔和 */
     padding: 1.25rem 1.5rem; /* 上下内边距稍小，左右保持，更紧凑 */
-    border: 1px solid rgba(0,0,0,0.05); /* 浅边框增加轮廓感 */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06); /* 柔和阴影提升立体感 */
+    border: 1px solid rgba(0, 0, 0, 0.05); /* 浅边框增加轮廓感 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* 柔和阴影提升立体感 */
     margin-top: 0.5rem; /* 与商品列表拉开一点间距 */
 }
 
 /* 总计区域：优化对齐和间距 */
-.cart-summary__total {
+.cartSummaryTotal {
     padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(0,0,0,0.04); /* 浅分割线区分总价和按钮 */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04); /* 浅分割线区分总价和按钮 */
 }
 
 /* 总价文字：增加字号和间距，视觉更突出 */
-.cart-summary__price {
+.cartSummaryPrice {
     font-size: 1.5rem;
     letter-spacing: 0.5px; /* 轻微字间距更易读 */
 }
 
 /* 按钮区域：优化间距和响应式 */
-.cart-summary__actions {
+.cartSummaryActions {
     margin-top: 1rem;
 }
 
 /* 清空购物车按钮：优化hover效果，更协调 */
-.btn-outline-danger {
+.btnOutlineDanger {
     border-color: #f1416c;
     color: #f1416c;
     border-radius: 8px; /* 按钮圆角与容器呼应 */
     padding: 0.6rem 0; /* 垂直内边距更舒适 */
     transition: all 0.2s ease; /* 过渡动画更丝滑 */
 }
-.btn-outline-danger:hover {
+
+.btnOutlineDanger:hover {
     background-color: #fef2f4;
     border-color: #ef4444;
     color: #ef4444;
@@ -44,7 +45,7 @@
 }
 
 /* 立即付款按钮：强化视觉优先级 */
-.btn-primary {
+.btnPrimary {
     background-color: #2563eb; /* 更舒服的主色调（可替换为你的品牌色） */
     border-color: #2563eb;
     border-radius: 8px;
@@ -53,7 +54,8 @@
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); /* 轻微底色阴影 */
 }
-.btn-primary:hover {
+
+.btnPrimary:hover {
     background-color: #1d4ed8;
     border-color: #1d4ed8;
     transform: translateY(-1px);
@@ -62,13 +64,15 @@
 
 /* 小屏幕适配：按钮堆叠，避免挤压 */
 @media (max-width: 576px) {
-    .cart-summary__actions {
+    .cartSummaryActions {
         flex-direction: column;
     }
-    .cart-summary__price {
+
+    .cartSummaryPrice {
         font-size: 1.25rem;
     }
-    .cart-summary {
+
+    .cartSummary {
         padding: 1rem 1.25rem;
     }
 }

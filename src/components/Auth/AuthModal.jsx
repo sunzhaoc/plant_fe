@@ -1,21 +1,11 @@
 import {useState, useEffect} from 'react';
 import {useAuth} from '/src/context/AuthContext';
-// import './AuthModal.css';
 import styles from '/src/components/Auth/AuthModal.module.css';
 import {Eye, EyeOff} from 'lucide-react';
 
 export default function AuthModal() {
-    const {
-        authModalOpen,
-        setAuthModalOpen,
-        isLoginMode,
-        setIsLoginMode,
-        login,
-        register
-    } = useAuth();
-
+    const {authModalOpen, setAuthModalOpen, isLoginMode, setIsLoginMode, login, register} = useAuth();
     const [showPassword, setShowPassword] = useState(false);
-
     const [formData, setFormData] = useState({
         account: '', // 用于登录（用户名/手机/邮箱）
         username: '',   // 用于注册
@@ -23,7 +13,6 @@ export default function AuthModal() {
         password: '',   // 通用
         phone: ''       // 用于注册
     });
-
     const [error, setError] = useState('');
 
     // 背景滚动锁定
