@@ -1,6 +1,6 @@
 import {useEffect} from 'react';
 import {BrowserRouter, Route, Routes, useLocation} from 'react-router-dom';
-import {CartProvider} from '/src/context/CartContext.jsx';
+import {CartProvider} from '/src/context/CartProvider.jsx';
 import Header from '/src/components/Layout/Header.jsx';
 import Footer from '/src/components/Layout/Footer.jsx';
 import Home from '/src/pages/Home.jsx';
