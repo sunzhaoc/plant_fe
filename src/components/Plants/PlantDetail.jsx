@@ -4,7 +4,7 @@ import ImageGallery from '/src/components/UI/ImageGallery';
 import QuantitySelector from '/src/components/UI/QuantitySelector';
 import {useCart} from '/src/context/CartContext';
 import styles from '/src/components/Plants/PlantDetail.module.css';
-
+import toast from 'react-hot-toast';
 
 export default function PlantDetail({plant}) {
     const [selectedSize, setSelectedSize] = useState(plant.sizes[0]);
@@ -22,7 +22,7 @@ export default function PlantDetail({plant}) {
             selectedSize.size,
             quantity
         );
-        alert('已添加到购物车');
+        toast.success('已添加到购物车');
     };
 
     const handleViewCart = () => {

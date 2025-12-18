@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import {useAuth} from '/src/context/AuthContext';
 import styles from '/src/components/Auth/AuthModal.module.css';
 import {Eye, EyeOff} from 'lucide-react';
+import toast from "react-hot-toast";
 
 export default function AuthModal() {
     const {authModalOpen, setAuthModalOpen, isLoginMode, setIsLoginMode, login, register} = useAuth();
@@ -89,6 +90,7 @@ export default function AuthModal() {
             const {success, message} = await login(formData.account, formData.password);
             if (success) {
                 setAuthModalOpen(false);
+                toast.success("登录成功");
             } else {
                 setError(message);
             }

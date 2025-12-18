@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {AuthProvider} from '/src/context/AuthProvider.jsx';
 import AuthModal from '/src/components/Auth/AuthModal';
 import ProtectedRoute from '/src/components/Auth/ProtectedRoute.jsx';
+import {Toaster} from 'react-hot-toast';
 
 function ScrollToTop() {
     const location = useLocation();
@@ -31,6 +32,7 @@ function ScrollToTop() {
 function App() {
     return (
         <BrowserRouter>
+            <Toaster position="top-center" reverseOrder={false} />
             <AuthProvider>
                 <CartProvider>
                     <ScrollToTop />

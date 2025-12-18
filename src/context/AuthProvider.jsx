@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import api from "@/utils/api.jsx";
-import {message} from "antd";
+import toast from 'react-hot-toast';
 import {AuthContext} from '/src/context/AuthContext.jsx'
 
 export const AuthProvider = ({children}) => {
@@ -64,7 +64,7 @@ export const AuthProvider = ({children}) => {
     const logout = async () => {
         setUser(null);
         localStorage.removeItem('user');
-        message.success("已退出成功");
+        toast.success("已退出");
         navigate('/'); // 退出后强制跳转到首页，防止停留在敏感页面
     };
 

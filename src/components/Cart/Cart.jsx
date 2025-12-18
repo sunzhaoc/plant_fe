@@ -2,6 +2,7 @@ import {useNavigate} from 'react-router-dom';
 import CartItem from '/src/components/Cart/CartItem';
 import {useCart} from '/src/context/CartContext';
 import styles from '/src/components/Cart/Cart.module.css';
+import toast from 'react-hot-toast';
 
 export default function Cart() {
     const {
@@ -20,7 +21,7 @@ export default function Cart() {
             alert('购物车为空！');
             return;
         }
-        alert('付款成功！感谢您的购买。');
+        toast.success('付款成功！感谢您的购买。');
         clearCart();
         navigate('/');
     };
