@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 import {useAuth} from '/src/context/AuthContext';
-import './AuthModal.css';
+// import './AuthModal.css';
+import styles from '/src/components/Auth/AuthModal.module.css';
 import {Eye, EyeOff} from 'lucide-react';
 
 export default function AuthModal() {
@@ -14,7 +15,6 @@ export default function AuthModal() {
     } = useAuth();
 
     const [showPassword, setShowPassword] = useState(false);
-
 
     const [formData, setFormData] = useState({
         account: '', // 用于登录（用户名/手机/邮箱）
@@ -140,24 +140,26 @@ export default function AuthModal() {
     };
 
     return (
-        <div className="auth-overlay" onClick={() => setAuthModalOpen(false)}>
-            <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
-                <div className="auth-header">
+        <div className={styles.authOverlay} onClick={() => setAuthModalOpen(false)}>
+            <div className={styles.authModal} onClick={(e) => e.stopPropagation()}>
+                <div className={styles.authHeader}>
                     <h2>{isLoginMode ? '登录' : '注册'}</h2>
                     <button
-                        className="close-btn"
+                        className={styles.closeBtn}
                         onClick={() => setAuthModalOpen(false)}
                     >
                         <i className="bi bi-x"></i>
                     </button>
                 </div>
 
-                {error && <div className="auth-error">{error}</div>}
+                {error && <div className={styles.authError}>{error}</div>}
 
-                <form onSubmit={handleSubmit} className="auth-form" key={isLoginMode ? 'login-form' : 'register-form'}>
+                <form
+                    onSubmit={handleSubmit} className={styles.authForm}
+                    key={isLoginMode ? 'login-form' : 'register-form'}>
                     {/* 登录模式：仅显示账号 + 密码 */}
                     {isLoginMode ? (
-                        <div className="form-group">
+                        <div className={styles.formGroup}>
                             <label htmlFor="account">账号</label>
                             <input
                                 type="text"
@@ -182,7 +184,7 @@ export default function AuthModal() {
                         // 注册模式：显示完整字段（用户名+手机号+邮箱）
                         <>
                             {/* 用户名 */}
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label htmlFor="username">用户名</label>
                                 <input
                                     type="text"
@@ -210,7 +212,7 @@ export default function AuthModal() {
                             </div>
 
                             {/* 手机号 */}
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label htmlFor="phone">手机号</label>
                                 <input
                                     type="tel"
@@ -238,7 +240,7 @@ export default function AuthModal() {
                             </div>
 
                             {/* 邮箱 */}
-                            <div className="form-group">
+                            <div className={styles.formGroup}>
                                 <label htmlFor="email">邮箱</label>
                                 <input
                                     type="email"
@@ -266,7 +268,7 @@ export default function AuthModal() {
                     )}
 
                     {/* 密码输入框：登录/注册共用 */}
-                    <div className="form-group">
+                    <div className={styles.formGroup}>
                         <label htmlFor="password">密码</label>
                         <div className="password-input-wrapper" style={{position: 'relative'}}>
                             <input
@@ -300,12 +302,12 @@ export default function AuthModal() {
                         </div>
                     </div>
 
-                    <button type="submit" className="auth-btn">
+                    <button type="submit" className={styles.authBtn}>
                         {isLoginMode ? '登录' : '注册'}
                     </button>
                 </form>
 
-                <div className="auth-switch">
+                <div className={styles.authSwitch}>
                     {isLoginMode ? (
                         <>
                             还没有账号？{' '}
@@ -314,7 +316,7 @@ export default function AuthModal() {
                                     setIsLoginMode(false);
                                     resetForm();
                                 }}
-                                className="switch-link"
+                                className={styles.switchLink}
                             >
                                 立即注册
                             </button>
@@ -327,7 +329,7 @@ export default function AuthModal() {
                                     setIsLoginMode(true);
                                     resetForm();
                                 }}
-                                className="switch-link"
+                                className={styles.switchLink}
                             >
                                 立即登录
                             </button>

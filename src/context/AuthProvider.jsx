@@ -24,6 +24,7 @@ export const AuthProvider = ({children}) => {
 
     // 登录函数
     const login = async (account, password) => {
+        // account 可以是邮箱/手机/用户名
         try {
             const response = await api.post('/api/login', {account, password});
             const userData = response.data.user;
@@ -69,7 +70,14 @@ export const AuthProvider = ({children}) => {
 
     return (<AuthContext.Provider
         value={{
-            user, authModalOpen, setAuthModalOpen, isLoginMode, setIsLoginMode, login, register, logout
+            user,
+            authModalOpen,
+            setAuthModalOpen,
+            isLoginMode,
+            setIsLoginMode,
+            login,
+            register,
+            logout
         }}>
         {children}
     </AuthContext.Provider>);

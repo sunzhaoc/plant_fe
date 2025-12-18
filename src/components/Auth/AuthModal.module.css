@@ -1,5 +1,5 @@
 /* src/components/Auth/AuthModal.css */
-.auth-overlay {
+.authOverlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -15,7 +15,7 @@
     padding: 1rem;
 }
 
-.auth-modal {
+.authModal {
     background: white;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -24,7 +24,7 @@
     overflow: hidden;
 }
 
-.auth-header {
+.authHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -32,13 +32,13 @@
     border-bottom: 1px solid #eee;
 }
 
-.auth-header h2 {
+.authHeader h2 {
     margin: 0;
     font-size: 1.5rem;
     color: #333;
 }
 
-.close-btn {
+.closeBtn {
     background: none;
     border: none;
     font-size: 1.2rem;
@@ -46,22 +46,22 @@
     color: #666;
 }
 
-.auth-form {
+.authForm {
     padding: 1.5rem;
 }
 
-.form-group {
+.formGroup {
     margin-bottom: 1rem;
 }
 
-.form-group label {
+.formGroup label {
     display: block;
     margin-bottom: 0.5rem;
     color: #555;
     font-size: 0.9rem;
 }
 
-.form-group input {
+.formGroup input {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid #ddd;
@@ -69,7 +69,7 @@
     font-size: 1rem;
 }
 
-.auth-btn {
+.authBtn {
     width: 100%;
     padding: 0.8rem;
     background-color: var(--primary-color);
@@ -82,18 +82,18 @@
     margin-top: 1rem;
 }
 
-.auth-btn:hover {
+.authBtn:hover {
     background-color: var(--dark-color);
 }
 
-.auth-switch {
+.authSwitch {
     padding: 1rem 1.5rem;
     text-align: center;
     border-top: 1px solid #eee;
     background-color: #f9f9f9;
 }
 
-.switch-link {
+.switchLink {
     color: var(--primary-color);
     background: none;
     border: none;
@@ -102,7 +102,7 @@
     font-size: 1rem;
 }
 
-.auth-error {
+.authError {
     color: var(--secondary-color);
     padding: 0 1.5rem;
     font-size: 0.9rem;
