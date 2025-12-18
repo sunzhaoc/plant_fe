@@ -9,7 +9,7 @@ import CartPage from '/src/pages/CartPage.jsx';
 import QuickCart from '/src/components/Cart/QuickCart.jsx';
 import '/src/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {AuthProvider} from '/src/context/AuthContext';
+import {AuthProvider} from '/src/context/AuthProvider.jsx';
 import AuthModal from '/src/components/Auth/AuthModal';
 import ProtectedRoute from '/src/components/Auth/ProtectedRoute.jsx';
 
