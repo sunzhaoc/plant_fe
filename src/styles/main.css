@@ -152,16 +152,16 @@ body {
     transform: translateY(-2px);
 }
 
-.plant-card-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
+/*.plant-card-img {*/
+/*    width: 100%;*/
+/*    height: 100%;*/
+/*    object-fit: cover;*/
+/*    transition: transform 0.3s ease;*/
+/*}*/
 
-.plant-card:hover .plant-card-img {
-    transform: scale(1.02);
-}
+/*.plant-card:hover .plantCardImg {*/
+/*    transform: scale(1.02);*/
+/*}*/
 
 .plant-img-container {
     position: relative;

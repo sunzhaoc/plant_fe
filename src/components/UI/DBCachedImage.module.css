@@ -1,0 +1,23 @@
+.plantCardImgLoading,
+.plantCardImgDone {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* 防止图片放大时溢出 */
+}
+
+
+.plantCardImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 关键：保持比例铺满 */
+    display: block; /* 消除图片底部间隙 */
+    transition: transform 0.3s ease;
+}
+
+.plantCardImgLoading:hover .plantCardImg {
+    transform: scale(1.02);
+}
+
+.plantCardImgDone:hover .plantCardImg {
+    transform: scale(1.02);
+}
