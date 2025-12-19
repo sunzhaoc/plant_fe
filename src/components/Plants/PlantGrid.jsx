@@ -30,16 +30,18 @@ export const plantsData = [
             {size: 'M', price: 500.00},
         ]
     },
-    // {
-    //     id: 18,
-    //     name: '巴氏蚁巢木',
-    //     latinName: 'Myrmecodia brassii',
-    //     price: 3000,
-    //     imgUrl: [
-    //         "plant/myrmecodia/myrmecodia_brassii/img.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L']
-    // },
+    {
+        id: 18,
+        name: '巴氏蚁巢木',
+        latinName: 'Myrmecodia brassii',
+        imgUrl: [
+            "plant/myrmecodia/myrmecodia_brassii/img.png",
+        ],
+        sizes: [
+            {size: 'S', price: 450.00},
+            {size: 'M', price: 500.00},
+        ]
+    },
     {
         id: 16,
         name: '方茎蚁茎玉',
@@ -52,39 +54,45 @@ export const plantsData = [
             {size: 'M', price: 500.00},
         ]
     },
-    // {
-    //     id: 1,
-    //     name: '大王蚁堡',
-    //     latinName: 'Squamellaria major',
-    //     price: 5000.54,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_major/img.png",
-    //         "plant/squamellaria/squamellaria_major/img_1.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L']
-    // },
-    // {
-    //     id: 2,
-    //     name: '发动机蚁堡',
-    //     latinName: 'Squamellaria kajewskli (Bugainville Island, PNG)',
-    //     price: 2000,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_kajewskli/img.png",
-    //         "plant/squamellaria/squamellaria_kajewskli/img_1.png",
-    //     ],
-    //     sizes: ['S', 'M', 'L', 'XL']
-    // },
-    // {
-    //     id: 3,
-    //     name: '赫胥黎蚁堡',
-    //     latinName: 'Squamellaria huxleyana (Vanua Levu, Fiji)',
-    //     price: 3500,
-    //     imgUrl: [
-    //         "plant/squamellaria/squamellaria_huxleyana/img.png",
-    //         "plant/squamellaria/squamellaria_huxleyana/img_1.png",
-    //     ],
-    //     sizes: ['S', 'M']
-    // },
+    {
+        id: 1,
+        name: '大王蚁堡',
+        latinName: 'Squamellaria major',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_major/img_1.png",
+            "plant/squamellaria/squamellaria_major/img.png",
+        ],
+        sizes: [
+            {size: 'S', price: 450.00},
+            {size: 'M', price: 500.00},
+        ]
+    },
+    {
+        id: 2,
+        name: '发动机蚁堡',
+        latinName: 'Squamellaria kajewskli (Bugainville Island, PNG)',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_kajewskli/img.png",
+            "plant/squamellaria/squamellaria_kajewskli/img_1.png",
+        ],
+        sizes: [
+            {size: 'S', price: 450.00},
+            {size: 'M', price: 500.00},
+        ]
+    },
+    {
+        id: 3,
+        name: '赫胥黎蚁堡',
+        latinName: 'Squamellaria huxleyana (Vanua Levu, Fiji)',
+        imgUrl: [
+            "plant/squamellaria/squamellaria_huxleyana/img.png",
+            "plant/squamellaria/squamellaria_huxleyana/img_1.png",
+        ],
+        sizes: [
+            {size: 'S', price: 450.00},
+            {size: 'M', price: 500.00},
+        ]
+    },
     {
         id: 4,
         name: '格雷蚁堡',
