@@ -41,7 +41,7 @@ export default function Header() {
                                 <div className={styles.navGroup}>
                                     <p className={styles.userText}>您好，{user.username}</p>
                                     <button className={styles.logoutBtn} onClick={logout}>
-                                        退出登录
+                                        退出
                                     </button>
                                 </div>
                             </>

@@ -10,6 +10,7 @@ export default function PlantCard({plant}) {
                         <Link to={`/detail/${plant.id}`}>
                             <DBCachedImage
                                 url={plant.imgUrl[0]}
+                                params="?image_process=resize,h_260" // 图片操作参数
                                 alt={plant.name}
                                 className="plantCardImg"
                             />

@@ -4,6 +4,7 @@ import {plantApi} from "@/services/api.jsx";
 const DB_NAME = 'PlantImageCache';
 const DB_VERSION = 1;
 const STORE_NAME = 'images';
+const INDEXED_DB_OPEN = false; // 是否打开 IndexedDB 数据库缓存
 
 // 打开数据库连接
 const openDB = () => {
@@ -213,30 +214,36 @@ export const ImageDbCache = {
      */
     async getImageSrc(url) {
         let outer = this;
-        // 先清理过期缓存
-        await outer.cleanExpired();
-        // 检查缓存
-        const cachedBlob = await this.get(url);
-
-        if (cachedBlob) {
-            console.log(`命中本地缓存: ${url}`);
-            return URL.createObjectURL(cachedBlob);
+        if (INDEXED_DB_OPEN) {
+            // 先清理过期缓存
+            await outer.cleanExpired();
+            // 检查缓存
+            const cachedBlob = await this.get(url);
+            if (cachedBlob) {
+                console.log(`命中本地缓存: ${url}`);
+                return URL.createObjectURL(cachedBlob);
+            }
         }
 
         // 缓存不存在，请求网络
         try {
+            console.log(url);
             const signedURL = await plantApi.getPlantImage(url);
             if (typeof signedURL !== 'string' || !signedURL) {
                 throw new Error(`signedURL 无效：${signedURL}`); // 提前拦截无效值
             }
-            const response = await fetch(signedURL, {
-                method: 'GET',
-                mode: 'cors',
-                credentials: 'omit',
-            });
-            const blob = await response.blob();
-            await outer.set(url, blob);
-            return URL.createObjectURL(blob);
+            console.log(signedURL);
+            if (INDEXED_DB_OPEN) {
+                const response = await fetch(signedURL, {
+                    method: 'GET',
+                    mode: 'cors',
+                    credentials: 'omit',
+                });
+                const blob = await response.blob();
+                await outer.set(url, blob);
+                return URL.createObjectURL(blob);
+            }
+            return signedURL;
         } catch (error) {
             console.error(`获取图片失败: ${url}`, error);
             return '/src/assets/images/default-plant.jpg';
