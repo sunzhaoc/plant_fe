@@ -227,12 +227,12 @@ export const ImageDbCache = {
 
         // 缓存不存在，请求网络
         try {
-            console.log(url);
+            // console.log(url);
             const signedURL = await plantApi.getPlantImage(url);
             if (typeof signedURL !== 'string' || !signedURL) {
                 throw new Error(`signedURL 无效：${signedURL}`); // 提前拦截无效值
             }
-            console.log(signedURL);
+            // console.log(signedURL);
             if (INDEXED_DB_OPEN) {
                 const response = await fetch(signedURL, {
                     method: 'GET',
