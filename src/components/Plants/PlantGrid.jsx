@@ -72,6 +72,7 @@ export const plantsData = [
         name: '发动机蚁堡',
         latinName: 'Squamellaria kajewskli (Bugainville Island, PNG)',
         imgUrl: [
+            "plant/squamellaria/squamellaria_kajewskli/img_2.jpg",
             "plant/squamellaria/squamellaria_kajewskli/img.png",
             "plant/squamellaria/squamellaria_kajewskli/img_1.png",
         ],
@@ -98,7 +99,7 @@ export const plantsData = [
         name: '格雷蚁堡',
         latinName: 'Squamellaria grayi (Taveuni Island, Fiji)',
         imgUrl: [
-            "plant/squamellaria/squamellaria_grayi/img.png",
+            "plant/squamellaria/squamellaria_grayi/img_3.jpg",
         ],
         sizes: [
             {size: 'S', price: 4500.00},
@@ -111,9 +112,9 @@ export const plantsData = [
         name: '古皮蚁堡',
         latinName: 'Squamellaria guppyanum (Bugainville Island, PNG)',
         imgUrl: [
-            "plant/squamellaria/squamellaria_guppyanum/img.png",
-            "plant/squamellaria/squamellaria_guppyanum/img_1.png",
-            "plant/squamellaria/squamellaria_guppyanum/img_2.png"
+            "plant/squamellaria/squamellaria_guppyanum/img_4.jpg",
+            "plant/squamellaria/squamellaria_guppyanum/img_3.jpg",
+
         ],
         sizes: [
             {size: 'S', price: 2000.00},
@@ -161,10 +162,8 @@ export const plantsData = [
         name: '细花蚁堡',
         latinName: 'Squamellaria tenuiflora',
         imgUrl: [
-            "plant/squamellaria/squamellaria_tenuiflora/img.png",
-            "plant/squamellaria/squamellaria_tenuiflora/img_1.png",
-            "plant/squamellaria/squamellaria_tenuiflora/img_2.png",
-            "plant/squamellaria/squamellaria_tenuiflora/img_3.png",
+            "plant/squamellaria/squamellaria_tenuiflora/img_4.jpg",
+            "plant/squamellaria/squamellaria_tenuiflora/img_5.jpg"
         ],
         sizes: [
             {size: 'S', price: 2000.00},

@@ -2,8 +2,8 @@ import {defineConfig} from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-const isProd = process.env.NODE_ENV === 'production';
-// const isProd = 'production' === 'production';
+// const isProd = process.env.NODE_ENV === 'production';
+const isProd = 'production' === 'production';
 // const isProd = 'local' === 'production';
 
 const CDN_DOMAIN = 'https://static.antplant.store/';
