@@ -1,4 +1,4 @@
-import {plantApi} from "@/services/api.jsx";
+import {plantApi} from "/src/services/api.jsx";
 
 // 数据库配置
 const DB_NAME = 'PlantImageCache';

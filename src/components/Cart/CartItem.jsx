@@ -1,6 +1,6 @@
 import QuantitySelector from '/src/components/UI/QuantitySelector';
 import {useEffect, useState} from 'react';
-import {plantApi} from "@/services/api.jsx";
+import {plantApi} from "/src/services/api.jsx";
 
 export default function CartItem({item, onUpdate, onRemove}) {
     const [imageUrl, setImageUrl] = useState('');

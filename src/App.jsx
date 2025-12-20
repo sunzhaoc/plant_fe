@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {BrowserRouter, Route, Routes, useLocation} from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import {CartProvider} from '/src/context/CartProvider.jsx';
 import Header from '/src/components/Layout/Header.jsx';
 import Footer from '/src/components/Layout/Footer.jsx';
@@ -40,6 +40,9 @@ function App() {
                     <main className="content">
                         <div className="container">
                             <Routes>
+                                {/* 将 index.html 强行重定向到根目录 */}
+                                <Route path="/index.html" element={<Navigate to="/" replace />} />
+
                                 <Route path="/" element={<Home />} />
                                 <Route path="/detail/:id" element={<Detail />} />
 

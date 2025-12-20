@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import api from "@/utils/api.jsx";
+import api from "/src/utils/api.jsx";
 import toast from 'react-hot-toast';
 import {AuthContext} from '/src/context/AuthContext.jsx'
 

@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import CartItem from './CartItem.jsx';
-import { useCart } from '@/context/CartContext.jsx';
+import { useCart } from '/src/context/CartContext.jsx';
 
 export default function QuickCart() {
     const {
