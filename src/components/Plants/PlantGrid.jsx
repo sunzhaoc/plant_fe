@@ -138,6 +138,8 @@ export const plantsData = [
         latinName: 'Squamellaria thekii (Taveuni, Fiji)',
         imgUrl: [
             "plant/squamellaria/squamellaria_thekii/img.png",
+
+            "plant/squamellaria/squamellaria_thekii/original.jpeg",
             "plant/squamellaria/squamellaria_thekii/img_1.png",
         ],
         sizes: [
@@ -149,9 +151,8 @@ export const plantsData = [
         name: '杰布蚁堡',
         latinName: 'Squamellaria jebbiana',
         imgUrl: [
-            "plant/squamellaria/squamellaria_jebbiana/img.png",
-            "plant/squamellaria/squamellaria_jebbiana/img_1.png",
-            "plant/squamellaria/squamellaria_jebbiana/img_2.png"
+            "plant/squamellaria/squamellaria_jebbiana/img_3.jpg",
+            "plant/squamellaria/squamellaria_jebbiana/img_4.jpg"
         ],
         sizes: [
             {size: 'S', price: 2000.00},
@@ -174,7 +175,9 @@ export const plantsData = [
         name: '瓦努阿图蚁堡',
         latinName: 'Squamellaria vanuatuensis',
         imgUrl: [
-            "plant/squamellaria/squamellaria_vanuatuensis/img.png",
+            "plant/squamellaria/squamellaria_vanuatuensis/img_1.jpg",
+            "plant/squamellaria/squamellaria_vanuatuensis/img_2.jpg",
+            "plant/squamellaria/squamellaria_vanuatuensis/img_3.jpg",
         ],
         sizes: [
             {size: 'S', price: 2000.00},
@@ -185,6 +188,7 @@ export const plantsData = [
         name: '威尔逊蚁堡',
         latinName: 'Squamellaria wilsonii (Taveuni, Fiji)',
         imgUrl: [
+            "plant/squamellaria/squamellaria_wilsonii/original.jpeg",
             "plant/squamellaria/squamellaria_wilsonii/img.png",
             "plant/squamellaria/squamellaria_wilsonii/img_1.png",
         ],
@@ -198,7 +202,7 @@ export const plantsData = [
         id: 13,
         name: '威尔金森蚁堡',
         latinName: 'Squamellaria wilkinsonii',
-        imgUrl: [],
+        imgUrl: ["plant/squamellaria/squamellaria_wilkinsonii/img.jpg"],
         sizes: [
             {size: 'S', price: 4500.00},
             {size: 'M', price: 5000.03},
