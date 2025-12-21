@@ -44,14 +44,17 @@ function App() {
                                 <Route path="/index.html" element={<Navigate to="/" replace />} />
 
                                 <Route path="/" element={<Home />} />
-                                <Route path="/detail/:id" element={<Detail />} />
+                                <Route
+                                    path="/detail/:id"
+                                    element={
+                                        <ProtectedRoute> <Detail /> </ProtectedRoute>
+                                    }
+                                />
 
                                 <Route
                                     path="/cart"
                                     element={
-                                        <ProtectedRoute>
-                                            <CartPage />
-                                        </ProtectedRoute>
+                                        <ProtectedRoute> <CartPage /> </ProtectedRoute>
                                     }
                                 />
                             </Routes>
