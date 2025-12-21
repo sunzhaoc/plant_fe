@@ -46,16 +46,12 @@ function App() {
                                 <Route path="/" element={<Home />} />
                                 <Route
                                     path="/detail/:id"
-                                    element={
-                                        <ProtectedRoute> <Detail /> </ProtectedRoute>
-                                    }
+                                    element={<ProtectedRoute> <Detail /> </ProtectedRoute>}
                                 />
 
                                 <Route
                                     path="/cart"
-                                    element={
-                                        <ProtectedRoute> <CartPage /> </ProtectedRoute>
-                                    }
+                                    element={<ProtectedRoute> <CartPage /> </ProtectedRoute>}
                                 />
                             </Routes>
                         </div>
