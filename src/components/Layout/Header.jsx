@@ -5,7 +5,7 @@ import styles from '/src/components/Layout/Header.module.css';
 import logoImg from '/src/assets/images/logo.jpg';
 
 export default function Header() {
-    const {getTotalItems} = useCart();
+    const {totalItems} = useCart();
     const {user, setAuthModalOpen, logout} = useAuth();
 
     return (
@@ -33,8 +33,8 @@ export default function Header() {
                                         <i className="bi bi-cart3"></i>
                                         <span>购物车</span>
                                     </Link>
-                                    {getTotalItems() > 0 && (
-                                        <span className={styles.badge}>{getTotalItems()}</span>
+                                    {totalItems > 0 && (
+                                        <span className={styles.badge}>{totalItems}</span>
                                     )}
                                 </div>
 

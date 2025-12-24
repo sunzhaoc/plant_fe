@@ -10,8 +10,8 @@ export default function Cart() {
         updateQuantity,
         removeFromCart,
         clearCart,
-        getTotalPrice,
-        getTotalItems
+        totalPrice,
+        totalItems
     } = useCart();
     const navigate = useNavigate();
 
@@ -46,7 +46,7 @@ export default function Cart() {
     return (
         <div>
             <div className="mb-4">
-                <h3>我的购物车 ({getTotalItems()} 件商品)</h3>
+                <h3>我的购物车 ({totalItems} 件商品)</h3>
                 <hr
                     style={{
                         borderColor: 'rgba(0, 0, 0, 0.4)',
@@ -76,7 +76,7 @@ export default function Cart() {
             <div className={styles.cartSummary}>
                 <div className={`${styles.cartSummaryTotal} d-flex justify-content-between align-items-center mb-4`}>
                     <h5 className="mb-0 fw-medium">总计:</h5>
-                    <h4 className={`${styles.cartSummaryPrice} mb-0 text-primary fw-bold`}>¥ {getTotalPrice()}</h4>
+                    <h4 className={`${styles.cartSummaryPrice} mb-0 text-primary fw-bold`}>¥ {totalPrice}</h4>
                 </div>
                 <div className={`${styles.cartSummaryActions} d-flex gap-3`}>
                     <button

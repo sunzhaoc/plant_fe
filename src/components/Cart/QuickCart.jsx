@@ -8,7 +8,7 @@ export default function QuickCart() {
         updateQuantity,
         removeFromCart,
         clearCart,
-        getTotalPrice,
+        totalPrice,
         quickCartOpen,
         setQuickCartOpen
     } = useCart();
@@ -105,7 +105,7 @@ export default function QuickCart() {
                             <div className="border-top pt-3">
                                 <div className="d-flex justify-content-between mb-3">
                                     <h6>总计:</h6>
-                                    <h5 className="text-primary">¥{getTotalPrice()}</h5>
+                                    <h5 className="text-primary">¥{totalPrice}</h5>
                                 </div>
                                 <button
                                     className="btn btn-primary w-100 mb-2"
