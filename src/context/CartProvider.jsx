@@ -1,16 +1,24 @@
 import {useState, useEffect} from 'react';
+import {useAuth} from '/src/context/AuthContext';
 import {CartContext} from '/src/context/CartContext'
 
 
 export const CartProvider = ({children}) => {
+    const {user} = useAuth();
+
     // 初始化购物车（从本地存储读取）
     const [cartItems, setCartItems] = useState(() => {
-        const saved = localStorage.getItem('cartItems');
-        return saved ? JSON.parse(saved) : [];
+        try {
+            const saved = localStorage.getItem('cartItems');
+            return saved ? JSON.parse(saved) : [];
+        } catch (error) {
+            console.error('读取本地购物车失败', error);
+            localStorage.removeItem('cartItems'); // 清除损坏的数据
+            return [];
+        }
     });
 
-    // TODO
-    // 快速购物车（后续开发）
+    // TODO 快速购物车（后续开发）
     const [quickCartOpen, setQuickCartOpen] = useState(false);
 
     // 购物车变化时保存到本地存储
