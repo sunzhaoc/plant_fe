@@ -1,19 +1,23 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useMemo} from 'react';
 import {useAuth} from '/src/context/AuthContext';
 import {CartContext} from '/src/context/CartContext'
-
+import {debounce} from "/src/utils/debounce.jsx";
+import api from "/src/utils/api.jsx";
 
 export const CartProvider = ({children}) => {
     const {user} = useAuth();
 
     // 初始化购物车（从本地存储读取）
     const [cartItems, setCartItems] = useState(() => {
+        if (user === null) {
+            return []
+        }
         try {
-            const saved = localStorage.getItem('cartItems');
+            const saved = localStorage.getItem(`cart_${user.id}`); // 获取该用户的购物车数据
             return saved ? JSON.parse(saved) : [];
         } catch (error) {
             console.error('读取本地购物车失败', error);
-            localStorage.removeItem('cartItems'); // 清除损坏的数据
+            localStorage.removeItem(`cart_${user.id}`); // 清除损坏的数据
             return [];
         }
     });
@@ -21,10 +25,37 @@ export const CartProvider = ({children}) => {
     // TODO 快速购物车（后续开发）
     const [quickCartOpen, setQuickCartOpen] = useState(false);
 
+    // 防抖后的购物车同步到服务端函数
+    const syncCartToServer = useMemo(
+        () =>
+            debounce(async (cartItems) => {
+                try {
+                    const cartInfo = cartItems.map(_ => ({
+                        id: _.id,
+                        size: _.size,
+                        quantity: _.quantity
+                    }));
+                    const response = await api.post(`/api/cart/sync-redis`, {
+                        cartItems: cartInfo,
+                    });
+                    console.log('同步成功:', response.data);
+                } catch (error) {
+                    console.error('购物车同步到服务端失败', error);
+                }
+            }, 500),
+        []
+    );
+
     // 购物车变化时保存到本地存储
     useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
+        if (user === null || !user?.id) return;
+        console.log("sssssssssssssssss");
+        // 本地存储（带用户ID前缀）
+        localStorage.setItem(`cart_${user.id}`, JSON.stringify(cartItems));
+        // 防抖同步到服务端（Redis）
+        syncCartToServer(cartItems);
+        return () => syncCartToServer.cancel?.(); // 清理函数。如果组件卸载，取消挂起的防抖调用
+    }, [cartItems, user, user?.id, syncCartToServer]);
 
     // 添加商品到购物车
     const addToCart = (plant, size, quantity) => {
