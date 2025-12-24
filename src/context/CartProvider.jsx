@@ -1,4 +1,4 @@
-import {useState, useEffect, useMemo} from 'react';
+import {useState, useEffect, useMemo, useRef} from 'react';
 import {useAuth} from '/src/context/AuthContext';
 import {CartContext} from '/src/context/CartContext'
 import {debounce} from "/src/utils/debounce.jsx";
@@ -22,22 +22,18 @@ export const CartProvider = ({children}) => {
         }
     });
 
+    // 保存上一次购物车状态，用于对比增量
+    const prevCartItemsRef = useRef([]);
+
     // TODO 快速购物车（后续开发）
     const [quickCartOpen, setQuickCartOpen] = useState(false);
 
     // 防抖后的购物车同步到服务端函数
     const syncCartToServer = useMemo(
         () =>
-            debounce(async (cartItems) => {
+            debounce(async (changeCartItems) => {
                 try {
-                    const cartInfo = cartItems.map(_ => ({
-                        id: _.id,
-                        size: _.size,
-                        quantity: _.quantity
-                    }));
-                    const response = await api.post(`/api/cart/sync-redis`, {
-                        cartItems: cartInfo,
-                    });
+                    const response = await api.post(`/api/cart/sync-redis`, changeCartItems);
                     console.log('同步成功:', response.data);
                 } catch (error) {
                     console.error('购物车同步到服务端失败', error);
@@ -49,11 +45,46 @@ export const CartProvider = ({children}) => {
     // 购物车变化时保存到本地存储
     useEffect(() => {
         if (user === null || !user?.id) return;
-        console.log("sssssssssssssssss");
+
         // 本地存储（带用户ID前缀）
         localStorage.setItem(`cart_${user.id}`, JSON.stringify(cartItems));
-        // 防抖同步到服务端（Redis）
-        syncCartToServer(cartItems);
+
+        const prevCartItems = prevCartItemsRef.current;
+        const currentCartItems = cartItems;
+
+        // 新增/修改的项（当前有，或与上一次数量不一致）
+        const addedOrUpdatedItems = currentCartItems.filter(currentItem => {
+            const prevItem = prevCartItems.find(
+                p => p.id === currentItem.id && p.size === currentItem.size
+            );
+            return !prevItem || prevItem.quantity !== currentItem.quantity;
+        }).map(_ => ({
+            id: _.id,
+            size: _.size,
+            quantity: _.quantity
+        }));
+
+        // 删除的项（上一次有，当前没有）
+        const deletedItems = prevCartItems.filter(prevItem => {
+            return !currentCartItems.find(
+                c => c.id === prevItem.id && c.size === prevItem.size
+            );
+        }).map(_ => ({
+            id: _.id,
+            size: _.size
+        }));
+
+        // 增量同步到服务端
+        if (addedOrUpdatedItems.length > 0 || deletedItems.length > 0) {
+            syncCartToServer({
+                addedOrUpdatedItems, // 新增/修改项
+                deletedItems        // 删除项
+            });
+        }
+
+        // 更新上一次购物车状态（当前状态变为下一次的上一次状态）
+        prevCartItemsRef.current = [...currentCartItems];
+
         return () => syncCartToServer.cancel?.(); // 清理函数。如果组件卸载，取消挂起的防抖调用
     }, [cartItems, user, user?.id, syncCartToServer]);
 
