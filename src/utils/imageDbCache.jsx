@@ -1,4 +1,4 @@
-import {plantApi} from "/src/services/api.jsx";
+import {plantImageApi} from "/src/services/api.jsx";
 
 // 数据库配置
 const DB_NAME = 'PlantImageCache';
@@ -228,7 +228,7 @@ export const ImageDbCache = {
         // 缓存不存在，请求网络
         try {
             // console.log(url);
-            const signedURL = await plantApi.getPlantImage(url);
+            const signedURL = await plantImageApi.getPlantImage(url);
             if (typeof signedURL !== 'string' || !signedURL) {
                 throw new Error(`signedURL 无效：${signedURL}`); // 提前拦截无效值
             }

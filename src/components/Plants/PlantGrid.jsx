@@ -1,5 +1,6 @@
 import PlantCard from '/src/components/Plants/PlantCard';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
+import api from "/src/utils/api.jsx";
 
 // 植物数据常量（使用导入的图片变量，确保打包后路径正确）
 export const plantsData = [
@@ -241,6 +242,7 @@ export const plantsData = [
 const getGenera = (plants) => {
     const genera = new Set();
     plants.forEach(plant => {
+        if (!plant.latinName) return;
         const genus = plant.latinName.split(' ')[0];
         genera.add(genus);
     });
@@ -249,15 +251,65 @@ const getGenera = (plants) => {
 
 
 export default function PlantGrid() {
+    const [plantList, setPlantList] = useState([]);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchPlants = async () => {
+            try {
+                setLoading(true);
+                const response = await api.get('/api/plants');
+
+                // 校验接口响应是否成功
+                if (!response.data.success) {
+                    throw new Error(response.data.message || "获取植物数据失败");
+                }
+
+                const transformedPlants = response.data.data.map(plant => ({
+                    plantId: plant.plant_id,
+                    plantName: plant.name,
+                    plantLatinName: plant.latin_name,
+                    plantMainImgUrl: plant.main_img_url ? plant.main_img_url : '',
+                    plantMinPrice: plant.min_price,
+                }));
+
+                setPlantList(transformedPlants);
+                setError(null);
+            } catch (err) {
+                setError(err.message || "网络异常，无法获取植物数据");
+                setPlantList([]);
+                console.error("获取植物数据失败：", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPlants();
+    }, []);
+
+
     const [selectedGenus, setSelectedGenus] = useState('全部');
-    const genera = getGenera(plantsData);
+    const genera = getGenera(plantList);
 
     // 根据选中的属名筛选植物
     const filteredPlants = selectedGenus === '全部'
-        ? plantsData
-        : plantsData.filter(plant =>
-            plant.latinName.split(' ')[0] === selectedGenus
-        );
+        ? plantList
+        : plantList.filter(plant => {
+            if (!plant.latinName) return false;
+            return plant.latinName.split(' ')[0] === selectedGenus;
+        });
+
+    // 加载状态提示
+    if (loading) {
+        return <div className="text-center py-8">正在加载植物数据...</div>;
+    }
+
+    // 错误状态提示
+    if (error) {
+        return <div className="text-center py-8 text-danger">{error}</div>;
+    }
 
     return (
         <div>
@@ -279,7 +331,7 @@ export default function PlantGrid() {
             {/* 植物网格 */}
             <div className="row">
                 {filteredPlants.map(plant => (
-                    <PlantCard key={plant.id} plant={plant} />
+                    <PlantCard key={plant.plantId} plant={plant} />
                 ))}
             </div>
         </div>

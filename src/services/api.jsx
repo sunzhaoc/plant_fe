@@ -1,4 +1,5 @@
 import api from '/src/utils/api';
+import md5 from 'md5';
 
 export const plantApi = {
     imageCache: {},
@@ -31,3 +32,39 @@ export const plantApi = {
         }
     }
 }
+
+export const plantImageApi = {
+    /**
+     * 生成阿里云 CDN A 类鉴权 URL
+     * @param {string} url - 原始路径 (例如: /test.jpg 或 test.jpg?x-oss-process=...)
+     * @param {number} [validSeconds=3600] - 有效期（秒），默认 1 小时
+     */
+    getPlantImage: (url, validSeconds = 3600) => {
+        const CONFIG = {
+            domain: 'image.antplant.store',
+            authKey: 'sunzhaochuan',
+            uid: '0',
+            rand: '0'
+        };
+
+        if (!url) return '';
+
+        // 1. 处理路径与参数
+        const [pathPart, queryPart] = url.split('?');
+        const path = pathPart.startsWith('/') ? pathPart : `/${pathPart}`;
+
+        // 2. 计算过期时间戳 (当前时间 + 有效时长)
+        const timestamp = Math.floor(Date.now() / 1000) + validSeconds;
+
+        // 3. 构造签名字符串并计算 MD5
+        // 格式: /URI-Timestamp-rand-uid-PrivateKey
+        const signStr = `${path}-${timestamp}-${CONFIG.rand}-${CONFIG.uid}-${CONFIG.authKey}`;
+        const hash = md5(signStr);
+
+        // 4. 拼接最终 URL
+        const authKeyParam = `auth_key=${timestamp}-${CONFIG.rand}-${CONFIG.uid}-${hash}`;
+        const connector = queryPart ? `?${queryPart}&` : '?';
+
+        return `https://${CONFIG.domain}${path}${connector}${authKeyParam}`;
+    }
+};

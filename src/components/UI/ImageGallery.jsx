@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {plantApi} from "/src/services/api.jsx";
+import {plantApi, plantImageApi} from "/src/services/api.jsx";
 
 const DEFAULT_PLANT_IMAGE = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTUwIDE0MGMwIDEwLjktOC45IDIwLTIwIDIwaC02MGMtMTEuMSAwLTIwLTkuMS0yMC0yMFY4MGMwLTExLjEgOC45LTIwIDIwLTIwaDYwYzExLjEgMCAyMCA4LjkgMjAgMjB2NjB6bTAtODBDMTUwIDQwIDEyMCAxMCA4MCAxMEg2MGMtNDAgMC03MCAzMCIgZmlsbD0iI0VFRkVGRiIvPjxwYXRoIGQ9Ik04MCA0MGMtMjcuNiAwLTUwIDIyLjQtNTAgNTB2NjBjMCAyNy42IDIyLjQgNTAgNTAgNTBoNjBjMjcuNiAwIDUwLTIyLjQgNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMTBjLTI3LjYgMC01MCAyMi40LTUwIDUwdjYwYzAgMjcuNiAyMi40IDUwIDUwIDUwaDYwYzI3LjYgMCA1MC0yMi40IDUwLTUwdjYwYzAgMjcuNi0yMi40IDUwLTUwIDUwaC02MGMtMjcuNiAwLTUwLTIyLjQtNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMCIgZmlsbD0iI0RkRURFRCIvPjwvc3ZnPg==';
 
@@ -12,6 +12,7 @@ export default function ImageGallery({imgUrls}) {
 
     useEffect(() => {
         const loadImages = async () => {
+            // console.log(imgUrls);
             setLoading(true);
             if (!imgUrls || imgUrls.length === 0) {
                 setImages([DEFAULT_PLANT_IMAGE]);
@@ -20,7 +21,7 @@ export default function ImageGallery({imgUrls}) {
                 return;
             }
             const urls = await Promise.all(
-                imgUrls.map(_ => plantApi.getPlantImage(_))
+                imgUrls.map(_ => plantImageApi.getPlantImage(_.img_url + '?image_process=resize,h_10'))
             );
             setImages(urls);
             if (urls.length > 0) {

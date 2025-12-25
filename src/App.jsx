@@ -44,8 +44,9 @@ function App() {
                                 <Route path="/index.html" element={<Navigate to="/" replace />} />
 
                                 <Route path="/" element={<Home />} />
+
                                 <Route
-                                    path="/detail/:id"
+                                    path="/detail/:plantId"
                                     element={<ProtectedRoute> <Detail /> </ProtectedRoute>}
                                 />
 
@@ -57,7 +58,7 @@ function App() {
                         </div>
                     </main>
                     <Footer />
-                    <QuickCart />
+                    {/*<QuickCart />*/}
                     <AuthModal />
                 </CartProvider>
             </AuthProvider>

@@ -83,25 +83,25 @@ export const CartProvider = ({children}) => {
     }, [cartItems, user, user?.id, syncCartToServer]);
 
     // 添加商品到购物车
-    const addToCart = useCallback((plant, size, quantity) => {
+    const addToCart = useCallback((plant) => {
         setCartItems(prev => {
-            const existingIndex = prev.findIndex(item => item.id === plant.id && item.size === size);
+            const existingIndex = prev.findIndex(item => item.id === plant.plantId && item.size === plant.plantSku);
             if (existingIndex > -1) {
                 const newItems = [...prev];
                 newItems[existingIndex] = {
                     ...newItems[existingIndex],
-                    quantity: newItems[existingIndex].quantity + quantity
+                    quantity: newItems[existingIndex].quantity + plant.plantQuantity
                 };
                 return newItems;
             }
             return [...prev, {
-                id: plant.id,
-                name: plant.name,
-                latinName: plant.latinName,
-                price: plant.price,
-                imgUrl: plant.imgUrl[0],
-                size,
-                quantity,
+                id: plant.plantId,
+                name: plant.plantName,
+                latinName: plant.plantLatinName,
+                price: plant.plantPrice,
+                imgUrl: plant.plantMainImgUrl,
+                size: plant.plantSku,
+                quantity: plant.plantQuantity,
             }];
         });
     }, []);
@@ -110,7 +110,7 @@ export const CartProvider = ({children}) => {
     const updateQuantity = useCallback((id, size, newQuantity) => { // 参数改为 newQuantity
         setCartItems(prev => prev.map(item =>
             (item.id === id && item.size === size)
-                ? { ...item, quantity: Math.max(1, newQuantity) } // 直接赋值
+                ? {...item, quantity: Math.max(1, newQuantity)} // 直接赋值
                 : item
         ));
     }, []);
