@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import {useCart} from '/src/context/CartContext';
 import {useAuth} from '/src/context/AuthContext';
 import styles from '/src/components/Layout/Header.module.css';
-import logoImg from '/src/assets/images/logo.jpg';
+import logoImg from '/src/assets/images/logo_min.jpg';
 
 export default function Header() {
     const {totalItems} = useCart();
