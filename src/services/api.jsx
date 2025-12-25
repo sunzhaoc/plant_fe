@@ -49,19 +49,16 @@ export const plantImageApi = {
 
         if (!url) return '';
 
-        // 1. 处理路径与参数
         const [pathPart, queryPart] = url.split('?');
         const path = pathPart.startsWith('/') ? pathPart : `/${pathPart}`;
 
-        // 2. 计算过期时间戳 (当前时间 + 有效时长)
-        const timestamp = Math.floor(Date.now() / 1000) + validSeconds;
+        const now = Math.floor(Date.now() / 1000);
+        const windowSize = 1800; // 对齐到 30 分钟 (1800秒)
+        const timestamp = Math.floor(now / windowSize) * windowSize + validSeconds;
 
-        // 3. 构造签名字符串并计算 MD5
-        // 格式: /URI-Timestamp-rand-uid-PrivateKey
         const signStr = `${path}-${timestamp}-${CONFIG.rand}-${CONFIG.uid}-${CONFIG.authKey}`;
         const hash = md5(signStr);
 
-        // 4. 拼接最终 URL
         const authKeyParam = `auth_key=${timestamp}-${CONFIG.rand}-${CONFIG.uid}-${hash}`;
         const connector = queryPart ? `?${queryPart}&` : '?';
 
