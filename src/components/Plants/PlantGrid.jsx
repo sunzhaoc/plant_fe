@@ -1,8 +1,8 @@
 import PlantCard from '/src/components/Plants/PlantCard';
-import {useEffect, useState, useMemo} from 'react';
-import api from "/src/utils/api.jsx";
+import { useState, useMemo } from 'react';
+import { usePlants } from '/src/context/PlantContext.jsx';
 
-// 提取所有独特的属名（从拉丁名中提取第一个单词）
+// 提取所有独特的属名（保留你原有逻辑：从拉丁名中提取第一个单词）
 const getGenera = (plants) => {
     const genera = new Set();
     plants.forEach(plant => {
@@ -13,46 +13,9 @@ const getGenera = (plants) => {
     return ['全部', ...Array.from(genera)];
 };
 
-
 export default function PlantGrid() {
-    const [plantList, setPlantList] = useState([]);
-
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        const fetchPlants = async () => {
-            try {
-                setLoading(true);
-                const response = await api.get('/api/plants');
-
-                // 校验接口响应是否成功
-                if (!response.data.success) {
-                    throw new Error(response.data.message || "获取植物数据失败");
-                }
-
-                const transformedPlants = response.data.data.map(plant => ({
-                    plantId: plant.plant_id,
-                    plantName: plant.name,
-                    plantLatinName: plant.latin_name,
-                    plantMainImgUrl: plant.main_img_url ? plant.main_img_url : '',
-                    plantMinPrice: plant.min_price,
-                }));
-
-                setPlantList(transformedPlants);
-                setError(null);
-            } catch (err) {
-                setError(err.message || "网络异常，无法获取植物数据");
-                setPlantList([]);
-                console.error("获取植物数据失败：", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPlants();
-    }, []);
-
+    // 从Context获取缓存的植物数据
+    const { plantList, loading, error } = usePlants();
 
     const [selectedGenus, setSelectedGenus] = useState('全部');
     const genera = useMemo(() => {

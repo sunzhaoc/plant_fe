@@ -6,13 +6,13 @@ import Footer from '/src/components/Layout/Footer.jsx';
 import Home from '/src/pages/Home.jsx';
 import Detail from '/src/pages/Detail.jsx';
 import CartPage from '/src/pages/CartPage.jsx';
-import QuickCart from '/src/components/Cart/QuickCart.jsx';
 import '/src/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {AuthProvider} from '/src/context/AuthProvider.jsx';
 import AuthModal from '/src/components/Auth/AuthModal';
 import ProtectedRoute from '/src/components/Auth/ProtectedRoute.jsx';
 import {Toaster} from 'react-hot-toast';
+import {PlantProvider} from '/src/context/PlantProvider.jsx';
 
 function ScrollToTop() {
     const location = useLocation();
@@ -33,35 +33,37 @@ function App() {
     return (
         <BrowserRouter>
             <Toaster position="top-center" reverseOrder={false} />
-            <AuthProvider>
-                <CartProvider>
-                    <ScrollToTop />
-                    <Header />
-                    <main className="content">
-                        <div className="container">
-                            <Routes>
-                                {/* 将 index.html 强行重定向到根目录 */}
-                                <Route path="/index.html" element={<Navigate to="/" replace />} />
+            <PlantProvider>
+                <AuthProvider>
+                    <CartProvider>
+                        <ScrollToTop />
+                        <Header />
+                        <main className="content">
+                            <div className="container">
+                                <Routes>
+                                    {/* 将 index.html 强行重定向到根目录 */}
+                                    <Route path="/index.html" element={<Navigate to="/" replace />} />
 
-                                <Route path="/" element={<Home />} />
+                                    <Route path="/" element={<Home />} />
 
-                                <Route
-                                    path="/detail/:plantId"
-                                    element={<ProtectedRoute> <Detail /> </ProtectedRoute>}
-                                />
+                                    <Route
+                                        path="/detail/:plantId"
+                                        element={<ProtectedRoute> <Detail /> </ProtectedRoute>}
+                                    />
 
-                                <Route
-                                    path="/cart"
-                                    element={<ProtectedRoute> <CartPage /> </ProtectedRoute>}
-                                />
-                            </Routes>
-                        </div>
-                    </main>
-                    <Footer />
-                    {/*<QuickCart />*/}
-                    <AuthModal />
-                </CartProvider>
-            </AuthProvider>
+                                    <Route
+                                        path="/cart"
+                                        element={<ProtectedRoute> <CartPage /> </ProtectedRoute>}
+                                    />
+                                </Routes>
+                            </div>
+                        </main>
+                        <Footer />
+                        {/*<QuickCart />*/}
+                        <AuthModal />
+                    </CartProvider>
+                </AuthProvider>
+            </PlantProvider>
         </BrowserRouter>
     );
 }
