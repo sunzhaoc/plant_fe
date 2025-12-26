@@ -9,12 +9,11 @@ export const PlantProvider = ({children}) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // 只在首次加载时请求数据
     useEffect(() => {
         if (plantList.length === 0) {
             fetchPlantList();
         }
-    }, [plantList]);
+    }, []);
 
     // 获取商品列表数据
     const fetchPlantList = async () => {
