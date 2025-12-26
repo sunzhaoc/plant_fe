@@ -1,13 +1,13 @@
 import PlantCard from '/src/components/Plants/PlantCard';
-import {useEffect, useState} from 'react';
+import {useEffect, useState, useMemo} from 'react';
 import api from "/src/utils/api.jsx";
 
 // 提取所有独特的属名（从拉丁名中提取第一个单词）
 const getGenera = (plants) => {
     const genera = new Set();
     plants.forEach(plant => {
-        if (!plant.latinName) return;
-        const genus = plant.latinName.split(' ')[0];
+        if (!plant.plantLatinName) return;
+        const genus = plant.plantLatinName.split(' ')[0];
         genera.add(genus);
     });
     return ['全部', ...Array.from(genera)];
@@ -55,14 +55,16 @@ export default function PlantGrid() {
 
 
     const [selectedGenus, setSelectedGenus] = useState('全部');
-    const genera = getGenera(plantList);
+    const genera = useMemo(() => {
+        return getGenera(plantList);
+    }, [plantList]);
 
     // 根据选中的属名筛选植物
     const filteredPlants = selectedGenus === '全部'
         ? plantList
         : plantList.filter(plant => {
-            if (!plant.latinName) return false;
-            return plant.latinName.split(' ')[0] === selectedGenus;
+            if (!plant.plantLatinName) return false;
+            return plant.plantLatinName.split(' ')[0] === selectedGenus;
         });
 
     // 加载状态提示
