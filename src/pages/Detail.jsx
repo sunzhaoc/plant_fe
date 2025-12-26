@@ -2,6 +2,7 @@ import {useParams, Navigate, useLocation} from 'react-router-dom';
 import PlantDetail from '/src/components/Plants/PlantDetail';
 import api from "/src/utils/api.jsx";
 import {useEffect, useState} from "react";
+import {useAuth} from '/src/context/AuthContext';
 
 export default function Detail() {
     const {plantId} = useParams();  // 从路由参数获取plantId
@@ -10,6 +11,7 @@ export default function Detail() {
     const [plant, setPlant] = useState(null); // 存储植物详情数据
     const [loading, setLoading] = useState(true); // 加载状态标记
     const [error, setError] = useState(null); // 错误信息存储
+    const {logout, setAuthModalOpen} = useAuth();
 
     useEffect(() => {
         const fetchPlantDetail = async () => {
@@ -28,6 +30,10 @@ export default function Detail() {
                     plantSkus
                 });
             } catch (err) {
+                if (err.response?.status === 401) {
+                    logout();
+                    setAuthModalOpen(true);
+                }
                 setError(err.message || "网络异常，无法获取植物数据");
                 console.error(err.message || '网络异常，请稍后重试');
             } finally {
