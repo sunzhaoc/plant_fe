@@ -3,6 +3,10 @@ import PlantDetail from '/src/components/Plants/PlantDetail';
 import api from "/src/utils/api.jsx";
 import {useEffect, useState} from "react";
 import {useAuth} from '/src/context/AuthContext';
+import {RingLoader} from 'react-spinners';
+import {sleep} from '/src/utils/time.jsx';
+import LoadingSpinner from "../utils/LoadingSpinner.jsx";
+
 
 export default function Detail() {
     const {plantId} = useParams();  // 从路由参数获取plantId
@@ -18,7 +22,7 @@ export default function Detail() {
             try {
                 setLoading(true);
                 const {data: {success, message, data}} = await api.get(`/api/plant-detail/${plantId}`);
-
+                await sleep(300);
                 if (!success) throw new Error(message || "获取植物详情数据失败");
 
                 const {images: plantImages, skus: plantSkus, ...restData} = data;
@@ -46,7 +50,7 @@ export default function Detail() {
     }, [plantId]); // 依赖项：plantId变化时重新请求
 
     if (loading) {
-        return <div>正在加载植物详情...</div>; // 可替换为自定义加载组件
+        return <LoadingSpinner text="正在加载植物详情..." />;
     }
 
     // 错误状态渲染

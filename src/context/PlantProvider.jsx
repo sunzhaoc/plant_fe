@@ -1,6 +1,8 @@
 import {useState, useEffect} from 'react';
 import api from '/src/utils/api.jsx';
 import {PlantContext} from '/src/context/PlantContext.jsx'
+import LoadingSpinner from "/src/utils/LoadingSpinner.jsx";
+import {sleep} from '/src/utils/time.jsx';
 
 export const PlantProvider = ({children}) => {
     const [plantList, setPlantList] = useState([]);
@@ -18,6 +20,7 @@ export const PlantProvider = ({children}) => {
     const fetchPlantList = async () => {
         if (loading) return; // 防止重复请求
         setLoading(true);
+        await sleep(100);
         try {
             const response = await api.get('/api/plants');
             if (!response.data.success) {
@@ -40,6 +43,11 @@ export const PlantProvider = ({children}) => {
             setLoading(false);
         }
     };
+
+    if (loading) {
+        return <LoadingSpinner text="正在加载植物..." />;
+    }
+
 
     return (
         <PlantContext.Provider
