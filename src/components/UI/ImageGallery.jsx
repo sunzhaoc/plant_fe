@@ -21,7 +21,7 @@ export default function ImageGallery({imgUrls}) {
                 return;
             }
             const urls = await Promise.all(
-                imgUrls.map(_ => plantImageApi.getPlantImage(_.img_url + '?image_process=resize,h_10'))
+                imgUrls.map(_ => plantImageApi.getPlantImage(_.img_url + '?image_process=resize,h_400,w_552'))
             );
             setImages(urls);
             if (urls.length > 0) {
