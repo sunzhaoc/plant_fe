@@ -19,11 +19,13 @@ export default function PlantDetail({plant}) {
     const handleIncrease = () => {
         if (selectedSize && quantity < selectedSize.stock) {
             setQuantity(prev => prev + 1);
+        } else if (selectedSize) {
+            toast.error(`该规格库存仅剩${selectedSize.stock}件，无法增加数量`);
         }
     };
 
     const handleDecrease = () => {
-        setQuantity(prev => Math.max(1, prev - 1));
+        setQuantity(prev => prev - 1);
     };
 
     // 加入购物车（增加库存校验）
@@ -32,6 +34,7 @@ export default function PlantDetail({plant}) {
             toast.error('请选择有效的商品规格');
             return;
         }
+
         addToCart(
             {
                 plantId: plant.plantId,
@@ -40,10 +43,10 @@ export default function PlantDetail({plant}) {
                 plantMainImgUrl: plant.plantMainImgUrl,
                 plantSku: selectedSize.size,
                 plantPrice: selectedSize.price,
-                plantQuantity: quantity
+                plantQuantity: quantity,
+                stock: selectedSize.stock
             }
         );
-        toast.success('已添加到购物车');
     };
 
     // 查看购物车
@@ -57,6 +60,8 @@ export default function PlantDetail({plant}) {
             setSelectedSize(sizeItem);
             // 切换规格时重置数量为1（避免数量超过新规格库存）
             setQuantity(1);
+        } else {
+            toast.error('该规格暂无库存，无法选择');
         }
     };
 
