@@ -41,10 +41,8 @@ export default function Cart() {
                         stock: Number(item.stock) // 转数字
                     };
                 });
-
-                // console.log("new_version\n", stockMap);
-
-                // 4. 遍历购物车，更新匹配项的quantity和stock
+                
+                // 1. 遍历购物车，更新匹配项的quantity和stock
                 const updatedCartItems = cartItems.map(item => {
                     const uniqueKey = `${item.id}-${item.skuId}`;
                     const matchedStock = stockMap[uniqueKey];
@@ -60,9 +58,8 @@ export default function Cart() {
                     return item;
                 });
 
-                // 5. 更新购物车状态（核心：需确保setCartItems能修改购物车数据）
-                // console.log("uddate_version\n", updatedCartItems);
-                setCartItems(updatedCartItems);
+                // 过滤掉 quantity 为 0 的项（核心变更）
+                setCartItems(updatedCartItems.filter(item => item.quantity > 0));
             } catch (error) {
                 console.error(error.response?.data?.message || '刷新购物车失败');
             } finally {
