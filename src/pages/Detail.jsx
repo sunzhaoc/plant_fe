@@ -3,7 +3,6 @@ import PlantDetail from '/src/components/Plants/PlantDetail';
 import api from "/src/utils/api.jsx";
 import {useEffect, useState} from "react";
 import {useAuth} from '/src/context/AuthContext';
-import {RingLoader} from 'react-spinners';
 import {sleep} from '/src/utils/time.jsx';
 import LoadingSpinner from "../utils/LoadingSpinner.jsx";
 

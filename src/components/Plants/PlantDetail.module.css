@@ -72,6 +72,7 @@
     color: #555;
     padding: 10px 20px;
     margin-right: 10px;
+    margin-bottom: 10px; /* 增加垂直间距 */
     cursor: pointer;
     transition: all 0.2s;
     border-radius: 0; /* 直角 */
@@ -84,9 +85,24 @@
 }
 
 .sizeBtn.active {
-    background: #333 ; /* 选中变黑 */
+    background: #333; /* 选中变黑 */
     color: white;
     border-color: #333;
+}
+
+/* 核心：无货规格按钮置灰样式（强化版） */
+.sizeBtn.disabled {
+    background: #f5f5f5 !important; /* 浅灰背景 */
+    border-color: #d9d9d9 !important; /* 更浅的边框 */
+    color: #999 !important; /* 灰色文字 */
+    cursor: not-allowed !important; /* 禁用光标 */
+    opacity: 0.7; /* 降低透明度 */
+    pointer-events: none; /* 彻底禁用点击（防止穿透） */
+}
+
+.sizeBtn.disabled:hover {
+    border-color: #d9d9d9 !important; /* hover 不变化 */
+    color: #999 !important;
 }
 
 /* 购买按钮组 */
@@ -111,6 +127,19 @@
 .btnFlatPrimary:hover {
     opacity: 0.8;
     color: white;
+}
+
+/* 核心：禁用状态加入购物车按钮 */
+.btnDisabled {
+    background: #e0e0e0 !important; /* 浅灰背景 */
+    border-color: #d0d0d0 !important; /* 灰色边框 */
+    color: #999 !important; /* 灰色文字 */
+    cursor: not-allowed !important;
+    opacity: 0.8;
+}
+
+.btnDisabled:hover {
+    opacity: 0.8 !important; /* hover 不变化 */
 }
 
 .btnFlatOutline {

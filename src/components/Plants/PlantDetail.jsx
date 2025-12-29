@@ -1,26 +1,37 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import ImageGallery from '/src/components/UI/ImageGallery';
 import QuantitySelector from '/src/components/UI/QuantitySelector';
 import {useCart} from '/src/context/CartContext';
 import styles from '/src/components/Plants/PlantDetail.module.css';
 import toast from 'react-hot-toast';
-import api from "/src/utils/api.jsx";
 
 export default function PlantDetail({plant}) {
-    const [selectedSize, setSelectedSize] = useState(plant?.plantSkus?.[0] || null); // 默认选中第一个规格
-    const [quantity, setQuantity] = useState(1); // 数量
+    // 默认选中第一个有库存的规格
+    const defaultSize = plant?.plantSkus?.find(_ => _.stock > 0) || plant?.plantSkus?.[0] || null;
+    const [selectedSize, setSelectedSize] = useState(defaultSize);
+    const [quantity, setQuantity] = useState(1);
 
     const {addToCart} = useCart();
     const navigate = useNavigate();
 
-    // 数量增减
-    const handleIncrease = () => setQuantity(prev => prev + 1);
-    const handleDecrease = () => setQuantity(prev => Math.max(1, prev - 1));
+    // 数量增减（限制最大购买数量为选中规格的库存）
+    const handleIncrease = () => {
+        if (selectedSize && quantity < selectedSize.stock) {
+            setQuantity(prev => prev + 1);
+        }
+    };
 
-    // 加入购物车
+    const handleDecrease = () => {
+        setQuantity(prev => Math.max(1, prev - 1));
+    };
+
+    // 加入购物车（增加库存校验）
     const handleAddToCart = () => {
-        if (!plant || !selectedSize) return;
+        if (!plant || !selectedSize) {
+            toast.error('请选择有效的商品规格');
+            return;
+        }
         addToCart(
             {
                 plantId: plant.plantId,
@@ -40,9 +51,13 @@ export default function PlantDetail({plant}) {
         navigate('/cart');
     };
 
-    // 切换规格逻辑
+    // 切换规格逻辑（只允许选择有库存的规格）
     const handleSizeChange = (sizeItem) => {
-        setSelectedSize(sizeItem);
+        if (sizeItem.stock > 0) {
+            setSelectedSize(sizeItem);
+            // 切换规格时重置数量为1（避免数量超过新规格库存）
+            setQuantity(1);
+        }
     };
 
     return (
@@ -51,7 +66,6 @@ export default function PlantDetail({plant}) {
             <div className={styles.plantMainSection}>
                 {/* 左侧：图片展示 */}
                 <div className={styles.plantGalleryCol}>
-                    {/* 确保 ImageGallery 内部样式也尽量简洁，不要有太厚的边框 */}
                     <ImageGallery imgUrls={plant.plantImages} />
                 </div>
 
@@ -71,14 +85,27 @@ export default function PlantDetail({plant}) {
                             {plant.plantSkus?.map((_) => (
                                 <button
                                     key={_.size}
-                                    className={`${styles.sizeBtn} ${selectedSize?.size === _.size ? styles.active : ''}`}
+                                    className={`${styles.sizeBtn} 
+                                        ${selectedSize?.size === _.size ? styles.active : ''}
+                                        ${_.stock <= 0 ? styles.disabled : ''}`}
                                     onClick={() => handleSizeChange(_)}
+                                    disabled={_.stock <= 0} // 库存为0时禁用按钮
                                 >
-                                    {_.size}
-                                    {/* 可选：拼接价格显示，提升用户体验 */}
+                                    <span>{_.size}</span>
                                     <span style={{marginLeft: '6px', fontSize: '12px'}}>
                                         ¥ {_.price.toFixed(2)}
                                     </span>
+                                    {/* 库存小于10时显示库存数量 */}
+                                    {_.stock < 10 && (
+                                        <span
+                                            style={{
+                                                marginLeft: '4px',
+                                                fontSize: '11px',
+                                                color: _.stock <= 0 ? '#999' : '#ff6b6b'
+                                            }}>
+                                            {_.stock <= 0 ? '无货' : `仅剩${_.stock}件`}
+                                        </span>
+                                    )}
                                 </button>
                             ))}
                         </div>
@@ -86,18 +113,27 @@ export default function PlantDetail({plant}) {
 
                     <div className="mb-4">
                         <span className={styles.sectionLabel}>购买数量</span>
-                        {/* 确保 QuantitySelector 样式也是扁平的，去掉了圆角 */}
                         <QuantitySelector
                             quantity={quantity}
                             onIncrease={handleIncrease}
                             onDecrease={handleDecrease}
+                            // 禁用减号当数量为1，禁用加号当数量达到库存上限
+                            disabledDecrease={quantity <= 1}
+                            disabledIncrease={selectedSize && quantity >= selectedSize.stock}
                         />
+                        {/* 显示当前规格的库存信息 */}
+                        {selectedSize && (
+                            <p style={{fontSize: '12px', color: '#666', margin: '4px 0 0 0'}}>
+                                库存：{selectedSize.stock} 件
+                            </p>
+                        )}
                     </div>
 
                     <div className={styles.actionButtons}>
                         <button
-                            className={styles.btnFlatPrimary}
+                            className={`${styles.btnFlatPrimary} ${!selectedSize || selectedSize.stock <= 0 ? styles.btnDisabled : ''}`}
                             onClick={handleAddToCart}
+                            disabled={!selectedSize || selectedSize.stock <= 0} // 无选中规格或库存为0时禁用加入购物车
                         >
                             加入购物车
                         </button>
@@ -112,7 +148,7 @@ export default function PlantDetail({plant}) {
                 </div>
             </div>
 
-            {/* 下半部分：商品介绍 (放在最下面) */}
+            {/* 下半部分：商品介绍 */}
             <div className={styles.plantDescriptionSection}>
                 <h4 className={styles.descTitle}>关于植物</h4>
                 <p className={styles.descText}>
