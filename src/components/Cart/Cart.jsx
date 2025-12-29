@@ -1,8 +1,10 @@
 import {useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
 import CartItem from '/src/components/Cart/CartItem';
 import {useCart} from '/src/context/CartContext';
 import styles from '/src/components/Cart/Cart.module.css';
 import toast from 'react-hot-toast';
+import api from "/src/utils/api.jsx";
 
 export default function Cart() {
     const {
@@ -11,9 +13,65 @@ export default function Cart() {
         removeFromCart,
         clearCart,
         totalPrice,
-        totalItems
+        totalItems,
+        setCartItems
     } = useCart();
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true); // 加载状态标记
+
+    useEffect(() => {
+        const syncCartStock = async () => {
+            try {
+                setLoading(true);
+                // console.log('原始\n', cartItems);
+                const response = await api.post(`/api/cart/sync-stock`, {
+                    cartItems: cartItems.map(_ => ({
+                        id: _.id,
+                        skuId: _.skuId,
+                        quantity: _.quantity,
+                    }))
+                });
+
+                const stockInfo = response.data.data.stockInfo;
+                const stockMap = {};
+                stockInfo.forEach(item => {
+                    const uniqueKey = `${item.id}-${item.skuId}`;
+                    stockMap[uniqueKey] = {
+                        newQuantity: Number(item.newQuantity), // 转数字
+                        stock: Number(item.stock) // 转数字
+                    };
+                });
+
+                // console.log("new_version\n", stockMap);
+
+                // 4. 遍历购物车，更新匹配项的quantity和stock
+                const updatedCartItems = cartItems.map(item => {
+                    const uniqueKey = `${item.id}-${item.skuId}`;
+                    const matchedStock = stockMap[uniqueKey];
+
+                    // 匹配到则更新，未匹配则保留原数据
+                    if (matchedStock) {
+                        return {
+                            ...item,
+                            quantity: matchedStock.newQuantity,
+                            stock: matchedStock.stock
+                        };
+                    }
+                    return item;
+                });
+
+                // 5. 更新购物车状态（核心：需确保setCartItems能修改购物车数据）
+                // console.log("uddate_version\n", updatedCartItems);
+                setCartItems(updatedCartItems);
+            } catch (error) {
+                console.error(error.response?.data?.message || '刷新购物车失败');
+            } finally {
+                setLoading(false);
+            }
+        }
+        syncCartStock();
+    }, []);
+
 
     // 付款
     const handlePayment = () => {

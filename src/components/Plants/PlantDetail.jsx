@@ -41,6 +41,7 @@ export default function PlantDetail({plant}) {
                 plantName: plant.plantName,
                 plantLatinName: plant.plantLatinName,
                 plantMainImgUrl: plant.plantMainImgUrl,
+                plantSkuId: selectedSize.sku_id,
                 plantSku: selectedSize.size,
                 plantPrice: selectedSize.price,
                 plantQuantity: quantity,

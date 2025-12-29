@@ -115,6 +115,7 @@ export const CartProvider = ({children}) => {
                 latinName: plant.plantLatinName,
                 price: plant.plantPrice,
                 imgUrl: plant.plantMainImgUrl,
+                skuId: plant.plantSkuId,
                 size: plant.plantSku,
                 quantity: plant.plantQuantity,
                 stock: plant.stock, // 保存库存信息用于后续校验
@@ -172,6 +173,7 @@ export const CartProvider = ({children}) => {
                 totalItems,
                 quickCartOpen,
                 setQuickCartOpen,
+                setCartItems,
             }}
         >
             {children}
