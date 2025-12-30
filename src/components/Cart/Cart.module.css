@@ -62,6 +62,102 @@
     box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3); /* hover时阴影加深 */
 }
 
+
+/* 付款提示弹窗 - 遮罩层 */
+.paymentModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* 确保弹窗在最上层 */
+}
+
+/* 弹窗内容容器 */
+.paymentModalContent {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: modalFadeIn 0.3s ease;
+}
+
+/* 弹窗关闭按钮 */
+.modalCloseBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.25rem;
+    transition: color 0.2s;
+}
+
+.modalCloseBtn:hover {
+    color: #000;
+}
+
+/* 弹窗头部 */
+.modalHeader {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.modalHeader h4 {
+    color: #333;
+    font-weight: 600;
+}
+
+/* 弹窗主体 */
+.modalBody {
+    text-align: center;
+}
+
+.modalBody p {
+    line-height: 1.6;
+    color: #666;
+}
+
+/* 二维码容器 */
+.qrcodeContainer {
+    margin-top: 1.5rem;
+}
+
+/* 二维码图片样式 */
+.qrcodeImg {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border: 1px solid #eee;
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin: 0 auto;
+    display: block;
+}
+
+/* 弹窗淡入动画 */
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* 小屏幕适配：按钮堆叠，避免挤压 */
 @media (max-width: 576px) {
     .cartSummaryActions {
@@ -75,4 +171,15 @@
     .cartSummary {
         padding: 1rem 1.25rem;
     }
+
+    .btn-sm-hover {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+    }
+
+    .btn-lg-hover {
+        padding: 0.6rem 1.2rem;
+        font-size: 1rem;
+    }
+
 }
