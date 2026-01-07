@@ -13,6 +13,7 @@ import AuthModal from '/src/components/Auth/AuthModal';
 import ProtectedRoute from '/src/components/Auth/ProtectedRoute.jsx';
 import {Toaster} from 'react-hot-toast';
 import {PlantProvider} from '/src/context/PlantProvider.jsx';
+import OrderPage from '/src/pages/OrderPage';
 
 function ScrollToTop() {
     const location = useLocation();
@@ -50,10 +51,17 @@ function App() {
                                         path="/detail/:plantId"
                                         element={<ProtectedRoute> <Detail /> </ProtectedRoute>}
                                     />
-
+                                    
+                                    {/*购物车*/}
                                     <Route
                                         path="/cart"
                                         element={<ProtectedRoute> <CartPage /> </ProtectedRoute>}
+                                    />
+
+                                    {/*订单中心*/}
+                                    <Route
+                                        path="/orders"
+                                        element={<ProtectedRoute> <OrderPage /> </ProtectedRoute>}
                                     />
                                 </Routes>
                             </div>

@@ -28,6 +28,12 @@ export default function Header() {
                         {user ? (
                             /* 登录状态：显示购物车 + 用户信息 + 退出按钮 */
                             <>
+                                <div className={styles.navGroup}>
+                                    <Link to="/orders" className={styles.btnBase}>
+                                        <i className="bi bi-list-check me-1"></i>
+                                        我的订单
+                                    </Link>
+                                </div>
                                 <div className={styles.badgeContainer}>
                                     <Link to="/cart" className={styles.cartBtn}>
                                         <i className="bi bi-cart3"></i>

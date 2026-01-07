@@ -18,10 +18,11 @@ export default function Cart() {
         setCartItems
     } = useCart();
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(true); // 加载状态标记
+    const [loading, setLoading] = useState(false); // 购物车加载状态
+    const [paymentLoading, setPaymentLoading] = useState(false); // 付款接口加载状态
 
     // 立即付款后展示二维码
-    const [weChatQrCodeUrl, setWeChatQrcodeUrl] = useState(''); // 二维码
+    const [weChatQrCodeUrl, setWeChatQrcodeUrl] = useState('');
     const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     // 异步获取微信二维码图片
@@ -87,15 +88,47 @@ export default function Cart() {
     }, []);
 
     // 付款
-    const handlePayment = () => {
+    const handlePayment = async () => {
+        // 1. 购物车为空校验
         if (cartItems.length === 0) {
-            toast.error('购物车为空！'); // 替换alert为toast更统一
+            toast.error('购物车为空！');
             return;
         }
-        setShowPaymentModal(true); // 显示提示弹窗
-        // toast.success('付款成功！感谢您的购买。');
-        // clearCart();
+
+        // 2. 防止重复点击
+        if (paymentLoading) return;
+
+        try {
+            setPaymentLoading(true);
+
+            // 3. 构造接口请求参数（可根据后端要求调整字段）
+            const paymentData = {
+                cartItems: cartItems.map(_ => ({
+                    plantId: _.id, // 植物ID
+                    skuId: _.skuId,
+                    quantity: _.quantity,
+                })),
+            };
+
+            // 4. 调用付款接口（替换为实际的接口路径）
+            const response = await api.post('/api/order/create-payment', paymentData);
+            if (response.data.success) {
+                toast.success('订单已提交！');
+                console.log('付款接口返回数据：', response.data);
+            }
+        } catch (error) {
+            // 6. 接口调用失败处理
+            const errorMsg = error.response?.data?.message || '付款请求失败，请稍后重试';
+            toast.error(errorMsg);
+            console.error('付款接口调用失败：', error);
+        } finally {
+            // 7. 重置加载状态
+            setPaymentLoading(false);
+        }
+        clearCart();
         // navigate('/');
+        // 8. 显示付款弹窗（原有逻辑保留）
+        setShowPaymentModal(true);
     };
 
     // 空购物车渲染逻辑
@@ -160,8 +193,21 @@ export default function Cart() {
                     <button
                         className={`btn ${styles.btnPrimary} btn-lg-hover flex-grow-2`}
                         onClick={handlePayment}
+                        disabled={paymentLoading} // 加载中禁用按钮
                     >
-                        <i className="bi bi-credit-card me-2"></i>立即付款
+                        {/* 加载状态显示loading图标 */}
+                        {paymentLoading ? (
+                            <>
+                                <span
+                                    className="spinner-border spinner-border-sm me-2" role="status"
+                                    aria-hidden="true"></span>
+                                处理中...
+                            </>
+                        ) : (
+                            <>
+                                <i className="bi bi-credit-card me-2"></i>立即付款
+                            </>
+                        )}
                     </button>
                 </div>
             </div>
@@ -191,11 +237,11 @@ export default function Cart() {
                             <p className="text-center mb-2">可扫码了解更多信息</p>
                             {/* 替换为你的微信二维码图片地址 */}
                             <img
-                                src={weChatQrCodeUrl ?? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTUwIDE0MGMwIDEwLjktOC45IDIwLTIwIDIwaC02MGMtMTEuMSAwLTIwLTkuMS0yMC0yMFY4MGMwLTExLjEgOC45LTIwIDIwLTIwaDYwYzExLjEgMCAyMCA4LjkgMjAgMjB2NjB6bTAtODBDMTUwIDQwIDEyMCAxMCA4MCAxMEg2MGMtNDAgMC03MCAzMCIgZmlsbD0iI0VFRkVGRiIvPjxwYXRoIGQ9Ik04MCA0MGMtMjcuNiAwLTUwIDIyLjQtNTAgNTB2NjBjMCAyNy42IDIyLjQgNTAgNTAgNTBoNjBjMjcuNiAwIDUwLTIyLjQgNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMTBjLTI3LjYgMC01MCAyMi40LTUwIDUwdjYwYzAgMjcuNiAyMi40IDUwIDUwIDUwaDYwYzI3LjYgMCA1MC0yMi40IDUwLTUwdjYwYzAgMjcuNi0yMi40IDUwLTUwIDUwaC02MGMtMjcuNiAwLTUwLTIyLjQtNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMCIgZmlsbD0iI0RkRURFRCIvPjwvc3ZnPg=='} // 精准兜底
+                                src={weChatQrCodeUrl ?? 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTUwIDE0MGMwIDEwLjktOC45IDIwLTIwIDIwaC02MGMtMTEuMSAwLTIwLTkuMS0yMC0yMFY4MGMwLTExLjEgOC45LTIwIDIwLTIwaDYwYzExLjEgMCAyMCA4LjkgMjAgMjB2NjB6bTAtODBDMTUwIDQwIDEyMCAxMCA4MCAxMEg2MGMtNDAgMC03MCAzMCIgZmlsbD0iI0VFRkVGRiIvPjxwYXRoIGQ9Ik04MCA0MGMtMjcuNiAwLTUwIDIyLjQtNTAgNTB2NjBjMCAyNy42IDIyLjQgNTAgNTAgNTBoNjBjMjcuNiAwIDUwLTIyLjQgNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMTBjLTI3LjYgMC01MCAyMi40LTUwIDUwdjYwYzAgMjcuNiAyMi40IDUwIDUwIDUwaDYwYzI3LjYgMCA1MC0yMi40IDUwLTUwdjYwYzAgMjcuNi0yMi40IDUwLTUwIDUwaC02MGMtMjcuNiAwLTUwLTIyLjQtNTAtNTBWNjBjMC0yNy42LTIyLjQtNTAtNTAtNTBIMCIgZmlsbD0iI0RkRURFRCIvPjwvc3ZnPg=='}
                                 alt="微信二维码"
                                 className={styles.qrcodeImg}
-                                loading="lazy" // 懒加载
-                                width={200} // 固定尺寸，避免布局抖动
+                                loading="lazy"
+                                width={200}
                                 height={200}
                             />
                         </div>
