@@ -3,7 +3,7 @@ import styles from '/src/components/Order/OrderList.module.css';
 import api from "/src/utils/api.jsx";
 import {plantImageApi} from "/src/services/api.jsx";
 
-// 订单状态映射（可根据实际业务调整）
+// 订单状态映射（新增配色体系）
 const orderStatusMap = {
     0: {text: '待付款', className: styles.statusPending},
     2: {text: '已付款', className: styles.statusPaid},
@@ -15,38 +15,29 @@ const orderStatusMap = {
 const OrderList = () => {
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
-    // 新增：存储每个商品项的图片URL（key为唯一标识，value为图片地址）
     const [imageUrls, setImageUrls] = useState({});
 
-    // 获取订单并排序
+    // 获取订单数据（逻辑复用，UI层重构）
     const fetchOrders = async () => {
         setLoading(true);
         try {
             const response = await api.get(`/api/order/get-orders`);
-
-            // 关键修改1：增加多层边界检查，避免数据格式异常
             if (!response || !response.data || response.data.success !== true) {
                 console.error('订单接口返回异常:', response);
                 setOrders([]);
                 return;
             }
-
-            // 确保订单列表是数组
             const rawOrders = Array.isArray(response.data.data) ? response.data.data : [];
-
-            // 排序 + 确保order_items是数组（核心修复点）
-            const sortedOrders = rawOrders.map(order => ({
-                ...order,
-                // 关键修改2：兜底order_items为空数组，避免map报错
-                order_items: Array.isArray(order.order_items) ? order.order_items : []
-            })).sort((a, b) => {
-                // 关键修改3：时间排序增加容错，避免无效时间导致排序异常
-                const timeA = new Date(a.create_time)?.getTime() || 0;
-                const timeB = new Date(b.create_time)?.getTime() || 0;
-                return timeB - timeA;
-            });
-
-            console.log("排序后的：", sortedOrders);
+            const sortedOrders = rawOrders
+                .map(order => ({
+                    ...order,
+                    order_items: Array.isArray(order.order_items) ? order.order_items : []
+                }))
+                .sort((a, b) => {
+                    const timeA = new Date(a.create_time)?.getTime() || 0;
+                    const timeB = new Date(b.create_time)?.getTime() || 0;
+                    return timeB - timeA;
+                });
             setOrders(sortedOrders);
         } catch (error) {
             console.error('获取订单失败:', error);
@@ -57,25 +48,41 @@ const OrderList = () => {
         }
     };
 
-    // 新增：图片加载失败的异步处理函数
+    // 图片加载失败处理
     const handleImageError = async (imgKey, originalUrl) => {
         try {
-            // 避免重复请求：如果已经有备用地址，不再请求
             if (imageUrls[imgKey]) return;
-            // 拼接处理参数并调用接口获取新图片地址
             const newUrl = await plantImageApi.getPlantImage(`${originalUrl}?image_process=resize,h_80,w_80`);
-            // 更新对应图片的URL
-            setImageUrls(prev => ({
-                ...prev,
-                [imgKey]: newUrl
-            }));
+            setImageUrls(prev => ({...prev, [imgKey]: newUrl}));
         } catch (error) {
             console.error(`获取备用图片失败（key: ${imgKey}）:`, error);
-            // 兜底：设置默认图片地址
             setImageUrls(prev => ({
                 ...prev,
-                [imgKey]: 'https://picsum.photos/200/200?random=0'
+                [imgKey]: 'https://picsum.photos/seed/plant/200/200'
             }));
+        }
+    };
+
+    // 格式化金额
+    const formatAmount = (amount) => {
+        const numAmount = Number(amount);
+        return `¥${isNaN(numAmount) ? '0.00' : numAmount.toFixed(2)}`;
+    };
+
+    // 格式化时间（更简洁的展示）
+    const formatTime = (timeStr) => {
+        if (!timeStr) return '未知时间';
+        try {
+            const date = new Date(timeStr);
+            return date.toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch (error) {
+            return timeStr;
         }
     };
 
@@ -83,112 +90,135 @@ const OrderList = () => {
         fetchOrders();
     }, []);
 
-    // 格式化金额
-    const formatAmount = (amount) => {
-        // 关键修改4：金额格式化增加容错，避免非数字报错
-        const numAmount = Number(amount);
-        return `¥${isNaN(numAmount) ? '0.00' : numAmount.toFixed(2)}`;
-    };
+    // 加载中骨架屏（重构样式）
+    const renderSkeleton = () => (
+        <div className={styles.skeletonWrapper}>
+            {[1, 2, 3].map((item) => (
+                <div key={item} className={styles.skeletonCard}>
+                    <div className={styles.skeletonHeader}>
+                        <div className={styles.skeletonLine + ' ' + styles.skeletonLineMd}></div>
+                        <div className={styles.skeletonTag}></div>
+                    </div>
+                    <div className={styles.skeletonMeta}>
+                        <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
+                        <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
+                    </div>
+                    <div className={styles.skeletonProduct}>
+                        <div className={styles.skeletonImg}></div>
+                        <div className={styles.skeletonProductInfo}>
+                            <div className={styles.skeletonLine + ' ' + styles.skeletonLineMd}></div>
+                            <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
+                            <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
+                        </div>
+                        <div className={styles.skeletonPrice}></div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 
-
-    if (loading) {
-        return (
-            <div className={styles.loadingContainer}>
-                <div className={styles.loader}></div>
-                <p>正在加载订单数据...</p>
+    // 空状态（重构样式）
+    const renderEmpty = () => (
+        <div className={styles.emptyWrapper}>
+            <div className={styles.emptyIcon}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2Z" />
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
             </div>
-        );
-    }
+            <h3 className={styles.emptyTitle}>暂无订单记录</h3>
+            <p className={styles.emptyDesc}>你还没有任何植物订单，快去挑选心仪的绿植吧～</p>
+            <button className={styles.emptyBtn}>去逛逛</button>
+        </div>
+    );
+
+    // 订单列表（完全重构排版）
+    const renderOrderList = () => (
+        <div className={styles.orderWrapper}>
+            {orders.map((order) => (
+                <div key={order.order_sn} className={styles.orderCard}>
+                    {/* 订单头部：状态 + 编号 + 时间 */}
+                    <div className={styles.orderHeader}>
+                        <div className={styles.orderStatus}>
+                            <span
+                                className={`${styles.statusTag} ${orderStatusMap[order.order_status]?.className || styles.statusDefault}`}>
+                                {orderStatusMap[order.order_status]?.text || '未知状态'}
+                            </span>
+                        </div>
+                        <div className={styles.orderBasic}>
+                            <p className={styles.orderSn}>订单编号：{order.order_sn || '未知编号'}</p>
+                            <p className={styles.orderTime}>{formatTime(order.create_time)}</p>
+                        </div>
+                    </div>
+
+                    {/* 商品列表（核心区域） */}
+                    <div className={styles.productList}>
+                        {order.order_items.length === 0 ? (
+                            <div className={styles.emptyProduct}>暂无商品信息</div>
+                        ) : (
+                            order.order_items.map((item, index) => {
+                                const imgKey = `${order.order_sn}-${index}`;
+                                const imgSrc = imageUrls[imgKey] || item.main_img_url || 'https://picsum.photos/seed/plant/200/200';
+
+                                return (
+                                    <div key={imgKey} className={styles.productItem}>
+                                        <img
+                                            src={imgSrc}
+                                            alt={item.plant_name || '商品图片'}
+                                            className={styles.productImg}
+                                            loading="lazy"
+                                            onError={() => handleImageError(imgKey, order.main_img_url || item.main_img_url)}
+                                        />
+                                        <div className={styles.productInfo}>
+                                            <h4
+                                                className={styles.productName}
+                                                title={item.plant_name || ''}
+                                            >
+                                                {item.plant_name || '未知商品'}
+                                            </h4>
+                                            <p
+                                                className={styles.productLatin}
+                                                title={item.plant_latin_name || ''}
+                                            >
+                                                {item.plant_latin_name || '无拉丁学名'}
+                                            </p>
+                                            <p className={styles.productSpec}>{item.sku_size || '无规格信息'}</p>
+                                        </div>
+                                        <div className={styles.productPriceWrap}>
+                                            <p className={styles.productPrice}>{formatAmount(item.price)}</p>
+                                            <p className={styles.productQty}>×{item.quantity || 1}</p>
+                                        </div>
+                                    </div>
+                                );
+                            })
+                        )}
+                    </div>
+
+                    {/* 订单金额汇总 */}
+                    <div className={styles.orderAmount}>
+                        {/*<div className={styles.amountLabel}></div>*/}
+                        <div className={styles.amountValue}>
+                            <span className={styles.totalLabel}>实付金额：</span>
+                            <span className={styles.payAmount}>{formatAmount(order.pay_amount)}</span>
+                            {order.total_amount !== order.pay_amount && (
+                                <span className={styles.originalAmount}>{formatAmount(order.total_amount)}</span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    );
 
     return (
-        <div className={styles.container}>
-            <h1 className={styles.pageTitle}>我的订单</h1>
+        <div className={styles.pageContainer}>
+            <div className={styles.pageHeader}>
+                <h1 className={styles.pageTitle}>我的订单</h1>
+                <p className={styles.pageSubtitle}>共 {orders.length} 笔订单</p>
+            </div>
 
-            {/* 空数据状态 */}
-            {orders.length === 0 && (
-                <div className={styles.emptyContainer}>
-                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M3 4h18v2H3V4zm0 7h18v2H3v-2zm0 7h18v2H3v-2z" fill="#ccc" />
-                    </svg>
-                    <p>暂无订单记录</p>
-                    <button className={styles.emptyBtn}>去逛逛</button>
-                </div>
-            )}
-
-            {/* 订单列表 */}
-            {orders.length > 0 && (
-                <div className={styles.orderList}>
-                    {orders.map((order) => (
-                        <div key={order.order_sn} className={styles.orderCard}>
-                            {/* 订单头部信息 */}
-                            <div className={styles.orderHeader}>
-                                <div className={styles.orderSn}>
-                                    订单编号：{order.order_sn || '未知编号'}
-                                </div>
-                                <div className={styles.orderStatus}>
-                                    <span
-                                        className={`${styles.statusTag} ${orderStatusMap[order.order_status]?.className || styles.statusDefault}`}>
-                                        {orderStatusMap[order.order_status]?.text || '未知状态'}
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* 订单金额与时间 */}
-                            <div className={styles.orderInfo}>
-                                <div className={styles.orderTime}> 下单时间：{order.create_time} </div>
-                                <div className={styles.orderAmount}>
-                                    <p>总金额：{formatAmount(order.total_amount)}</p>
-                                    <p>实付金额：
-                                        <span className={styles.payAmount}>{formatAmount(order.pay_amount)}</span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* 订单商品列表 */}
-                            <div className={styles.productList}>
-                                {order.order_items.length === 0 ? (
-                                    <div className={styles.emptyProduct}>暂无商品信息</div>
-                                ) : (
-                                    order.order_items.map((item, index) => {
-                                        // 生成每个商品图片的唯一标识（避免重复）
-                                        const imgKey = `${order.order_sn}-${index}`;
-                                        // TODO（需要再测试一下）优先使用备用地址，无则使用原始地址，兜底默认图
-                                        const imgSrc = imageUrls[imgKey] || item.main_img_url || 'https://picsum.photos/200/200?random=0';
-                                        return (
-                                            <div key={imgKey} className={styles.productItem}>
-                                                {/* 图片 */}
-                                                <img
-                                                    src={imgSrc}
-                                                    alt={item.plant_name || '商品图片'}
-                                                    className={styles.productImage}
-                                                    loading="lazy"
-                                                    onError={() => handleImageError(imgKey, order.main_img_url || item.main_img_url)}
-                                                />
-                                                {/* 商品信息 */}
-                                                <div className={styles.productInfo}>
-                                                    <h3 className={styles.productName}>{item.plant_name || ''}</h3>
-                                                    <p className={styles.productSpec}>{item.sku_size || ''}</p>
-                                                    <p className={styles.productLatin}>{item.plant_latin_name || ''}</p>
-                                                </div>
-                                                {/* 单价 数量 */}
-                                                <div className={styles.productPriceQty}>
-                                                    <p className={styles.productPrice}>{formatAmount(item.price)}</p>
-                                                    <p className={styles.productQty}>×{item.quantity || 1}</p>
-                                                </div>
-                                            </div>
-                                        );
-                                    })
-                                )}
-                            </div>
-
-                            {/* 订单操作区（可扩展） */}
-                            {/*<div className={styles.orderActions}>*/}
-                            {/*    <button className={styles.actionBtn}>查看详情</button>*/}
-                            {/*    <button className={styles.actionBtnOutline}>联系客服</button>*/}
-                            {/*</div>*/}
-                        </div>
-                    ))}
-                </div>
+            {loading ? renderSkeleton() : (
+                orders.length === 0 ? renderEmpty() : renderOrderList()
             )}
         </div>
     );
