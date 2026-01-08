@@ -3,7 +3,7 @@ import styles from '/src/components/Order/OrderList.module.css';
 import api from "/src/utils/api.jsx";
 import {plantImageApi} from "/src/services/api.jsx";
 
-// 订单状态映射（新增配色体系）
+// 订单状态映射
 const orderStatusMap = {
     0: {text: '待付款', className: styles.statusPending},
     2: {text: '已付款', className: styles.statusPaid},
@@ -16,19 +16,26 @@ const OrderList = () => {
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
     const [imageUrls, setImageUrls] = useState({});
+    // 分页相关状态
+    const [currentPage, setCurrentPage] = useState(1); // 当前页码
+    const [pageSize, setPageSize] = useState(10);      // 每页条数
+    const [total, setTotal] = useState(0);             // 总订单数
 
-    // 获取订单数据（逻辑复用，UI层重构）
-    const fetchOrders = async () => {
+    // 修改fetchOrders：接收分页参数，请求时传递
+    const fetchOrders = async (page = 1, size = 10) => {
         setLoading(true);
         try {
-            const response = await api.get(`/api/order/get-orders`);
+            // 拼接分页参数到URL
+            const response = await api.get(`/api/order/get-orders?page=${page}&pageSize=${size}`);
             if (!response || !response.data || response.data.success !== true) {
                 console.error('订单接口返回异常:', response);
                 setOrders([]);
+                setTotal(0);
                 return;
             }
-            const rawOrders = Array.isArray(response.data.data) ? response.data.data : [];
-            const sortedOrders = rawOrders
+            // 解构返回的分页数据：list是当前页订单，total是总条数
+            const {list = [], total = 0} = response.data.data || {};
+            const sortedOrders = list
                 .map(order => ({
                     ...order,
                     order_items: Array.isArray(order.order_items) ? order.order_items : []
@@ -39,16 +46,20 @@ const OrderList = () => {
                     return timeB - timeA;
                 });
             setOrders(sortedOrders);
+            setTotal(total); // 保存总条数
+            setCurrentPage(page); // 同步当前页码
+            setPageSize(size);    // 同步每页条数
         } catch (error) {
             console.error('获取订单失败:', error);
             alert('获取订单失败，请稍后重试');
             setOrders([]);
+            setTotal(0);
         } finally {
             setLoading(false);
         }
     };
 
-    // 图片加载失败处理
+    // 图片加载失败处理（保持不变）
     const handleImageError = async (imgKey, originalUrl) => {
         try {
             if (imageUrls[imgKey]) return;
@@ -63,13 +74,13 @@ const OrderList = () => {
         }
     };
 
-    // 格式化金额
+    // 格式化金额（保持不变）
     const formatAmount = (amount) => {
         const numAmount = Number(amount);
         return `¥${isNaN(numAmount) ? '0.00' : numAmount.toFixed(2)}`;
     };
 
-    // 格式化时间（更简洁的展示）
+    // 格式化时间（保持不变）
     const formatTime = (timeStr) => {
         if (!timeStr) return '未知时间';
         try {
@@ -86,11 +97,27 @@ const OrderList = () => {
         }
     };
 
+    // 分页控件事件：上一页
+    const handlePrevPage = () => {
+        if (currentPage > 1) {
+            fetchOrders(currentPage - 1, pageSize);
+        }
+    };
+
+    // 分页控件事件：下一页
+    const handleNextPage = () => {
+        const maxPage = Math.ceil(total / pageSize);
+        if (currentPage < maxPage) {
+            fetchOrders(currentPage + 1, pageSize);
+        }
+    };
+
+    // 初始化加载第一页数据
     useEffect(() => {
-        fetchOrders();
+        fetchOrders(1, pageSize);
     }, []);
 
-    // 加载中骨架屏（重构样式）
+    // 加载中骨架屏（保持不变）
     const renderSkeleton = () => (
         <div className={styles.skeletonWrapper}>
             {[1, 2, 3].map((item) => (
@@ -117,7 +144,7 @@ const OrderList = () => {
         </div>
     );
 
-    // 空状态（重构样式）
+    // 空状态
     const renderEmpty = () => (
         <div className={styles.emptyWrapper}>
             <div className={styles.emptyIcon}>
@@ -132,12 +159,11 @@ const OrderList = () => {
         </div>
     );
 
-    // 订单列表（完全重构排版）
+    // 订单列表
     const renderOrderList = () => (
         <div className={styles.orderWrapper}>
             {orders.map((order) => (
                 <div key={order.order_sn} className={styles.orderCard}>
-                    {/* 订单头部：状态 + 编号 + 时间 */}
                     <div className={styles.orderHeader}>
                         <div className={styles.orderStatus}>
                             <span
@@ -151,7 +177,6 @@ const OrderList = () => {
                         </div>
                     </div>
 
-                    {/* 商品列表（核心区域） */}
                     <div className={styles.productList}>
                         {order.order_items.length === 0 ? (
                             <div className={styles.emptyProduct}>暂无商品信息</div>
@@ -194,9 +219,7 @@ const OrderList = () => {
                         )}
                     </div>
 
-                    {/* 订单金额汇总 */}
                     <div className={styles.orderAmount}>
-                        {/*<div className={styles.amountLabel}></div>*/}
                         <div className={styles.amountValue}>
                             <span className={styles.totalLabel}>实付金额：</span>
                             <span className={styles.payAmount}>{formatAmount(order.pay_amount)}</span>
@@ -210,15 +233,49 @@ const OrderList = () => {
         </div>
     );
 
+    // 渲染分页控件
+    const renderPagination = () => {
+        const maxPage = Math.ceil(total / pageSize);
+        // 无数据时不显示分页
+        if (total === 0) return null;
+
+        return (
+            <div className={styles.paginationWrapper}>
+                <button
+                    className={`${styles.paginationBtn} ${currentPage === 1 ? styles.disabled : ''}`}
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 1}
+                >
+                    上一页
+                </button>
+                <span className={styles.paginationInfo}>
+                    第 {currentPage} 页 / 共 {maxPage} 页（总 {total} 条）
+                </span>
+                <button
+                    className={`${styles.paginationBtn} ${currentPage === maxPage ? styles.disabled : ''}`}
+                    onClick={handleNextPage}
+                    disabled={currentPage === maxPage}
+                >
+                    下一页
+                </button>
+            </div>
+        );
+    };
+
     return (
         <div className={styles.pageContainer}>
             <div className={styles.pageHeader}>
                 <h1 className={styles.pageTitle}>我的订单</h1>
-                <p className={styles.pageSubtitle}>共 {orders.length} 笔订单</p>
+                <p className={styles.pageSubtitle}>共 {total} 笔订单</p> {/* 改为显示总条数 */}
             </div>
 
             {loading ? renderSkeleton() : (
-                orders.length === 0 ? renderEmpty() : renderOrderList()
+                orders.length === 0 ? renderEmpty() : (
+                    <>
+                        {renderOrderList()}
+                        {renderPagination()} {/* 渲染分页控件 */}
+                    </>
+                )
             )}
         </div>
     );

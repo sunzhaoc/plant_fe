@@ -469,7 +469,40 @@ body {
         gap: var(--spacing-xs);
     }
 }
+/* 分页控件样式 */
+.paginationWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+    gap: 16px;
+}
 
+.paginationBtn {
+    padding: 8px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.paginationBtn:hover:not(.disabled) {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.paginationBtn.disabled {
+    cursor: not-allowed;
+    color: #9ca3af;
+    background: #f9fafb;
+}
+
+.paginationInfo {
+    color: #6b7280;
+    font-size: 14px;
+}
 /* 小屏手机适配（375px以下） */
 @media (max-width: 375px) {
     .pageContainer {
