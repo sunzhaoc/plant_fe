@@ -13,42 +13,39 @@ const orderStatusMap = {
 };
 
 const OrderList = () => {
+    // 核心状态管理
     const [loading, setLoading] = useState(true);
     const [orders, setOrders] = useState([]);
     const [imageUrls, setImageUrls] = useState({});
-    // 分页相关状态
-    const [currentPage, setCurrentPage] = useState(1); // 当前页码
-    const [pageSize, setPageSize] = useState(10);      // 每页条数
-    const [total, setTotal] = useState(0);             // 总订单数
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(0);
 
-    // 修改fetchOrders：接收分页参数，请求时传递
+    // 获取订单列表（分页版）
     const fetchOrders = async (page = 1, size = 10) => {
         setLoading(true);
         try {
-            // 拼接分页参数到URL
             const response = await api.get(`/api/order/get-orders?page=${page}&pageSize=${size}`);
-            if (!response || !response.data || response.data.success !== true) {
+            if (!response?.data?.success) {
                 console.error('订单接口返回异常:', response);
                 setOrders([]);
                 setTotal(0);
                 return;
             }
-            // 解构返回的分页数据：list是当前页订单，total是总条数
+
             const {list = [], total = 0} = response.data.data || {};
+            // 格式化订单数据并按创建时间倒序
             const sortedOrders = list
                 .map(order => ({
                     ...order,
                     order_items: Array.isArray(order.order_items) ? order.order_items : []
                 }))
-                .sort((a, b) => {
-                    const timeA = new Date(a.create_time)?.getTime() || 0;
-                    const timeB = new Date(b.create_time)?.getTime() || 0;
-                    return timeB - timeA;
-                });
+                .sort((a, b) => new Date(b.create_time)?.getTime() - new Date(a.create_time)?.getTime());
+
             setOrders(sortedOrders);
-            setTotal(total); // 保存总条数
-            setCurrentPage(page); // 同步当前页码
-            setPageSize(size);    // 同步每页条数
+            setTotal(total);
+            setCurrentPage(page);
+            setPageSize(size);
         } catch (error) {
             console.error('获取订单失败:', error);
             alert('获取订单失败，请稍后重试');
@@ -59,33 +56,29 @@ const OrderList = () => {
         }
     };
 
-    // 图片加载失败处理（保持不变）
+    // 图片加载失败降级处理
     const handleImageError = async (imgKey, originalUrl) => {
+        if (imageUrls[imgKey]) return;
         try {
-            if (imageUrls[imgKey]) return;
             const newUrl = await plantImageApi.getPlantImage(`${originalUrl}?image_process=resize,h_80,w_80`);
             setImageUrls(prev => ({...prev, [imgKey]: newUrl}));
         } catch (error) {
             console.error(`获取备用图片失败（key: ${imgKey}）:`, error);
-            setImageUrls(prev => ({
-                ...prev,
-                [imgKey]: 'https://picsum.photos/seed/plant/200/200'
-            }));
+            setImageUrls(prev => ({...prev, [imgKey]: 'https://picsum.photos/seed/plant/200/200'}));
         }
     };
 
-    // 格式化金额（保持不变）
+    // 格式化金额
     const formatAmount = (amount) => {
         const numAmount = Number(amount);
         return `¥${isNaN(numAmount) ? '0.00' : numAmount.toFixed(2)}`;
     };
 
-    // 格式化时间（保持不变）
+    // 格式化时间
     const formatTime = (timeStr) => {
         if (!timeStr) return '未知时间';
         try {
-            const date = new Date(timeStr);
-            return date.toLocaleString('zh-CN', {
+            return new Date(timeStr).toLocaleString('zh-CN', {
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
@@ -97,45 +90,37 @@ const OrderList = () => {
         }
     };
 
-    // 分页控件事件：上一页
-    const handlePrevPage = () => {
-        if (currentPage > 1) {
-            fetchOrders(currentPage - 1, pageSize);
-        }
-    };
-
-    // 分页控件事件：下一页
+    // 分页控制
+    const handlePrevPage = () => currentPage > 1 && fetchOrders(currentPage - 1, pageSize);
     const handleNextPage = () => {
         const maxPage = Math.ceil(total / pageSize);
-        if (currentPage < maxPage) {
-            fetchOrders(currentPage + 1, pageSize);
-        }
+        currentPage < maxPage && fetchOrders(currentPage + 1, pageSize);
     };
 
-    // 初始化加载第一页数据
+    // 初始化加载
     useEffect(() => {
         fetchOrders(1, pageSize);
     }, []);
 
-    // 加载中骨架屏（保持不变）
+    // 骨架屏
     const renderSkeleton = () => (
         <div className={styles.skeletonWrapper}>
             {[1, 2, 3].map((item) => (
                 <div key={item} className={styles.skeletonCard}>
                     <div className={styles.skeletonHeader}>
-                        <div className={styles.skeletonLine + ' ' + styles.skeletonLineMd}></div>
+                        <div className={`${styles.skeletonLine} ${styles.skeletonLineMd}`}></div>
                         <div className={styles.skeletonTag}></div>
                     </div>
                     <div className={styles.skeletonMeta}>
-                        <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
-                        <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
+                        <div className={`${styles.skeletonLine} ${styles.skeletonLineSm}`}></div>
+                        <div className={`${styles.skeletonLine} ${styles.skeletonLineSm}`}></div>
                     </div>
                     <div className={styles.skeletonProduct}>
                         <div className={styles.skeletonImg}></div>
                         <div className={styles.skeletonProductInfo}>
-                            <div className={styles.skeletonLine + ' ' + styles.skeletonLineMd}></div>
-                            <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
-                            <div className={styles.skeletonLine + ' ' + styles.skeletonLineSm}></div>
+                            <div className={`${styles.skeletonLine} ${styles.skeletonLineMd}`}></div>
+                            <div className={`${styles.skeletonLine} ${styles.skeletonLineSm}`}></div>
+                            <div className={`${styles.skeletonLine} ${styles.skeletonLineSm}`}></div>
                         </div>
                         <div className={styles.skeletonPrice}></div>
                     </div>
@@ -159,7 +144,7 @@ const OrderList = () => {
         </div>
     );
 
-    // 订单列表
+    // 订单列表渲染
     const renderOrderList = () => (
         <div className={styles.orderWrapper}>
             {orders.map((order) => (
@@ -167,7 +152,8 @@ const OrderList = () => {
                     <div className={styles.orderHeader}>
                         <div className={styles.orderStatus}>
                             <span
-                                className={`${styles.statusTag} ${orderStatusMap[order.order_status]?.className || styles.statusDefault}`}>
+                                className={`${styles.statusTag} ${orderStatusMap[order.order_status]?.className || styles.statusDefault}`}
+                            >
                                 {orderStatusMap[order.order_status]?.text || '未知状态'}
                             </span>
                         </div>
@@ -195,16 +181,10 @@ const OrderList = () => {
                                             onError={() => handleImageError(imgKey, order.main_img_url || item.main_img_url)}
                                         />
                                         <div className={styles.productInfo}>
-                                            <h4
-                                                className={styles.productName}
-                                                title={item.plant_name || ''}
-                                            >
+                                            <h4 className={styles.productName} title={item.plant_name || ''}>
                                                 {item.plant_name || '未知商品'}
                                             </h4>
-                                            <p
-                                                className={styles.productLatin}
-                                                title={item.plant_latin_name || ''}
-                                            >
+                                            <p className={styles.productLatin} title={item.plant_latin_name || ''}>
                                                 {item.plant_latin_name || '无拉丁学名'}
                                             </p>
                                             <p className={styles.productSpec}>{item.sku_size || '无规格信息'}</p>
@@ -233,11 +213,10 @@ const OrderList = () => {
         </div>
     );
 
-    // 渲染分页控件
+    // 分页控件
     const renderPagination = () => {
-        const maxPage = Math.ceil(total / pageSize);
-        // 无数据时不显示分页
         if (total === 0) return null;
+        const maxPage = Math.ceil(total / pageSize);
 
         return (
             <div className={styles.paginationWrapper}>
@@ -266,14 +245,14 @@ const OrderList = () => {
         <div className={styles.pageContainer}>
             <div className={styles.pageHeader}>
                 <h1 className={styles.pageTitle}>我的订单</h1>
-                <p className={styles.pageSubtitle}>共 {total} 笔订单</p> {/* 改为显示总条数 */}
+                <p className={styles.pageSubtitle}>共 {total} 笔订单</p>
             </div>
 
             {loading ? renderSkeleton() : (
                 orders.length === 0 ? renderEmpty() : (
                     <>
                         {renderOrderList()}
-                        {renderPagination()} {/* 渲染分页控件 */}
+                        {renderPagination()}
                     </>
                 )
             )}
