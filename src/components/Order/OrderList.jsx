@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import styles from '/src/components/Order/OrderList.module.css';
 import api from "/src/utils/api.jsx";
 import {plantImageApi} from "/src/services/api.jsx";
+import {useAuth} from '/src/context/AuthContext';
 
 // 订单状态映射
 const orderStatusMap = {
@@ -20,6 +21,7 @@ const OrderList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(0);
+    const {logout, setAuthModalOpen} = useAuth();
 
     // 获取订单列表（分页版）
     const fetchOrders = async (page = 1, size = 10) => {
@@ -47,8 +49,11 @@ const OrderList = () => {
             setCurrentPage(page);
             setPageSize(size);
         } catch (error) {
+            if (error.response?.status === 401) {
+                logout();
+                setAuthModalOpen(true);
+            }
             console.error('获取订单失败:', error);
-            alert('获取订单失败，请稍后重试');
             setOrders([]);
             setTotal(0);
         } finally {

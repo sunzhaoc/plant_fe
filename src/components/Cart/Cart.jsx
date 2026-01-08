@@ -6,6 +6,7 @@ import styles from '/src/components/Cart/Cart.module.css';
 import toast from 'react-hot-toast';
 import api from "/src/utils/api.jsx";
 import {plantImageApi} from "/src/services/api.jsx";
+import {useAuth} from '/src/context/AuthContext';
 
 export default function Cart() {
     const {
@@ -22,6 +23,7 @@ export default function Cart() {
     const [paymentLoading, setPaymentLoading] = useState(false);
     const [weChatQrCodeUrl, setWeChatQrcodeUrl] = useState('');
     const [showPaymentModal, setShowPaymentModal] = useState(false);
+    const {logout, setAuthModalOpen} = useAuth();
 
     // 异步获取微信二维码图片
     useEffect(() => {
@@ -72,6 +74,10 @@ export default function Cart() {
                 });
                 setCartItems(updatedCartItems.filter(item => item.quantity > 0));
             } catch (error) {
+                if (error.response?.status === 401) {
+                    logout();
+                    setAuthModalOpen(true);
+                }
                 console.error(error.response?.data?.message || '刷新购物车失败');
             } finally {
                 setLoading(false);
