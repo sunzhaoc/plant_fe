@@ -38,8 +38,12 @@
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* 空数据状态 */
@@ -97,6 +101,7 @@
     border-bottom: 1px solid #f5f5f5;
 }
 
+/* 订单编号 */
 .orderSn {
     font-size: 14px;
     color: #666;
@@ -106,35 +111,41 @@
 .statusTag {
     padding: 4px 12px;
     border-radius: 16px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
 }
 
+/* 订单状态标签 - 待发货 */
 .statusPending {
     background-color: #fff7e6;
     color: #faad14;
 }
 
+/* 订单状态标签 - 已付款 */
 .statusPaid {
     background-color: #e6fffa;
     color: #36cfc9;
 }
 
+/* 订单状态标签 - 已发货 */
 .statusShipped {
     background-color: #e8f4f8;
     color: #4299e1;
 }
 
+/* 订单状态标签 - 已完成 */
 .statusCompleted {
     background-color: #f0f9ff;
     color: #52c41a;
 }
 
+/* 订单状态标签 - 已取消 */
 .statusCancelled {
     background-color: #fff2f2;
     color: #ff4d4f;
 }
 
+/* 订单状态标签 - 默认（兜底） */
 .statusDefault {
     background-color: #f5f5f5;
     color: #8c8c8c;
@@ -229,44 +240,44 @@
 }
 
 /* 订单操作区 */
-.orderActions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    padding-top: 16px;
-    border-top: 1px solid #f5f5f5;
-}
+/*.orderActions {*/
+/*    display: flex;*/
+/*    justify-content: flex-end;*/
+/*    gap: 12px;*/
+/*    padding-top: 16px;*/
+/*    border-top: 1px solid #f5f5f5;*/
+/*}*/
 
-.actionBtn {
-    padding: 8px 16px;
-    background-color: #4299e1;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.2s;
-}
+/*.actionBtn {*/
+/*    padding: 8px 16px;*/
+/*    background-color: #4299e1;*/
+/*    color: white;*/
+/*    border: none;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    font-size: 14px;*/
+/*    transition: background-color 0.2s;*/
+/*}*/
 
-.actionBtn:hover {
-    background-color: #3182ce;
-}
+/*.actionBtn:hover {*/
+/*    background-color: #3182ce;*/
+/*}*/
 
-.actionBtnOutline {
-    padding: 8px 16px;
-    background-color: transparent;
-    color: #4299e1;
-    border: 1px solid #4299e1;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: color 0.2s, border-color 0.2s;
-}
+/*.actionBtnOutline {*/
+/*    padding: 8px 16px;*/
+/*    background-color: transparent;*/
+/*    color: #4299e1;*/
+/*    border: 1px solid #4299e1;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*    font-size: 14px;*/
+/*    transition: color 0.2s, border-color 0.2s;*/
+/*}*/
 
-.actionBtnOutline:hover {
-    color: #3182ce;
-    border-color: #3182ce;
-}
+/*.actionBtnOutline:hover {*/
+/*    color: #3182ce;*/
+/*    border-color: #3182ce;*/
+/*}*/
 
 /* 响应式适配 */
 @media (max-width: 768px) {
@@ -297,8 +308,8 @@
         margin-top: 8px;
     }
 
-    .orderActions {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
+    /*.orderActions {*/
+    /*    justify-content: center;*/
+    /*    flex-wrap: wrap;*/
+    /*}*/
 }

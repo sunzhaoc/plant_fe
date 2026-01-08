@@ -135,43 +135,42 @@ const OrderList = () => {
 
                             {/* 订单金额与时间 */}
                             <div className={styles.orderInfo}>
-                                <div className={styles.orderTime}>
-                                    创建时间：{order.create_time}
-                                </div>
+                                <div className={styles.orderTime}> 下单时间：{order.create_time} </div>
                                 <div className={styles.orderAmount}>
                                     <p>总金额：{formatAmount(order.total_amount)}</p>
-                                    <p>实付金额：<span
-                                        className={styles.payAmount}>{formatAmount(order.pay_amount)}</span></p>
+                                    <p>实付金额：
+                                        <span className={styles.payAmount}>{formatAmount(order.pay_amount)}</span>
+                                    </p>
                                 </div>
                             </div>
 
                             {/* 订单商品列表 */}
                             <div className={styles.productList}>
-                                {/* 关键修改5：即使order_items为空，也给出友好提示 */}
                                 {order.order_items.length === 0 ? (
                                     <div className={styles.emptyProduct}>暂无商品信息</div>
                                 ) : (
                                     order.order_items.map((item, index) => {
                                         // 生成每个商品图片的唯一标识（避免重复）
                                         const imgKey = `${order.order_sn}-${index}`;
-                                        // 优先使用备用地址，无则使用原始地址，兜底默认图
-                                        const imgSrc = imageUrls[imgKey] || order.main_img_url || item.main_img_url || 'https://picsum.photos/200/200?random=0';
-
+                                        // TODO（需要再测试一下）优先使用备用地址，无则使用原始地址，兜底默认图
+                                        const imgSrc = imageUrls[imgKey] || item.main_img_url || 'https://picsum.photos/200/200?random=0';
                                         return (
                                             <div key={imgKey} className={styles.productItem}>
+                                                {/* 图片 */}
                                                 <img
                                                     src={imgSrc}
                                                     alt={item.plant_name || '商品图片'}
                                                     className={styles.productImage}
                                                     loading="lazy"
-                                                    // 新增：图片加载失败时调用处理函数
                                                     onError={() => handleImageError(imgKey, order.main_img_url || item.main_img_url)}
                                                 />
+                                                {/* 商品信息 */}
                                                 <div className={styles.productInfo}>
-                                                    <h3 className={styles.productName}>{item.plant_name || '未知商品'}</h3>
-                                                    <p className={styles.productSpec}>{item.sku_size || '无规格'}</p>
-                                                    <p className={styles.productLatin}>{item.plant_latin_name || '无学名'}</p>
+                                                    <h3 className={styles.productName}>{item.plant_name || ''}</h3>
+                                                    <p className={styles.productSpec}>{item.sku_size || ''}</p>
+                                                    <p className={styles.productLatin}>{item.plant_latin_name || ''}</p>
                                                 </div>
+                                                {/* 单价 数量 */}
                                                 <div className={styles.productPriceQty}>
                                                     <p className={styles.productPrice}>{formatAmount(item.price)}</p>
                                                     <p className={styles.productQty}>×{item.quantity || 1}</p>
@@ -183,10 +182,10 @@ const OrderList = () => {
                             </div>
 
                             {/* 订单操作区（可扩展） */}
-                            <div className={styles.orderActions}>
-                                <button className={styles.actionBtn}>查看详情</button>
-                                <button className={styles.actionBtnOutline}>联系客服</button>
-                            </div>
+                            {/*<div className={styles.orderActions}>*/}
+                            {/*    <button className={styles.actionBtn}>查看详情</button>*/}
+                            {/*    <button className={styles.actionBtnOutline}>联系客服</button>*/}
+                            {/*</div>*/}
                         </div>
                     ))}
                 </div>
