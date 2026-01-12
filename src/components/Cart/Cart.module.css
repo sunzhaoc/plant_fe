@@ -146,6 +146,69 @@
     display: block;
 }
 
+/* 收货地址卡片样式 */
+.addressCard {
+    background-color: #f9f9f9;
+}
+
+/* 地址编辑弹窗遮罩 */
+.addressModalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+}
+
+/* 地址编辑弹窗内容 */
+.addressModalContent {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 1.5rem;
+    position: relative;
+}
+
+/* 弹窗关闭按钮 */
+.modalCloseBtn {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.modalCloseBtn:hover {
+    color: #000;
+}
+
+/* 弹窗头部 */
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* 弹窗主体 */
+.modalBody {
+    padding: 0.5rem 0;
+}
+
 /* 弹窗淡入动画 */
 @keyframes modalFadeIn {
     from {

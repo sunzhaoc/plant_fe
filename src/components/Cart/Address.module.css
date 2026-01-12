@@ -1,0 +1,113 @@
+.addressContainer {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f0f0f0;
+    margin-bottom: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f8f8f8;
+}
+
+.title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.title::before {
+    content: "";
+    width: 4px;
+    height: 16px;
+    background: #ff4d4f; /* 电商常用红色 */
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+/* 显示模式样式 */
+.displayWrapper {
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 8px;
+}
+
+.infoRow {
+    display: flex;
+    margin-bottom: 8px;
+    line-height: 1.6;
+}
+
+.label {
+    color: #999;
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.content {
+    color: #333;
+    font-weight: 500;
+}
+
+/* 编辑模式样式 */
+.editForm {
+    display: grid;
+    gap: 15px;
+}
+
+.inputGroup {
+    display: flex;
+    gap: 10px;
+}
+
+.formItem {
+    flex: 1;
+}
+
+.inputField {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.inputField:focus {
+    border-color: #ff4d4f;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.1);
+}
+
+.actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btnPrimary {
+    background: #ff4d4f;
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btnGhost {
+    background: transparent;
+    border: 1px solid #d9d9d9;
+    color: #666;
+    padding: 8px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+}
