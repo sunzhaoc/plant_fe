@@ -11,3 +11,6 @@ fi
 git add .
 git commit -m "$commit_msg"
 git push
+
+echo "https://antplant.store/"
+echo "https://antplant.store/index.html"
