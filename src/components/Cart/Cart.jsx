@@ -129,9 +129,9 @@ export default function Cart() {
                         <button className={styles.modalCloseBtn} onClick={() => setShowPaymentModal(false)}>
                             <i className="bi bi-x-lg"></i>
                         </button>
-                        <div className={styles.modalHeader}><h4 className="text-center mb-0">功能暂未上线</h4></div>
+                        <div className={styles.modalHeader}><h4 className="text-center mb-0">感谢您的购买</h4></div>
                         <div className={styles.modalBody}>
-                            <p className="text-center text-muted mb-4">预计26年3月正式上线，敬请期待～</p>
+                            <p className="text-center text-muted mb-4">请扫码添加老板微信付款～</p>
                             <div className={styles.qrcodeContainer}>
                                 <img
                                     src={weChatQrCodeUrl} alt="二维码" className={styles.qrcodeImg} width={200}

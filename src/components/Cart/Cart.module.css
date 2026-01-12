@@ -83,7 +83,7 @@
     border-radius: 12px;
     padding: 2rem;
     width: 90%;
-    max-width: 400px;
+    max-width: 300px;
     position: relative;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     animation: modalFadeIn 0.3s ease;
