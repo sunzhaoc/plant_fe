@@ -1,6 +1,7 @@
-/* 植物卡片容器 */
+/* 植物卡片容器 - 新增relative定位，作为标签的定位父级 */
 .plantCardContainer {
     padding: 0 8px;
+    position: relative; /* 关键修改：新增定位，用于SOLD OUT标签 */
 }
 
 .plantCard {
@@ -101,13 +102,46 @@
     transform: none; /* 完全无位移，扁平 */
 }
 
+/* Sold Out 标签 - 相对于plantCardContainer */
+.soldOutBadge {
+    position: absolute;
+    top: 8px; /* 微调位置，适配容器层级 */
+    left: 8px;
+    background-color: #f44336;
+    color: #ffffff;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 10;
+    pointer-events: none; /* 允许点击穿透 */
+    border-bottom-right-radius: 6px;
+}
+
+/* 无库存时卡片置灰样式 */
+.outOfStock {
+    filter: grayscale(80%); /* 80%灰度 */
+    opacity: 0.9; /* 轻微降低不透明度，增强置灰感 */
+    pointer-events: none;
+}
+
+/* 恢复详情链接的点击功能（覆盖outOfStock的pointer-events） */
+.outOfStock a {
+    pointer-events: auto;
+}
+
+/* 禁用状态的按钮 */
+.disabledBtn {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
 /* 文本截断（通用样式迁移） */
 .textTruncate {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 
 /* 响应式适配 */
 @media (max-width: 768px) {
@@ -121,5 +155,11 @@
 
     .plantCardFooterPurchaseButton {
         font-size: 15px;
+    }
+
+    /* 移动端标签适配 */
+    .soldOutBadge {
+        padding: 5px 12px;
+        font-size: 13px;
     }
 }

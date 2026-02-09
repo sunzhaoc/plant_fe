@@ -3,10 +3,14 @@ import DBCachedImage from '/src/components/UI/DBCachedImage';
 import styles from '/src/components/Plants/PlantCard.module.css';
 
 export default function PlantCard({plant}) {
+    const isOutOfStock = plant.plantStock === 0;
     return (<>
         <div className="col-md-3 mb-5">
             <div className={styles.plantCardContainer}>
-                <div className={`${styles.plantCard} h-100`}>
+                {isOutOfStock && (
+                    <div className={styles.soldOutBadge}>SOLD OUT</div>
+                )}
+                <div className={`${styles.plantCard} h-100 ${isOutOfStock ? styles.outOfStock : ''}`}>
                     <div className={styles.plantImgContainer}>
                         <Link
                             to={`/detail/${plant.plantId}`}
@@ -45,10 +49,10 @@ export default function PlantCard({plant}) {
                             </span>
                             <Link
                                 to={`/detail/${plant.plantId}`}
-                                className={styles.addToCartBtn}
+                                className={`${styles.addToCartBtn} ${isOutOfStock ? styles.disabledBtn : ''}`}
                                 state={{mainPlantInfo: plant}}
                             >
-                                购买
+                                {isOutOfStock ? '补货中' : '购买'}
                             </Link>
                         </div>
                     </div>

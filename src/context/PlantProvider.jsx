@@ -31,7 +31,9 @@ export const PlantProvider = ({children}) => {
                 plantLatinName: plant.latin_name,
                 plantMainImgUrl: plant.main_img_url ? plant.main_img_url : '',
                 plantMinPrice: plant.min_price,
+                plantStock: plant.stock,
             }));
+            console.log(transformedPlants);
             setPlantList(transformedPlants);
             setError(null);
         } catch (err) {
