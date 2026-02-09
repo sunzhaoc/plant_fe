@@ -1,6 +1,7 @@
 import PlantCard from '/src/components/Plants/PlantCard';
-import { useState, useMemo } from 'react';
-import { usePlants } from '/src/context/PlantContext.jsx';
+import {useState, useMemo} from 'react';
+import {usePlants} from '/src/context/PlantContext.jsx';
+import styles from '/src/components/Plants/PlantGrid.module.css'
 
 // 提取所有独特的属名（保留你原有逻辑：从拉丁名中提取第一个单词）
 const getGenera = (plants) => {
@@ -15,7 +16,7 @@ const getGenera = (plants) => {
 
 export default function PlantGrid() {
     // 从Context获取缓存的植物数据
-    const { plantList, loading, error } = usePlants();
+    const {plantList, loading, error} = usePlants();
 
     const [selectedGenus, setSelectedGenus] = useState('全部');
     const genera = useMemo(() => {
@@ -43,12 +44,12 @@ export default function PlantGrid() {
     return (
         <div>
             {/* 属名筛选栏 */}
-            <div className="mb-4 genus-filter">
+            <div className={`${styles.genusFilter} mb-4`}>
                 <div className="d-flex flex-wrap gap-2">
                     {genera.map(genus => (
                         <button
                             key={genus}
-                            className={`btn genus-btn ${selectedGenus === genus ? 'active' : ''}`}
+                            className={`btn ${styles.genusBtn} ${selectedGenus === genus ? 'active' : ''}`}
                             onClick={() => setSelectedGenus(genus)}
                         >
                             {genus}

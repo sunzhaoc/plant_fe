@@ -1,0 +1,25 @@
+.genusFilter {
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.genusBtn {
+    background: transparent;
+    border: 1px solid #ddd;
+    color: #555;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.genusBtn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.genusBtn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
