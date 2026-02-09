@@ -33,7 +33,6 @@ export const PlantProvider = ({children}) => {
                 plantMinPrice: plant.min_price,
                 plantStock: plant.stock,
             }));
-            console.log(transformedPlants);
             setPlantList(transformedPlants);
             setError(null);
         } catch (err) {
