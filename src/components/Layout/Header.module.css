@@ -1,126 +1,263 @@
-/* Header.module.css */
-
+/* ========================== 头部核心容器 ========================== */
+/* 头部整体容器：控制内边距、边框、背景色 */
 .header {
-    padding: 16px 0;
+    /* 盒模型：上下内边距，底部灰色分割线 */
+    padding: 12px 0;
     border-bottom: 1px solid #e1e4e8;
+    /* 视觉：白色背景，与页面内容区区分 */
     background-color: #ffffff;
 }
 
+/* ========================== 导航布局 ========================== */
+/* 导航容器：flex 布局实现 logo 左对齐、操作组右对齐 */
 .nav {
+    /* 布局：flex 弹性布局，垂直居中，宽度100%占满容器 */
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    /* 适配：小屏下允许容器内元素换行（兜底） */
+    flex-wrap: wrap;
 }
 
+/* 右侧操作组（购物车/用户/登录按钮）：flex 布局，元素间间距 */
 .navGroup {
+    /* 布局：flex 弹性布局，垂直居中，子元素间距20px */
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
 }
 
-/* 品牌 Logo */
+/* ========================== 品牌 Logo 区域 ========================== */
+/* Logo 容器：flex 布局，主色文字，加粗，去除下划线 */
 .brand {
+    /* 布局：flex 弹性布局，垂直居中 */
+    display: flex;
+    align-items: center;
+    /* 视觉：主色文字，加粗，无下划线，字号放大 */
     color: var(--primary-color);
     font-weight: bold;
     text-decoration: none;
     font-size: 1.2rem;
 }
 
-/* 购物车容器 */
-.badgeContainer {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
+/* Logo 文字：与图片保持8px间距 */
+.brandText {
+    margin-left: 8px;
 }
 
-/* 基础按钮样式 - 模仿 GitHub 按钮基础 */
-.btnBase {
+/* Logo 图片：固定高度，自适应宽度，圆角优化 */
+.logoIcon {
+    height: 32px;
+    width: auto;
+    border-radius: 4px; /* 轻微圆角，避免直角生硬 */
+}
+
+/* ========================== 通用图标按钮 ========================== */
+/* 图标按钮（购物车/订单/用户头像）：圆形按钮样式 */
+.iconBtn {
+    /* 布局：flex 居中，固定宽高，圆形 */
     display: flex;
     align-items: center;
-    gap: 4px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    /* 视觉：字号，默认文字色，透明背景，无边框 */
+    font-size: 20px;
+    color: #24292e;
+    background-color: transparent;
+    border: none;
+    /* 交互：鼠标指针样式，过渡动画（hover 效果平滑） */
     cursor: pointer;
     transition: all 0.2s ease;
-    text-decoration: none;
-    border: 1px solid transparent;
+    text-decoration: none; /* 兼容 Link 组件，去除下划线 */
 }
 
-/* 购物车按钮样式 */
-.cartBtn {
-    composes: btnBase;
-    border-color: #ddd;
-    background-color: transparent;
-    color: #24292e;
-}
-
-.cartBtn:hover {
+/* 图标按钮 hover 效果：浅灰背景，主色文字 */
+.iconBtn:hover {
     background-color: #f6f8fa;
-    border-color: #d0d7de;
+    color: var(--primary-color);
 }
 
-/* 徽章样式 */
+/* ========================== 购物车徽章（数量提示） ========================== */
+/* 购物车容器：相对定位，用于徽章绝对定位 */
+.badgeContainer {
+    position: relative;
+    display: inline-flex; /* 适配图标按钮的 inline 特性 */
+}
+
+/* 购物车数量徽章：右上角小红点提示 */
 .badge {
+    /* 定位：相对于购物车图标右上角偏移 */
     position: absolute;
-    top: -6px;
-    right: -6px;
+    top: -4px;
+    right: -4px;
+    /* 盒模型：内边距，字号，行高（垂直居中） */
     padding: 0 6px;
-    font-size: 12px;
-    line-height: 18px;
-    border-radius: 9px;
-    background-color: #d1242f;
+    font-size: 11px;
+    line-height: 16px;
+    /* 视觉：圆角（胶囊状），红色背景，白色文字，加粗 */
+    border-radius: 8px;
+    background-color: #d1242f; /* 警示红，突出数量提示 */
     color: white;
     font-weight: 600;
 }
 
-/* 登录/注册按钮（主按钮） */
+/* ========================== 用户菜单下拉 ========================== */
+/* 用户菜单容器：相对定位，用于下拉框绝对定位 */
+.userMenu {
+    position: relative;
+}
+
+/* 用户下拉菜单：默认隐藏，hover 显示 */
+.userDropdown {
+    /* 定位：绝对定位，在用户按钮下方，右对齐 */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    /* 盒模型：上间距，内边距，最小宽度（避免内容挤压） */
+    margin-top: 8px;
+    padding: 12px;
+    min-width: 160px;
+    /* 视觉：白色背景，浅灰边框，圆角，阴影（提升层次感） */
+    background-color: white;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    /* 层级：z-index 确保下拉框在最上层 */
+    z-index: 100;
+    /* 初始状态：隐藏 */
+    display: none;
+}
+
+/* 鼠标悬浮用户按钮时，显示下拉菜单 */
+.userMenu:hover .userDropdown {
+    display: block;
+}
+
+/* 下拉菜单中的用户名称文字 */
+.userText {
+    font-size: 14px;
+    color: #24292e;
+    font-weight: 500;
+    margin: 0 0 8px 0; /* 仅底部间距，与退出按钮分隔 */
+}
+
+/* ========================== 登录/注册按钮 ========================== */
+/* 登录/注册主按钮：绿色主按钮样式 */
 .authBtn {
-    composes: btnBase;
-    padding: 6px 16px;
-    border-color: #2ea44f;
+    /* 布局：flex 居中，内部元素间距4px */
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    /* 盒模型：内边距，圆角（胶囊状） */
+    padding: 8px 16px;
+    border-radius: 20px;
+    /* 视觉：字号，绿色背景，白色文字，加粗，绿色边框 */
+    font-size: 14px;
+    border: 1px solid #2ea44f;
     background-color: #2ea44f;
     color: white;
     font-weight: 500;
+    /* 交互：鼠标指针，过渡动画 */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
+/* 登录按钮 hover 效果：深一点的绿色，提升交互反馈 */
 .authBtn:hover {
     background-color: #2c974b;
     border-color: #2a8f47;
 }
 
-/* 退出按钮（次要按钮） */
+/* ========================== 退出按钮（下拉菜单内） ========================== */
+/* 退出按钮：次要按钮样式，浅灰边框，透明背景 */
 .logoutBtn {
-    composes: btnBase;
-    padding: 6px 16px;
-    border-color: #d0d7de;
+    /* 布局：flex 居中，宽度100%占满下拉框 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    /* 盒模型：内边距，圆角 */
+    padding: 6px 12px;
+    border-radius: 6px;
+    /* 视觉：字号，透明背景，浅灰边框，默认文字色 */
+    font-size: 14px;
+    border: 1px solid #d0d7de;
     background-color: transparent;
     color: #24292e;
+    /* 交互：鼠标指针，过渡动画 */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
 }
 
+/* 退出按钮 hover 效果：浅灰背景，边框加深 */
 .logoutBtn:hover {
     background-color: #f6f8fa;
     border-color: #c9d1d9;
 }
 
-.userText {
-    font-size: 14px;
-    color: #24292e;
-    font-weight: 400;
-    margin: 0;
-}
+/* ========================== 通用手机样式 ========================== */
+@media (max-width: 767px) {
+    /* 1. 头部内边距缩小，适配小屏紧凑布局 */
+    .header {
+        padding: 8px 0;
+    }
 
-.brand {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    /* ... your existing styles ... */
-}
+    /* 2. 右侧操作组间距缩小，避免元素溢出 */
+    .navGroup {
+        gap: 12px; /* 从20px缩至12px，减少横向占用 */
+    }
 
-.logoIcon {
-    height: 40px; /* Adjust height to match your nav bar */
-    width: auto; /* Maintain aspect ratio */
-    margin-right: 0px; /* Space between logo and text */
-    border-radius: 4px; /* Optional: if you want rounded corners */
+    /* 3. Logo 区域优化：保留文字，仅缩小字号（核心修改） */
+    .brand {
+        font-size: 0.9rem; /* 从1.2rem缩小，适配小屏 */
+    }
+
+    .brandText {
+        /* 移除 display: none; 让文字显示 */
+        margin-left: 6px; /* 微调间距，更紧凑 */
+        font-size: 0.9rem; /* 小屏字号适配 */
+    }
+
+    /* 4. 图标按钮尺寸缩小，适配小屏触控 */
+    .iconBtn {
+        width: 36px; /* 从40px缩至36px */
+        height: 36px;
+        font-size: 18px; /* 图标字号同步缩小 */
+    }
+
+    /* 5. 购物车徽章尺寸微调，适配缩小后的图标 */
+    .badge {
+        font-size: 10px;
+        line-height: 14px;
+        padding: 0 5px;
+        top: -3px;
+        right: -3px;
+    }
+
+    /* 6. 登录/注册按钮内边距缩小，避免横向溢出 */
+    .authBtn {
+        padding: 6px 12px; /* 从8px 16px缩至6px 12px */
+        font-size: 13px; /* 字号轻微缩小 */
+    }
+
+    /* 7. 用户下拉菜单适配：缩小内边距和最小宽度 */
+    .userDropdown {
+        min-width: 140px; /* 从160px缩至140px */
+        padding: 10px; /* 从12px缩至10px */
+    }
+
+    /* 8. 下拉菜单内文字和按钮字号微调 */
+    .userText {
+        font-size: 13px;
+    }
+
+    .logoutBtn {
+        font-size: 13px;
+        padding: 5px 10px;
+    }
 }
