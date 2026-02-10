@@ -24,7 +24,7 @@ const topLevelCategories = {
     }
 };
 
-// 提取植物属名
+// 提取植物属名（核心逻辑保留，精简空值判断）
 const getGenera = (plants = []) => {
     const genera = new Set();
     plants.forEach(plant => {
@@ -34,7 +34,7 @@ const getGenera = (plants = []) => {
     return Array.from(genera);
 };
 
-// 下拉选项组件
+// 下拉选项组件（移除未使用的isReset属性）
 const DropdownItem = ({genus, onClick, active}) => (
     <button
         className={`${styles.dropdownItem} ${active ? styles.active : ''}`}
@@ -44,8 +44,9 @@ const DropdownItem = ({genus, onClick, active}) => (
     </button>
 );
 
-// 下拉分组组件
+// 下拉分组组件（精简逻辑，保留核心功能）
 const DropdownGroup = ({groupName, genera, selectedGenus, onGenusSelect, allGenera}) => {
+    // 仅保留有数据的属名
     const availableGenera = useMemo(() =>
             genera.filter(genus => allGenera.includes(genus)),
         [genera, allGenera]);
@@ -71,20 +72,26 @@ const DropdownGroup = ({groupName, genera, selectedGenus, onGenusSelect, allGene
 
 export default function PlantGrid() {
     const {plantList, loading, error} = usePlants();
+    // 1. 修改初始值为 null（标识未初始化）
     const [selectedGenus, setSelectedGenus] = useState(null);
     const [activeCategory, setActiveCategory] = useState(null);
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownTimeoutRef = useRef(null);
-    const navRef = useRef(null);
 
+    // 提取所有属名（增加空值保护）
     const allGenera = useMemo(() => getGenera(plantList), [plantList]);
 
-    // 初始化逻辑
+    // 2. 新增 useEffect：数据加载完成后自动选中第一个属名
     useEffect(() => {
+        // 加载中/有错误/已选中/无属名时不执行
         if (loading || error || selectedGenus !== null || allGenera.length === 0) return;
+
+        // 默认选中第一个属名（也可以指定固定属名，比如 const defaultGenus = 'Hoya'）
         const defaultGenus = allGenera[0];
         setSelectedGenus(defaultGenus);
 
+        // 可选：自动定位到默认属名所在的顶级分类（优化用户体验）
+        // 遍历分类体系，找到包含默认属名的顶级分类
         for (const [topCategory, groups] of Object.entries(topLevelCategories)) {
             for (const [_, genera] of Object.entries(groups)) {
                 if (genera.includes(defaultGenus)) {
@@ -95,62 +102,52 @@ export default function PlantGrid() {
         }
     }, [loading, error, allGenera, selectedGenus]);
 
-    // 筛选逻辑
+    // 筛选植物（增加空值保护，精简逻辑）
     const filteredPlants = useMemo(() => {
         if (!plantList) return [];
+        // 未初始化时返回空（避免短暂展示全部），初始化后按选中属名筛选
         return selectedGenus !== null
             ? plantList.filter(plant => plant?.plantLatinName?.startsWith(selectedGenus))
             : [];
     }, [selectedGenus, plantList]);
 
-    // 选择属名
+    // 选择属名（精简逻辑）
     const handleGenusSelect = (genus) => {
         setSelectedGenus(genus);
         setDropdownVisible(false);
     };
 
-    // 修复：兼容触摸/鼠标事件
-    const handleCategoryActivate = (category) => {
+    // 鼠标进入分类（精简写法）
+    const handleMouseEnterCategory = (category) => {
         clearTimeout(dropdownTimeoutRef.current);
         setActiveCategory(category);
         setDropdownVisible(true);
     };
 
-    // 修复：统一的隐藏逻辑（兼容移动端）
-    const handleHideDropdown = () => {
+    // 鼠标离开（保留核心延迟逻辑）
+    const handleMouseLeave = () => {
         dropdownTimeoutRef.current = setTimeout(() => {
             setDropdownVisible(false);
-            // 可选：清空激活的分类，避免残留状态
-            setActiveCategory(null);
         }, 200);
     };
 
-    // 加载/错误状态（不变）
+    // 加载/错误状态（保留核心展示）
     if (loading) return <div className={styles.loader}>Loading Botanical Wonders...</div>;
     if (error) return <div className={styles.errorMessage}>Error: {error}</div>;
 
     return (
         <div className={styles.gridWrapper}>
-            {/* 修复1：添加ref + 同时绑定触摸/鼠标事件 */}
-            <nav
-                ref={navRef}
-                className={styles.topLevelNav}
-                onMouseLeave={handleHideDropdown}
-                onTouchEnd={() => {}} // 触发移动端事件绑定
-            >
+            <nav className={styles.topLevelNav} onMouseLeave={handleMouseLeave}>
                 <div className={styles.navContainer}>
+                    {/* 顶级分类导航（精简循环逻辑） */}
                     {Object.keys(topLevelCategories).map(category => (
                         <div
                             key={category}
                             className={styles.navItemWithDropdown}
-                            // 修复2：同时绑定onMouseEnter + onClick（兼容移动端触摸）
-                            onMouseEnter={() => handleCategoryActivate(category)}
-                            onClick={() => handleCategoryActivate(category)}
+                            onMouseEnter={() => handleMouseEnterCategory(category)}
                         >
                             <button
                                 className={`${styles.navItem} ${activeCategory === category && dropdownVisible ? styles.navActive : ''}`}
-                                // 修复3：阻止按钮默认行为（避免Safari点击穿透）
-                                onClick={(e) => e.stopPropagation()}
                             >
                                 {category}
                                 <span className={styles.arrow}></span>
@@ -158,14 +155,14 @@ export default function PlantGrid() {
                         </div>
                     ))}
                 </div>
+            </nav>
 
-                {/* 下拉面板：核心修复点 */}
+            {/* 下拉面板（保留核心交互） */}
+            <nav className={styles.topLevelNav2} onMouseLeave={handleMouseLeave}>
+
                 <div
                     className={`${styles.unifiedDropdownPanel} ${dropdownVisible ? styles.panelVisible : ''}`}
-                    // 修复4：同时绑定鼠标/触摸事件，防止提前隐藏
                     onMouseEnter={() => clearTimeout(dropdownTimeoutRef.current)}
-                    onTouchStart={() => clearTimeout(dropdownTimeoutRef.current)}
-                    onTouchEnd={(e) => e.stopPropagation()}
                 >
                     <div className={styles.panelContent}>
                         {activeCategory && Object.entries(topLevelCategories[activeCategory]).map(([groupName, groupGenera]) => (
@@ -179,18 +176,18 @@ export default function PlantGrid() {
                             />
                         ))}
                     </div>
-                    <div className={styles.panelFooter}>
-                        <button
-                            onClick={() => setSelectedGenus('')}
-                            className={styles.clearBtn}
-                        >
-                            Reset Filter 清除筛选
-                        </button>
-                    </div>
+                    {/*<div className={styles.panelFooter}>*/}
+                    {/*    <button*/}
+                    {/*        onClick={() => setSelectedGenus('')}*/}
+                    {/*        className={styles.clearBtn}*/}
+                    {/*    >*/}
+                    {/*        Reset Filter 清除筛选*/}
+                    {/*    </button>*/}
+                    {/*</div>*/}
                 </div>
             </nav>
 
-            {/* 筛选状态 + 植物网格（不变） */}
+            {/* 当前筛选状态（保留核心展示） */}
             <div className={styles.currentFilter}>
                 {selectedGenus ? (
                     <p>Showing: <strong>{selectedGenus}</strong> <span>({filteredPlants.length} items)</span></p>
@@ -199,6 +196,7 @@ export default function PlantGrid() {
                 )}
             </div>
 
+            {/* 植物卡片网格（保留核心渲染） */}
             <div className="row">
                 {filteredPlants.map(plant => (
                     <PlantCard key={plant.plantId} plant={plant} />
