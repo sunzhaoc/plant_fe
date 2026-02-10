@@ -19,9 +19,7 @@
     padding: 0 20px;
 }
 
-/* ==========================
-   导航栏核心样式
-   ========================== */
+/* 导航栏核心样式 - 修复点 */
 .topLevelNav {
     position: sticky;
     top: 0;
@@ -29,6 +27,10 @@
     background: white;
     padding: 15px 0;
     border-bottom: 1px solid #eee;
+    /* 修复1：Safari sticky 元素必须指定宽度 */
+    width: 100%;
+    /* 修复2：防止事件穿透 */
+    pointer-events: auto;
 }
 
 .navContainer {
@@ -51,6 +53,8 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    /* 修复3：移动端点击高亮去除 */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .navItem:hover {
@@ -78,18 +82,19 @@
     margin-bottom: -2px;
 }
 
-/* ==========================
-   下拉面板样式 (磨砂玻璃效果)
-   ========================== */
+/* 下拉面板样式 - 核心修复点 */
 .unifiedDropdownPanel {
     position: absolute;
     top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(10px);
-    width: 90%;
-    max-width: 1000px;
+    left: 0; /* 修复1：替换 translateX(-50%) 为 left:0 + width:100%，避免Safari transform 冲突 */
+    right: 0;
+    /* 移除：transform: translateX(-50%) translateY(10px); */
+    transform: translateY(10px); /* 仅保留Y轴过渡 */
+    width: 100%; /* 修复2：宽度100%，适配父容器 */
+    max-width: none; /* 修复3：取消最大宽度限制，避免截断 */
     background: var(--glass);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* 修复4：添加webkit前缀，兼容iOS Safari */
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 16px;
     box-shadow: var(--shadow-modern);
@@ -97,12 +102,19 @@
     visibility: hidden;
     transition: all 0.3s ease;
     overflow: hidden;
+    /* 修复5：提升z-index，避免被Safari遮挡 */
+    z-index: 9999;
+    /* 修复6：强制硬件加速，解决渲染卡顿 */
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px);
+    will-change: transform, opacity;
 }
 
 .panelVisible {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0); /* 仅Y轴过渡 */
+    -webkit-transform: translateY(0);
 }
 
 .panelContent {
@@ -126,11 +138,11 @@
     color: #999;
     cursor: pointer;
     text-decoration: underline;
+    /* 修复：去除点击高亮 */
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* ==========================
-   下拉分组与选项样式
-   ========================== */
+/* 下拉分组与选项样式（不变） */
 .groupTitle {
     font-size: 0.75rem;
     color: #aaa;
@@ -154,6 +166,8 @@
     color: var(--text-main);
     cursor: pointer;
     transition: all 0.2s;
+    /* 修复：去除点击高亮 */
+    -webkit-tap-highlight-color: transparent;
 }
 
 .dropdownItem:hover {
@@ -169,9 +183,7 @@
     border-color: var(--accent);
 }
 
-/* ==========================
-   状态展示样式 (筛选/加载/错误)
-   ========================== */
+/* 状态展示样式（不变） */
 .currentFilter {
     text-align: center;
     padding: 20px 0;
@@ -191,80 +203,76 @@
     font-style: italic;
 }
 
-/* ==========================
-   移动端适配 (768px以下) - 重点优化
-   ========================== */
+/* 移动端适配 - 修复点 */
 @media (max-width: 768px) {
-    /* 1. 优化导航栏：缩小尺寸、横向滚动避免换行 */
     .topLevelNav {
-        padding: 8px 0; /* 减少导航栏上下内边距 */
-        overflow-x: auto; /* 横向滚动 */
-        -webkit-overflow-scrolling: touch; /* 移动端顺滑滚动 */
-    }
-
-    .navContainer {
-        justify-content: flex-start; /* 左对齐，配合横向滚动 */
-        gap: 5px; /* 缩小导航项间距 */
-        padding: 0 10px; /* 左右内边距 */
-        flex-wrap: nowrap; /* 禁止换行 */
-    }
-
-    .navItem {
-        padding: 6px 12px; /* 缩小按钮内边距 */
-        font-size: 0.75rem; /* 缩小字体 */
-        white-space: nowrap; /* 禁止文字换行 */
-    }
-
-    /* 隐藏导航栏滚动条 */
-    .topLevelNav::-webkit-scrollbar {
-        display: none;
-    }
-
-    .topLevelNav {
+        padding: 8px 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        /* 修复：Safari 滚动条隐藏兼容 */
         -ms-overflow-style: none;
         scrollbar-width: none;
     }
 
-    /* 2. 优化下拉面板：限制高度、精简内边距 */
+    .navContainer {
+        justify-content: flex-start;
+        gap: 5px;
+        padding: 0 10px;
+        flex-wrap: nowrap;
+    }
+
+    .navItem {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    .topLevelNav::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 修复：移动端下拉面板定位 */
     .unifiedDropdownPanel {
         width: 100%;
-        position: fixed;
+        position: fixed; /* 改为fixed，避免父容器滚动影响 */
         top: auto;
         bottom: 0;
         left: 0;
+        right: 0;
         transform: translateY(100%);
+        -webkit-transform: translateY(100%);
         border-radius: 20px 20px 0 0;
-        max-height: 70vh; /* 限制最大高度为视口70% */
-        overflow-y: auto; /* 超出部分滚动 */
+        max-height: 70vh;
+        overflow-y: auto;
+        /* 修复：移动端提升z-index */
+        z-index: 99999;
     }
 
     .panelVisible {
         transform: translateY(0);
+        -webkit-transform: translateY(0);
     }
 
-    /*!* 精简分组标题和选项 *!*/
     .groupTitle {
         font-size: 0.7rem;
-        margin-bottom: 8px; /* 减少标题下间距 */
+        margin-bottom: 8px;
     }
 
     .dropdownItem {
-        padding: 4px 10px; /* 缩小选项按钮内边距 */
-        font-size: 0.8rem; /* 微调字体 */
+        padding: 4px 10px;
+        font-size: 0.8rem;
     }
 
-    /*!* 精简面板底部 *!*/
     .panelFooter {
-        padding: 8px 20px; /* 减少底部内边距 */
+        padding: 8px 20px;
     }
 
     .clearBtn {
         font-size: 0.7rem;
     }
 
-    /*!* 3. 精简筛选状态展示 *!*/
     .currentFilter {
-        padding: 12px 0; /* 减少上下内边距 */
+        padding: 12px 0;
         font-size: 0.85rem;
     }
 }
