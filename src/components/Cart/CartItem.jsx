@@ -1,10 +1,10 @@
 import QuantitySelector from '/src/components/UI/QuantitySelector';
 import {useEffect, useState} from 'react';
-import {plantImageApi} from "/src/services/api.jsx";
+import {plantImageApi} from '/src/services/api.jsx';
+import styles from '/src/components/Cart/CartItem.module.css';
 
 export default function CartItem({item, onUpdate, onRemove}) {
     const [imageUrl, setImageUrl] = useState('');
-
 
     const handleIncrease = () => {
         onUpdate(item.id, item.size, item.quantity + 1);
@@ -35,74 +35,97 @@ export default function CartItem({item, onUpdate, onRemove}) {
         setImageUrl(newUrl);
     };
 
-
     return (
-        <div
-            className="cart-item d-flex align-items-center py-1" style={{
-            lineHeight: 1.2,  // 收紧行高
-            maxHeight: '70px', // 限制最大高度
-            minHeight: '60px'  // 保证最小可点击区域
-        }}>
-            {/*图片*/}
-            <div className="col-2 pe-1">
-                <img
-                    src={imageUrl}
-                    alt={item.name}
-                    onError={handleImageError} // 过期时自动重试
-                    className="img-fluid rounded"
-                    style={{
-                        height: '65px',
-                        objectFit: 'cover',
-                        width: '85%' // 保证图片自适应列宽
-                    }}
-                />
+        <div className={styles.cartItem}>
+            {/* 桌面端布局 */}
+            <div className={styles.desktopLayout}>
+                {/* 图片 */}
+                <div className={styles.desktopImageContainer}>
+                    <img
+                        src={imageUrl}
+                        alt={item.name}
+                        onError={handleImageError}
+                        className={styles.itemImage}
+                    />
+                </div>
+
+                {/* 文字区 */}
+                <div className={styles.desktopTextArea}>
+                    <h6 className={styles.itemName}>{item.name}</h6>
+                    <p className={styles.latinName}>{item.latinName}</p>
+                    <p className={styles.sizeText}>规格: {item.size}</p>
+                </div>
+
+                {/* 单价列 */}
+                <div className={styles.priceColumn}>
+                    <span className={styles.priceText}>¥ {item.price}</span>
+                </div>
+
+                {/* 数量选择器列 */}
+                <div className={styles.quantityColumn}>
+                    <QuantitySelector
+                        quantity={item.quantity}
+                        onIncrease={handleIncrease}
+                        onDecrease={handleDecrease}
+                        size="sm"
+                    />
+                </div>
+
+                {/* 总价列 */}
+                <div className={styles.totalColumn}>
+                    <span className={styles.totalText}>¥ {(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+
+                {/* 删除按钮 */}
+                <div className={styles.deleteColumn}>
+                    <button
+                        className={styles.deleteButton}
+                        onClick={() => onRemove(item.id, item.size)}
+                    >
+                        <i className="bi bi-trash"></i>
+                    </button>
+                </div>
             </div>
 
-            {/* 文字区 */}
-            <div className="col-3 pe-1">
-                <h6 className="mb-0 fs-7" style={{fontSize: '0.85rem'}}>
-                    {item.name}
-                </h6>
-                <p className="text-muted small mb-0" style={{fontSize: '0.7rem'}}>
-                    {item.latinName}
-                </p>
-                <p className="mb-0" style={{fontSize: '0.75rem'}}>
-                    规格: {item.size}
-                </p>
-            </div>
+            {/* 移动端布局 */}
+            <div className={styles.mobileLayout}>
+                <div className="d-flex align-items-start">
+                    {/* 图片 */}
+                    <div className={styles.mobileImageContainer}>
+                        <img
+                            src={imageUrl}
+                            alt={item.name}
+                            onError={handleImageError}
+                            className={`${styles.itemImage} ${styles.mobileImage}`}
+                        />
+                    </div>
 
-            {/* 单价列 */}
-            <div className="col-2 pe-1" style={{fontSize: '0.85rem'}}>
-                ¥ {item.price}
-            </div>
-
-            {/* 数量选择器列 */}
-            <div className="col-2 pe-1">
-                <QuantitySelector
-                    quantity={item.quantity}
-                    onIncrease={handleIncrease}
-                    onDecrease={handleDecrease}
-                    size="sm"
-                />
-            </div>
-
-            {/* 总价列 */}
-            <div className="col-2 pe-1" style={{fontSize: '0.85rem'}}>
-                ¥ {(item.price * item.quantity).toFixed(2)}
-            </div>
-
-            {/* 删除按钮优化 */}
-            <div className="col-1">
-                <button
-                    className="btn btn-xs btn-outline-danger p-1"
-                    onClick={() => onRemove(item.id, item.size)}
-                    style={{
-                        padding: '2px 6px', // 精准控制按钮内边距
-                        fontSize: '0.75rem'
-                    }}
-                >
-                    <i className="bi bi-trash"></i>
-                </button>
+                    {/* 主要信息 */}
+                    <div className={styles.mobileInfoContainer}>
+                        <h6 className={styles.itemName}>{item.name}</h6>
+                        <p className={styles.latinName}>{item.latinName}</p>
+                        <p className={styles.sizeText}>规格: {item.size}</p>
+                        <div className={styles.mobilePriceQuantity}>
+                            <span className={styles.priceText}>¥ {item.price}</span>
+                            <QuantitySelector
+                                quantity={item.quantity}
+                                onIncrease={handleIncrease}
+                                onDecrease={handleDecrease}
+                                size="sm"
+                            />
+                        </div>
+                        <div className={styles.mobileSubtotalDelete}>
+                            <span
+                                className={styles.subtotalText}>小计: ¥ {(item.price * item.quantity).toFixed(2)}</span>
+                            <button
+                                className={styles.deleteButton}
+                                onClick={() => onRemove(item.id, item.size)}
+                            >
+                                <i className="bi bi-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

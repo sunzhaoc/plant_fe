@@ -1,0 +1,163 @@
+/* CartItem.module.css */
+/* 根容器样式 */
+.cartItem {
+    margin-bottom: 1rem;
+}
+
+/* 桌面端布局容器 */
+.desktopLayout {
+    display: none;
+    align-items: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* 响应式：大屏显示桌面布局 */
+@media (min-width: 768px) {
+    .desktopLayout {
+        display: flex;
+    }
+}
+
+/* 移动端布局容器 */
+.mobileLayout {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .mobileLayout {
+        display: none;
+    }
+}
+
+/* 图片容器（桌面端） */
+.desktopImageContainer {
+    flex: 0 0 16.666667%;
+    padding-right: 1rem;
+}
+
+/* 图片容器（移动端） */
+.mobileImageContainer {
+    margin-right: 1rem;
+}
+
+/* 商品图片样式（通用） */
+.itemImage {
+    height: 80px;
+    object-fit: cover;
+    width: 100%;
+    border-radius: 0.25rem;
+}
+
+/* 移动端图片特殊样式 */
+.mobileImage {
+    width: 80px;
+}
+
+/* 文字区域（桌面端） */
+.desktopTextArea {
+    flex: 0 0 33.333333%;
+    padding-right: 1rem;
+}
+
+/* 商品名称 */
+.itemName {
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+    font-size: 0.875rem;
+}
+
+/* 拉丁名 */
+.latinName {
+    color: #6c757d;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+/* 规格文本 */
+.sizeText {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+}
+
+/* 单价列（桌面端） */
+.priceColumn {
+    flex: 0 0 16.666667%;
+    padding-right: 1rem;
+    text-align: end;
+}
+
+/* 单价文本 */
+.priceText {
+    font-weight: 500;
+}
+
+/* 数量选择器列（桌面端） */
+.quantityColumn {
+    flex: 0 0 16.666667%;
+    padding-right: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+/* 总价列（桌面端） */
+.totalColumn {
+    flex: 0 0 8.333333%;
+    padding-right: 1rem;
+    text-align: end;
+}
+
+/* 总价文本 */
+.totalText {
+    font-weight: bold;
+}
+
+/* 删除列（桌面端） */
+.deleteColumn {
+    flex: 0 0 8.333333%;
+    text-align: end;
+}
+
+/* 移动端主要信息容器 */
+.mobileInfoContainer {
+    flex-grow: 1;
+}
+
+/* 移动端价格+数量容器 */
+.mobilePriceQuantity {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+/* 移动端小计+删除容器 */
+.mobileSubtotalDelete {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+/* 移动端小计文本 */
+.subtotalText {
+    font-weight: bold;
+}
+
+/* 删除按钮通用样式 */
+.deleteButton {
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background-color: #dc3545;
+    color: white;
+}
