@@ -9,8 +9,8 @@ const topLevelCategories = {
         'Myrmecophytic Rubiaceae 蚁栖茜草群': ['Squamellaria', 'Anthorrhiza', 'Hydnophytum', 'Myrmecodia', 'Myrmephytum'],
     },
     'Episodic Gesneriads & Ericads': {
-        'Epiphytic Gesneriads 附生苦苣苔群': ['Columnea', 'Aeschynanthus', 'Agalmyla', 'Drymonia', 'Glossoloma', 'Trichodrymonia'],
-        'Epiphytic Ericaceae 附生杜鹃群': ['Ceratostema', 'Disterigma', 'Macleania'],
+        'Epiphytic Gesneriads 附生苦苣苔群': ['Columnea', 'Aeschynanthus', 'Agalmyla', 'Drymonia', 'Glossoloma', 'Trichodrymonia', 'Codonanthopsis', 'Nautilocalyx', 'Pachycaulos', 'Pearcea'],
+        'Epiphytic Ericaceae 附生杜鹃群': ['Ceratostema', 'Disterigma', 'Macleania', 'Agapetes', 'Plutarchia', 'Semiramisia', 'Themistoclesia'],
     },
     'Epiphytic Ferns': {
         'Polypodiaceae & Myrmecophytic Ferns 水龙骨与蚁蕨群': ['Lecanopteris', 'Solanopteris', 'Microgramma', 'Serpocaulon', 'Lepisorus', 'Drynaria', 'Doodia'],
