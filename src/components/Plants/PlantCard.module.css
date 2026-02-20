@@ -32,8 +32,9 @@
     width: 100%;
     flex-shrink: 0;
     display: flex;
-    align-items: center;
+    align-items: stretch; /* 关键：交叉轴改为拉伸，子元素高度才能填满 */
     justify-content: center;
+    box-sizing: border-box; /* 可选：避免 padding/border 撑大容器 */
 }
 
 /* 卡片内容区 */
@@ -162,7 +163,7 @@
 /* 响应式适配 */
 @media (max-width: 768px) {
     .plantImgContainer {
-        height: 220px; /* 移动端仍保持竖向长方形 */
+        height: 220px;
     }
 
     .plantCardBody {
