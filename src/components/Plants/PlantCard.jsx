@@ -7,6 +7,9 @@ export default function PlantCard({plant}) {
     return (<>
         <div className="col-md-3 mb-5">
             <div className={styles.plantCardContainer}>
+                {plant.plantTag && (
+                    <div className={styles.tagBadge}>{plant.plantTag}</div>
+                )}
                 {isOutOfStock && (
                     <div className={styles.soldOutBadge}>SOLD OUT</div>
                 )}

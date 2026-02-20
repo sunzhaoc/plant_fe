@@ -30,8 +30,10 @@
     position: relative;
     height: 260px;
     width: 100%;
-    overflow: hidden;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 卡片内容区 */
@@ -100,6 +102,20 @@
     background: var(--dark-color);
     color: white;
     transform: none; /* 完全无位移，扁平 */
+}
+
+.tagBadge {
+    position: absolute;
+    top: 8px; /* 微调位置，适配容器层级 */
+    left: 8px;
+    background-color: green;
+    color: #ffffff;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 700;
+    z-index: 10;
+    pointer-events: none; /* 允许点击穿透 */
+    border-bottom-right-radius: 6px;
 }
 
 /* Sold Out 标签 - 相对于plantCardContainer */

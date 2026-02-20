@@ -32,6 +32,7 @@ export const PlantProvider = ({children}) => {
                 plantMainImgUrl: plant.main_img_url ? plant.main_img_url : '',
                 plantMinPrice: plant.min_price,
                 plantStock: plant.stock,
+                plantTag: plant.tag,
             }));
             setPlantList(transformedPlants);
             setError(null);
