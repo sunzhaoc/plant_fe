@@ -12,12 +12,6 @@ body {
     overflow-x: hidden; /* 防止面板滑出时出现横向滚动条 */
 }
 
-.plant-detail-img {
-    height: 400px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
 .thumbnail-img {
     height: 80px;
     width: 80px;
