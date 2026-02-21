@@ -13,11 +13,9 @@ body {
 }
 
 .plant-detail-img {
-    height: 450px;
+    height: 400px;
+    object-fit: cover;
     border-radius: 8px;
-    display: block;
-    margin: 0 auto;
-    object-position: center;
 }
 
 .thumbnail-img {

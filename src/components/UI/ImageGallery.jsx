@@ -43,7 +43,7 @@ export default function ImageGallery({imgUrls}) {
                 <img
                     src={selectedImage}
                     alt="Selected plant"
-                    className="plant-detail-img"
+                    className="plant-detail-img w-100"
                 />
             </div>
             <div className="d-flex gap-2">
