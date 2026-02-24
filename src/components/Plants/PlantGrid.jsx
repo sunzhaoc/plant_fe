@@ -1,9 +1,9 @@
 import PlantCard from '/src/components/Plants/PlantCard';
-import {useState, useMemo, useRef, useEffect} from 'react';
+import React, {useState, useMemo, useRef, useEffect, useCallback} from 'react';
 import {usePlants} from '/src/context/PlantContext.jsx';
 import styles from '/src/components/Plants/PlantGrid.module.css';
 
-// 植物分类体系
+/** 植物分类体系常量 */
 const topLevelCategories = {
     'Ant-Rubiaceae & Caudiciforms': {
         'Myrmecophytic Rubiaceae 蚁栖茜草群': ['Squamellaria', 'Anthorrhiza', 'Hydnophytum', 'Myrmecodia', 'Myrmephytum'],
@@ -24,32 +24,64 @@ const topLevelCategories = {
     }
 };
 
-// 提取植物属名（核心逻辑保留，精简空值判断）
-const getGenera = (plants = []) => {
-    const genera = new Set();
-    plants.forEach(plant => {
-        const genus = plant?.plantLatinName?.split(' ')[0];
-        if (genus) genera.add(genus);
-    });
-    return Array.from(genera);
+/**
+ * 工具函数：获取分类体系中第一个有效属名
+ * @returns {string|undefined} 第一个属名，无数据时返回undefined
+ */
+const getFirstGenus = () => {
+    for (const group of Object.values(topLevelCategories)) {
+        for (const generaArray of Object.values(group)) {
+            if (generaArray?.length > 0) return generaArray[0];
+        }
+    }
+    return undefined;
 };
 
-// 下拉选项组件（移除未使用的isReset属性）
-const DropdownItem = ({genus, onClick, active}) => (
+/**
+ * 工具函数：根据属名查找其所属的顶级分类
+ * @param {string} targetGenus - 目标属名
+ * @returns {string|undefined} 匹配的顶级分类名，未找到返回undefined
+ */
+const findTopCategoryForGenus = (targetGenus) => {
+    for (const [topCategory, groups] of Object.entries(topLevelCategories)) {
+        for (const [, genusList] of Object.entries(groups)) {
+            if (genusList.includes(targetGenus)) {
+                return topCategory; // 找到后立即返回，终止循环
+            }
+        }
+    }
+    return undefined;
+};
+
+/** 预先计算所有属名 */
+const allGenera = (() => {
+    const generaSet = new Set();
+    Object.values(topLevelCategories).forEach(group => {
+        Object.values(group || {}).forEach(generaList => {
+            generaList?.forEach(genus => {
+                if (genus) generaSet.add(genus);
+            });
+        });
+    });
+    return Array.from(generaSet);
+})();
+
+/** 下拉选项组件 */
+const DropdownItem = React.memo(({genus, onClick, active}) => (
     <button
         className={`${styles.dropdownItem} ${active ? styles.active : ''}`}
         onClick={() => onClick(genus)}
     >
         {genus}
     </button>
-);
+));
 
-// 下拉分组组件（精简逻辑，保留核心功能）
-const DropdownGroup = ({groupName, genera, selectedGenus, onGenusSelect, allGenera}) => {
-    // 仅保留有数据的属名
+/** 下拉分组组件 */
+const DropdownGroup = React.memo(({groupName, genera, selectedGenus, onGenusSelect}) => {
     const availableGenera = useMemo(() =>
             genera.filter(genus => allGenera.includes(genus)),
-        [genera, allGenera]);
+        [genera]
+    );
 
     if (availableGenera.length === 0) return null;
 
@@ -68,78 +100,63 @@ const DropdownGroup = ({groupName, genera, selectedGenus, onGenusSelect, allGene
             </div>
         </div>
     );
-};
+});
 
+// ------------------------------ 3. 主组件优化 ------------------------------
 export default function PlantGrid() {
-    const {plantList, loading, error} = usePlants();
-    // 1. 修改初始值为 null（标识未初始化）
-    const [selectedGenus, setSelectedGenus] = useState(null);
-    const [activeCategory, setActiveCategory] = useState(null);
+    const {plantCache, loading, error, fetchPlantsByGenus} = usePlants();
+    const [selectedGenus, setSelectedGenus] = useState(() => {
+        const defaultGenus = getFirstGenus();
+        return defaultGenus || null;
+    });
+
+    const [activeCategory, setActiveCategory] = useState(() => {
+        const defaultGenus = getFirstGenus();
+        return defaultGenus ? findTopCategoryForGenus(defaultGenus) : null;
+    });
+
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const dropdownTimeoutRef = useRef(null);
 
-    // 提取所有属名（增加空值保护）
-    const allGenera = useMemo(() => getGenera(plantList), [plantList]);
-
-    // 2. 新增 useEffect：数据加载完成后自动选中第一个属名
+    // 根据选中的属获取植物数据
     useEffect(() => {
-        // 加载中/有错误/已选中/无属名时不执行
-        if (loading || error || selectedGenus !== null || allGenera.length === 0) return;
-
-        // 默认选中第一个属名（也可以指定固定属名，比如 const defaultGenus = 'Hoya'）
-        const defaultGenus = allGenera[0];
-        setSelectedGenus(defaultGenus);
-
-        // 可选：自动定位到默认属名所在的顶级分类（优化用户体验）
-        // 遍历分类体系，找到包含默认属名的顶级分类
-        for (const [topCategory, groups] of Object.entries(topLevelCategories)) {
-            for (const [_, genera] of Object.entries(groups)) {
-                if (genera.includes(defaultGenus)) {
-                    setActiveCategory(topCategory);
-                    break;
-                }
-            }
+        if (selectedGenus) {
+            fetchPlantsByGenus(selectedGenus);
         }
-    }, [loading, error, allGenera, selectedGenus]);
+    }, [selectedGenus, fetchPlantsByGenus]);
 
-    // 筛选植物（增加空值保护，精简逻辑）
+    // 从缓存获取当前属的植物列表
     const filteredPlants = useMemo(() => {
-        if (!plantList) return [];
-        // 未初始化时返回空（避免短暂展示全部），初始化后按选中属名筛选
-        return selectedGenus !== null
-            ? plantList.filter(plant => plant?.plantLatinName?.startsWith(selectedGenus))
-            : [];
-    }, [selectedGenus, plantList]);
+        return plantCache[selectedGenus] || [];
+    }, [plantCache, selectedGenus]);
 
-    // 选择属名（精简逻辑）
-    const handleGenusSelect = (genus) => {
+    // 事件处理函数（选中了某个属名）
+    const handleGenusSelect = useCallback((genus) => {
         setSelectedGenus(genus);
         setDropdownVisible(false);
-    };
+    }, []);
 
-    // 鼠标进入分类（精简写法）
-    const handleMouseEnterCategory = (category) => {
+    const handleMouseEnterCategory = useCallback((category) => {
         clearTimeout(dropdownTimeoutRef.current);
         setActiveCategory(category);
         setDropdownVisible(true);
-    };
+    }, []);
 
-    // 鼠标离开（保留核心延迟逻辑）
-    const handleMouseLeave = () => {
+    const handleMouseLeave = useCallback(() => {
         dropdownTimeoutRef.current = setTimeout(() => {
             setDropdownVisible(false);
         }, 200);
-    };
+    }, []);
 
-    // 加载/错误状态（保留核心展示）
+    // 异常状态处理
     if (loading) return <div className={styles.loader}>Loading Botanical Wonders...</div>;
     if (error) return <div className={styles.errorMessage}>Error: {error}</div>;
 
     return (
         <div className={styles.gridWrapper}>
+            {/* 顶级分类导航栏 */}
             <nav className={styles.topLevelNav} onMouseLeave={handleMouseLeave}>
                 <div className={styles.navContainer}>
-                    {/* 顶级分类导航（精简循环逻辑） */}
                     {Object.keys(topLevelCategories).map(category => (
                         <div
                             key={category}
@@ -157,9 +174,8 @@ export default function PlantGrid() {
                 </div>
             </nav>
 
-            {/* 下拉面板（保留核心交互） */}
+            {/* 下拉面板 */}
             <nav className={styles.topLevelNav2} onMouseLeave={handleMouseLeave}>
-
                 <div
                     className={`${styles.unifiedDropdownPanel} ${dropdownVisible ? styles.panelVisible : ''}`}
                     onMouseEnter={() => clearTimeout(dropdownTimeoutRef.current)}
@@ -172,22 +188,13 @@ export default function PlantGrid() {
                                 genera={groupGenera}
                                 selectedGenus={selectedGenus}
                                 onGenusSelect={handleGenusSelect}
-                                allGenera={allGenera}
                             />
                         ))}
                     </div>
-                    {/*<div className={styles.panelFooter}>*/}
-                    {/*    <button*/}
-                    {/*        onClick={() => setSelectedGenus('')}*/}
-                    {/*        className={styles.clearBtn}*/}
-                    {/*    >*/}
-                    {/*        Reset Filter 清除筛选*/}
-                    {/*    </button>*/}
-                    {/*</div>*/}
                 </div>
             </nav>
 
-            {/* 当前筛选状态（保留核心展示） */}
+            {/* 当前筛选状态展示 */}
             <div className={styles.currentFilter}>
                 {selectedGenus ? (
                     <p>Showing: <strong>{selectedGenus}</strong> <span>({filteredPlants.length} items)</span></p>
@@ -196,7 +203,7 @@ export default function PlantGrid() {
                 )}
             </div>
 
-            {/* 植物卡片网格（保留核心渲染） */}
+            {/* 植物卡片网格 */}
             <div className="row">
                 {filteredPlants.map(plant => (
                     <PlantCard key={plant.plantId} plant={plant} />

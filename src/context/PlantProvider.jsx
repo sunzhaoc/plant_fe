@@ -1,30 +1,40 @@
-import {useState, useEffect} from 'react';
+import {useState, useCallback, useRef, useEffect} from 'react'; // 引入 useRef, useEffect
 import api from '/src/utils/api.jsx';
-import {PlantContext} from '/src/context/PlantContext.jsx'
-import LoadingSpinner from "/src/utils/LoadingSpinner.jsx";
+import {PlantContext} from '/src/context/PlantContext.jsx';
 import {sleep} from '/src/utils/time.jsx';
 
 export const PlantProvider = ({children}) => {
-    const [plantList, setPlantList] = useState([]);
+    const [plantCache, setPlantCache] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
+    const plantCacheRef = useRef(plantCache);
     useEffect(() => {
-        if (plantList.length === 0) {
-            fetchPlantList();
-        }
-    }, []);
+        plantCacheRef.current = plantCache;
+    }, [plantCache]);
 
-    // 获取商品列表数据
-    const fetchPlantList = async () => {
-        if (loading) return; // 防止重复请求
+    const fetchPlantsByGenus = useCallback(async (genus) => {
+        if (!genus) return;
+
+        // 使用 Ref 检查缓存，而不是 state，这样此函数就不需要依赖 plantCache 了
+        if (plantCacheRef.current[genus]) {
+            console.log(`Cache hit for: ${genus}`);
+            return;
+        }
+
         setLoading(true);
+        setError(null);
         await sleep(100);
+
         try {
-            const response = await api.get('/api/plants');
+            const response = await api.get('/api/plants', {
+                params: {genus: genus}
+            });
+
             if (!response.data.success) {
                 throw new Error(response.data.message || "获取植物数据失败");
             }
+
             const transformedPlants = response.data.data.map(plant => ({
                 plantId: plant.plant_id,
                 plantName: plant.name,
@@ -34,28 +44,24 @@ export const PlantProvider = ({children}) => {
                 plantStock: plant.stock,
                 plantTag: plant.tag,
             }));
-            setPlantList(transformedPlants);
-            setError(null);
+
+            setPlantCache(prevCache => ({
+                ...prevCache,
+                [genus]: transformedPlants
+            }));
         } catch (err) {
             setError(err.message || '网络异常，无法获取商品列表');
-            setPlantList([]);
             console.error("获取植物数据失败：", err);
         } finally {
             setLoading(false);
         }
-    };
-
-    if (loading) {
-        return <LoadingSpinner text="正在加载植物..." />;
-    }
-
+    }, []);
 
     return (
         <PlantContext.Provider
-            value={{plantList, loading, error, fetchPlantList}}
+            value={{plantCache, loading, error, fetchPlantsByGenus}}
         >
             {children}
         </PlantContext.Provider>
     );
 };
-
