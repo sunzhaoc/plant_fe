@@ -1,219 +1,168 @@
-/* 基础容器：柔和背景+立体质感+合理间距 */
-.cartSummary {
-    /* 替换单一纯色，用浅渐变/浅底色提升质感（兼容自定义变量） */
-    background-color: var(--accent-color, #f8f9fa);
-    /* 轻微渐变增加层次感（可选，无自定义变量也能生效） */
-    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
-    border-radius: 12px; /* 略大圆角更柔和 */
-    padding: 1.25rem 1.5rem; /* 上下内边距稍小，左右保持，更紧凑 */
-    border: 1px solid rgba(0, 0, 0, 0.05); /* 浅边框增加轮廓感 */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); /* 柔和阴影提升立体感 */
-    margin-top: 0.5rem; /* 与商品列表拉开一点间距 */
-}
-
-/* 总计区域：优化对齐和间距 */
-.cartSummaryTotal {
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04); /* 浅分割线区分总价和按钮 */
-}
-
-/* 总价文字：增加字号和间距，视觉更突出 */
-.cartSummaryPrice {
-    font-size: 1.5rem;
-    letter-spacing: 0.5px; /* 轻微字间距更易读 */
-}
-
-/* 按钮区域：优化间距和响应式 */
-.cartSummaryActions {
-    margin-top: 1rem;
-}
-
-/* 清空购物车按钮：优化hover效果，更协调 */
-.btnOutlineDanger {
-    border-color: #f1416c;
-    color: #f1416c;
-    border-radius: 8px; /* 按钮圆角与容器呼应 */
-    padding: 0.6rem 0; /* 垂直内边距更舒适 */
-    transition: all 0.2s ease; /* 过渡动画更丝滑 */
-}
-
-.btnOutlineDanger:hover {
-    background-color: #fef2f4;
-    border-color: #ef4444;
-    color: #ef4444;
-    transform: translateY(-1px); /* 轻微上浮，提升交互感 */
-}
-
-/* 立即付款按钮：强化视觉优先级 */
-.btnPrimary {
-    background-color: #2563eb; /* 更舒服的主色调（可替换为你的品牌色） */
-    border-color: #2563eb;
-    border-radius: 8px;
-    padding: 0.6rem 0;
-    font-weight: 600; /* 加粗文字更突出 */
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2); /* 轻微底色阴影 */
-}
-
-.btnPrimary:hover {
-    background-color: #1d4ed8;
-    border-color: #1d4ed8;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3); /* hover时阴影加深 */
-}
-
-
-/* 付款提示弹窗 - 遮罩层 */
+/* 弹窗基础样式（保留核心功能，优化尺寸适配） */
 .paymentModalOverlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* 确保弹窗在最上层 */
+    z-index: 9999;
+    animation: fadeIn 0.2s ease;
 }
 
-/* 弹窗内容容器 */
 .paymentModalContent {
     background-color: #fff;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 2rem;
-    width: 90%;
-    max-width: 300px;
+    width: 92%;
+    max-width: 680px;
     position: relative;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    animation: modalFadeIn 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    animation: modalSlideUp 0.3s ease;
 }
 
-/* 弹窗关闭按钮 */
 .modalCloseBtn {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    background: transparent;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: #666;
-    padding: 0.25rem;
-    transition: color 0.2s;
-}
-
-.modalCloseBtn:hover {
-    color: #000;
-}
-
-/* 弹窗头部 */
-.modalHeader {
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 1rem;
-}
-
-.modalHeader h4 {
-    color: #333;
-    font-weight: 600;
-}
-
-/* 弹窗主体 */
-.modalBody {
-    text-align: center;
-}
-
-.modalBody p {
-    line-height: 1.6;
-    color: #666;
-}
-
-/* 二维码容器 */
-.qrcodeContainer {
-    margin-top: 1.5rem;
-}
-
-/* 二维码图片样式 */
-.qrcodeImg {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
-    border: 1px solid #eee;
-    padding: 0.5rem;
-    border-radius: 8px;
-    margin: 0 auto;
-    display: block;
-}
-
-/* 收货地址卡片样式 */
-.addressCard {
-    background-color: #f9f9f9;
-}
-
-/* 地址编辑弹窗遮罩 */
-.addressModalOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1050;
-}
-
-/* 地址编辑弹窗内容 */
-.addressModalContent {
-    background-color: white;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 1.5rem;
-    position: relative;
-}
-
-/* 弹窗关闭按钮 */
-.modalCloseBtn {
     background: transparent;
     border: none;
     font-size: 1.25rem;
-    color: #666;
     cursor: pointer;
+    color: #999;
     padding: 0.25rem;
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    z-index: 10;
 }
 
 .modalCloseBtn:hover {
-    color: #000;
+    color: #333;
+    background-color: #f5f5f5;
 }
 
-/* 弹窗头部 */
 .modalHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
 }
 
-/* 弹窗主体 */
+.modalHeader h4 {
+    color: #222;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
 .modalBody {
-    padding: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* 弹窗淡入动画 */
-@keyframes modalFadeIn {
+/* 新增：应付金额容器 */
+.paymentAmount {
+    text-align: center;
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+/* 新增：金额数字样式（加大、加粗、品牌色） */
+.amountNumber {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #07c160; /* 微信绿，或者使用你的品牌色 #2563eb */
+    letter-spacing: 1px;
+}
+
+/* 顶部提示文案 */
+.modalTip {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    /* 修改 margin，上面小一点，下面大一点 */
+    margin: 0 0 1.75rem 0;
+    max-width: 480px;
+}
+
+/* 核心：二维码外层布局（桌面端横向，移动端纵向） */
+.qrcodeWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 2rem;
+    width: 100%;
+}
+
+/* 核心：统一的二维码卡片（两个卡片完全一致的规范，解决不协调核心问题） */
+.qrcodeCard {
+    flex: 1;
+    max-width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 1.25rem;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qrcodeCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 二维码图片容器（固定比例，确保两张图展示区域完全一致） */
+.qrcodeImgBox {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    margin-bottom: 1rem;
+}
+
+/* 二维码图片统一规范 */
+.qrcodeImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* 底部文字标签（完全统一的样式） */
+.qrcodeLabel {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.qrcodeLabel i {
+    font-size: 1.1rem;
+    color: #07c160; /* 微信品牌绿，统一视觉 */
+}
+
+/* 动画 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes modalSlideUp {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(10px);
     }
     to {
         opacity: 1;
@@ -221,28 +170,26 @@
     }
 }
 
-/* 小屏幕适配：按钮堆叠，避免挤压 */
+/* 响应式适配：移动端上下堆叠 */
 @media (max-width: 576px) {
-    .cartSummaryActions {
+    .paymentModalContent {
+        max-width: 360px;
+        padding: 1.5rem 1.25rem;
+    }
+
+    .qrcodeWrapper {
         flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
     }
 
-    .cartSummaryPrice {
-        font-size: 1.25rem;
+    .qrcodeCard {
+        max-width: 240px;
+        width: 100%;
     }
 
-    .cartSummary {
-        padding: 1rem 1.25rem;
+    .modalTip {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
     }
-
-    .btn-sm-hover {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-    }
-
-    .btn-lg-hover {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-    }
-
 }

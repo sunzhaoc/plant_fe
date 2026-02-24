@@ -25,11 +25,15 @@ export default function Cart() {
     const [paymentLoading, setPaymentLoading] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [weChatQrCodeUrl, setWeChatQrcodeUrl] = useState('');
+    const [WeChatQrcodeReceivePaymentUrl, setWeChatQrcodeReceivePaymentUrl] = useState('');
+
+    // 【新增】用于暂存订单金额，防止清空购物车后弹窗金额变为0
+    const [frozenOrderTotal, setFrozenOrderTotal] = useState(0);
 
     // 仅保存当前有效的地址引用，用于下单
     const [currentAddress, setCurrentAddress] = useState(null);
 
-    // 获取微信二维码
+    // 获取微信二维码 (代码保持不变，省略以节省篇幅)
     useEffect(() => {
         const getWeChatQrcodeUrl = async () => {
             try {
@@ -41,6 +45,18 @@ export default function Cart() {
         };
         getWeChatQrcodeUrl();
     }, []);
+
+    // useEffect(() => {
+    //     const getWeChatQrcodeReceivePaymentUrl = async () => {
+    //         try {
+    //             const WeChatQrcodeReceivePaymentUrl = await plantImageApi.getPlantImage('plant/website/antplant_store_qr.png?image_process=resize,w_500');
+    //             setWeChatQrcodeReceivePaymentUrl(WeChatQrcodeReceivePaymentUrl);
+    //         } catch (err) {
+    //             console.error('获取二维码失败：', err);
+    //         }
+    //     };
+    //     getWeChatQrcodeReceivePaymentUrl();
+    // }, []);
 
     useEffect(() => {
         const syncCartStock = async () => {
@@ -108,7 +124,13 @@ export default function Cart() {
             const response = await api.post('/api/order/create-payment', paymentData);
             if (response.data.success) {
                 toast.success('订单已提交！');
+
+                // 【修改】关键逻辑调整
+                // 1. 先保存当前金额到“冷冻”状态
+                setFrozenOrderTotal(totalPrice);
+                // 2. 再显示弹窗
                 setShowPaymentModal(true);
+                // 3. 最后清空购物车 (此时 React 会更新 cartItems，但弹窗里看的是 frozenOrderTotal)
                 clearCart();
             } else {
                 toast.error('订单提交失败：' + response.data.message);
@@ -122,21 +144,57 @@ export default function Cart() {
 
     return (
         <div>
-            {/* 付款成功/暂未上线弹窗 */}
+            {/* 付款成功 */}
             {showPaymentModal && (
                 <div className={styles.paymentModalOverlay}>
                     <div className={styles.paymentModalContent}>
                         <button className={styles.modalCloseBtn} onClick={() => setShowPaymentModal(false)}>
                             <i className="bi bi-x-lg"></i>
                         </button>
-                        <div className={styles.modalHeader}><h4 className="text-center mb-0">感谢您的购买</h4></div>
+                        <div className={styles.modalHeader}>
+                            <h4 className="text-center mb-0">感谢您的购买</h4>
+                        </div>
                         <div className={styles.modalBody}>
-                            <p className="text-center text-muted mb-4">请扫码添加老板微信付款～</p>
-                            <div className={styles.qrcodeContainer}>
-                                <img
-                                    src={weChatQrCodeUrl} alt="二维码" className={styles.qrcodeImg} width={200}
-                                    height={200}
-                                />
+                            <div className={styles.paymentAmount}>
+                                您需要支付
+                                {/* 【修改】这里使用 frozenOrderTotal 而不是 totalPrice */}
+                                <span className={styles.amountNumber}>¥ {frozenOrderTotal}</span>
+                            </div>
+
+
+                            <p className={styles.modalTip}>请添加老板微信付款核对订单信息</p>
+
+                            {/* 统一规范的二维码容器 */}
+                            <div className={styles.qrcodeWrapper}>
+                                {/* 收款码（左/上，核心操作项） */}
+                                {/*<div className={styles.qrcodeCard}>*/}
+                                {/*    <div className={styles.qrcodeImgBox}>*/}
+                                {/*        <img*/}
+                                {/*            src={WeChatQrcodeReceivePaymentUrl}*/}
+                                {/*            alt="微信收款码"*/}
+                                {/*            className={styles.qrcodeImg}*/}
+                                {/*        />*/}
+                                {/*    </div>*/}
+                                {/*    <p className={styles.qrcodeLabel}>*/}
+                                {/*        <i className="bi bi-wallet2"></i>*/}
+                                {/*        <span>扫码付款</span>*/}
+                                {/*    </p>*/}
+                                {/*</div>*/}
+
+                                {/* 老板微信码（右/下） */}
+                                <div className={styles.qrcodeCard}>
+                                    <div className={styles.qrcodeImgBox}>
+                                        <img
+                                            src={weChatQrCodeUrl}
+                                            alt="老板微信二维码"
+                                            className={styles.qrcodeImg}
+                                        />
+                                    </div>
+                                    <p className={styles.qrcodeLabel}>
+                                        <i className="bi bi-chat-dots"></i>
+                                        <span>添加老板微信</span>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
