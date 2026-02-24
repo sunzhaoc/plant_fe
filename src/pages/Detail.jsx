@@ -4,7 +4,7 @@ import api from "/src/utils/api.jsx";
 import {useEffect, useState} from "react";
 import {useAuth} from '/src/context/AuthContext';
 import {sleep} from '/src/utils/time.jsx';
-import LoadingSpinner from "../utils/LoadingSpinner.jsx";
+import LoadingSpinner from "/src/utils/LoadingSpinner.jsx";
 
 
 export default function Detail() {

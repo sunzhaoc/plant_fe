@@ -2,6 +2,7 @@ import PlantCard from '/src/components/Plants/PlantCard';
 import React, {useState, useMemo, useRef, useEffect, useCallback} from 'react';
 import {usePlants} from '/src/context/PlantContext.jsx';
 import styles from '/src/components/Plants/PlantGrid.module.css';
+import LoadingSpinner from "/src/utils/LoadingSpinner.jsx";
 
 /** 植物分类体系常量 */
 const topLevelCategories = {
@@ -149,7 +150,7 @@ export default function PlantGrid() {
     }, []);
 
     // 异常状态处理
-    if (loading) return <div className={styles.loader}>Loading Botanical Wonders...</div>;
+    if (loading) return <LoadingSpinner text="正在加载植物详情..." />;
     if (error) return <div className={styles.errorMessage}>Error: {error}</div>;
 
     return (
