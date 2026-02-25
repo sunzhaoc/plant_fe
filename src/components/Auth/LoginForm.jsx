@@ -21,6 +21,14 @@ export default function LoginForm({formData, onChange, onSubmit}) {
                     placeholder="请输入用户名/邮箱/手机号"
                     autoComplete="username"
                     className={styles.formInput}
+                    onInvalid={(e) => {
+                        if (e.target.validity.valueMissing) {
+                            e.target.setCustomValidity('请输入账号');
+                        } else {
+                            e.target.setCustomValidity('');
+                        }
+                    }}
+                    onInput={(e) => e.target.setCustomValidity("")}
                 />
             </div>
 
@@ -35,6 +43,8 @@ export default function LoginForm({formData, onChange, onSubmit}) {
                     placeholder="请输入密码"
                     autoComplete="current-password"
                     required
+                    minLength={6}
+                    maxLength={20}
                 />
             </div>
 
