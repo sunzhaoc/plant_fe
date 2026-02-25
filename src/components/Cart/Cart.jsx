@@ -254,7 +254,7 @@ export default function Cart() {
                                 className="btn btn-primary flex-grow-2"
                                 onClick={handlePayment}
                                 disabled={paymentLoading}>
-                                {paymentLoading ? '处理中...' : '立即付款'}
+                                {paymentLoading ? '处理中...' : '提交订单'}
                             </button>
                         </div>
                     </div>
