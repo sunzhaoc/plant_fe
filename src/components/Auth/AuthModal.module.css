@@ -1,13 +1,11 @@
-/* src/components/Auth/AuthModal.css */
+/* src/components/Auth/AuthModal.module.css */
+
+/* --- 容器样式 --- */
 .authOverlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     z-index: 2000;
     display: flex;
     align-items: center;
@@ -22,8 +20,10 @@
     width: 100%;
     max-width: 400px;
     overflow: hidden;
+    position: relative;
 }
 
+/* --- 头部样式 --- */
 .authHeader {
     display: flex;
     justify-content: space-between;
@@ -41,11 +41,13 @@
 .closeBtn {
     background: none;
     border: none;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     cursor: pointer;
     color: #666;
+    line-height: 1;
 }
 
+/* --- 表单通用样式 --- */
 .authForm {
     padding: 1.5rem;
 }
@@ -61,18 +63,56 @@
     font-size: 0.9rem;
 }
 
-.formGroup input {
+.formInput {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 1rem;
+    box-sizing: border-box; /* 防止 padding 撑破宽度 */
 }
 
+/* --- 密码输入框特定样式 --- */
+.passwordInputWrapper {
+    position: relative;
+}
+
+.passwordToggleBtn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: #666;
+}
+
+/* --- 验证码特定样式 --- */
+.codeInputGroup {
+    display: flex;
+    gap: 10px;
+}
+
+.sendCodeBtn {
+    padding: 0 15px;
+    white-space: nowrap;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+/* --- 按钮与切换 --- */
 .authBtn {
     width: 100%;
     padding: 0.8rem;
-    background-color: var(--primary-color);
+    background-color: var(--primary-color, #007bff); /* 给个默认值防止变量未定义 */
     color: white;
     border: none;
     border-radius: 4px;
@@ -83,7 +123,7 @@
 }
 
 .authBtn:hover {
-    background-color: var(--dark-color);
+    background-color: var(--dark-color, #0056b3);
 }
 
 .authSwitch {
@@ -94,7 +134,7 @@
 }
 
 .switchLink {
-    color: var(--primary-color);
+    color: var(--primary-color, #007bff);
     background: none;
     border: none;
     cursor: pointer;
@@ -103,7 +143,8 @@
 }
 
 .authError {
-    color: var(--secondary-color);
-    padding: 0 1.5rem;
+    color: var(--secondary-color, #dc3545);
+    padding: 0.5rem 1.5rem 0;
     font-size: 0.9rem;
+    text-align: center;
 }

@@ -1,4 +1,4 @@
-// Header.jsx
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useCart} from '/src/context/CartContext';
 import {useAuth} from '/src/context/AuthContext';
@@ -8,6 +8,8 @@ import logoImg from '/src/assets/images/logo_min.jpg';
 export default function Header() {
     const {totalItems} = useCart();
     const {user, setAuthModalOpen, logout} = useAuth();
+
+    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
     return (
         <header className={styles.header}>
@@ -41,11 +43,16 @@ export default function Header() {
                                     )}
                                 </div>
 
-                                <div className={styles.userMenu}>
+                                <div
+                                    className={styles.userMenu}
+                                    onMouseEnter={() => setIsUserMenuOpen(true)}
+                                    onMouseLeave={() => setIsUserMenuOpen(false)}
+                                >
                                     <button className={styles.iconBtn} title="用户菜单">
                                         <i className="bi bi-person-circle"></i>
                                     </button>
-                                    <div className={styles.userDropdown}>
+                                    <div
+                                        className={`${styles.userDropdown} ${isUserMenuOpen ? styles.userDropdownActive : ''}`}>
                                         <p className={styles.userText}>您好，{user.username}</p>
                                         <button className={styles.logoutBtn} onClick={logout}>
                                             退出
