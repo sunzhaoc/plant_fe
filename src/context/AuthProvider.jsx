@@ -12,7 +12,6 @@ export const AuthProvider = ({children}) => {
             try {
                 return JSON.parse(savedUser);
             } catch (e) {
-                console.error("解析本地用户信息失败", e);
                 localStorage.removeItem('user');
                 return null;
             }
@@ -21,10 +20,10 @@ export const AuthProvider = ({children}) => {
     });
     const [authModalOpen, setAuthModalOpen] = useState(false);
     const [isLoginMode, setIsLoginMode] = useState(true);
+    const [isForgotPasswordMode, setIsForgotPasswordMode] = useState(false);
 
     // 登录函数
     const login = async (account, password) => {
-        // account 可以是邮箱/手机/用户名
         try {
             const response = await api.post('/api/login', {account, password});
             const userData = response.data.user;
@@ -68,17 +67,45 @@ export const AuthProvider = ({children}) => {
         navigate('/'); // 退出后强制跳转到首页，防止停留在敏感页面
     };
 
-    return (<AuthContext.Provider
-        value={{
-            user,
-            authModalOpen,
-            setAuthModalOpen,
-            isLoginMode,
-            setIsLoginMode,
-            login,
-            register,
-            logout
-        }}>
-        {children}
-    </AuthContext.Provider>);
+    // 发送验证码
+    const sendVerificationCode = async (email) => {
+        try {
+            await api.post('/api/forgot-password/send-code', {email});
+            return {success: true, message: '验证码已发送，请查收邮箱'};
+        } catch (error) {
+            const errMsg = error.response?.data?.message || "发送失败，请稍后重试";
+            return {success: false, message: errMsg};
+        }
+    };
+
+    // 重置密码
+    const resetPassword = async (email, code, newPassword) => {
+        try {
+            await api.post('/api/forgot-password/reset', {email, code, newPassword});
+            return {success: true, message: '密码重置成功，请使用新密码登录'};
+        } catch (error) {
+            const errMsg = error.response?.data?.message || "重置失败，验证码可能已过期";
+            return {success: false, message: errMsg};
+        }
+    };
+
+    return (
+        <AuthContext.Provider
+            value={{
+                user,
+                authModalOpen,
+                setAuthModalOpen,
+                isLoginMode,
+                setIsLoginMode,
+                isForgotPasswordMode,
+                setIsForgotPasswordMode,
+                login,
+                register,
+                logout,
+                sendVerificationCode,
+                resetPassword
+            }}>
+            {children}
+        </AuthContext.Provider>
+    );
 };
