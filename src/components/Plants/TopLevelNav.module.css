@@ -1,0 +1,246 @@
+/* TopLevelNav.module.css */
+/* ==========================
+   基础变量定义 (仅导航栏相关)
+   ========================== */
+:root {
+    --accent: #2c5e4f;
+    --accent-light: #4a8c71;
+    --bg-soft: #f8f9fa;
+    --text-main: #2d3436;
+    --glass: rgba(255, 255, 255, 0.9);
+    --shadow-modern: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ==========================
+   导航栏核心样式
+   ========================== */
+.topLevelNav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.topLevelNav2 {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+}
+
+.navContainer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.navItem {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.navItem:hover {
+    background: var(--bg-soft);
+    color: var(--accent);
+}
+
+.navActive {
+    color: var(--accent);
+    background: #eef5f2;
+}
+
+.arrow {
+    width: 6px;
+    height: 6px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg);
+    margin-bottom: 3px;
+    transition: transform 0.3s;
+}
+
+.navActive .arrow {
+    transform: rotate(-135deg);
+    margin-bottom: -2px;
+}
+
+/* ==========================
+   下拉面板样式 (磨砂玻璃效果)
+   ========================== */
+.unifiedDropdownPanel {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 90%;
+    max-width: 1000px;
+    background: var(--glass);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    box-shadow: var(--shadow-modern);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.panelVisible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.panelContent {
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+}
+
+.panelFooter {
+    background: rgba(0, 0, 0, 0.02);
+    padding: 12px 30px;
+    text-align: right;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.clearBtn {
+    font-size: 0.75rem;
+    background: none;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* ==========================
+   下拉分组与选项样式
+   ========================== */
+.groupTitle {
+    font-size: 0.75rem;
+    color: #aaa;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+}
+
+.groupItems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dropdownItem {
+    padding: 6px 14px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.dropdownItem:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.dropdownItem.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+}
+
+/* ==========================
+   移动端适配 (768px以下)
+   ========================== */
+@media (max-width: 768px) {
+    /* 1. 优化导航栏：缩小尺寸、横向滚动避免换行 */
+    .topLevelNav {
+        padding: 8px 0;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .topLevelNav2 {
+        padding: 8px 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .navContainer {
+        justify-content: flex-start;
+        gap: 5px;
+        padding: 0 10px;
+        flex-wrap: nowrap;
+    }
+
+    .navItem {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    /* 隐藏导航栏滚动条 */
+    .topLevelNav::-webkit-scrollbar,
+    .topLevelNav2::-webkit-scrollbar {
+        display: none;
+    }
+
+    .topLevelNav,
+    .topLevelNav2 {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* 2. 优化下拉面板 */
+    .unifiedDropdownPanel {
+        width: 100%;
+        position: fixed;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        transform: translateY(100%);
+        border-radius: 20px 20px 0 0;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .panelVisible {
+        transform: translateY(0);
+    }
+
+    .groupTitle {
+        font-size: 0.7rem;
+        margin-bottom: 8px;
+    }
+
+    .dropdownItem {
+        padding: 4px 10px;
+        font-size: 0.8rem;
+    }
+
+    .panelFooter {
+        padding: 8px 20px;
+    }
+
+    .clearBtn {
+        font-size: 0.7rem;
+    }
+}
