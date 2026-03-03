@@ -1,4 +1,4 @@
-/* 容器设置 */
+/* 核心容器：控制整体布局与基础样式 */
 .plantDetailContainer {
     max-width: 1200px;
     margin: 0 auto;
@@ -7,19 +7,21 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* 顶部两栏布局 */
+/* 商品主区域：图片+购买信息的两栏响应式布局 */
 .plantMainSection {
     display: flex;
     flex-wrap: wrap;
-    gap: 4rem; /* 图片和信息之间的间距 */
+    gap: 4rem;
     margin-bottom: 5rem;
 }
 
+/* 图片画廊列：响应式最小宽度，适配小屏 */
 .plantGalleryCol {
     flex: 1;
     min-width: 300px;
 }
 
+/* 商品信息列：垂直居中布局，响应式最小宽度 */
 .plantInfoCol {
     flex: 1;
     min-width: 300px;
@@ -28,27 +30,29 @@
     justify-content: center;
 }
 
-/* 字体排印 */
+/* 商品标题：轻量化字体，优化间距 */
 .plantTitle {
-    font-size: 2.25rem;
-    font-weight: 300; /* 细字体显得更清冷 */
+    font-size: clamp(1.75rem, 4vw, 2.25rem); /* 响应式字号 */
+    font-weight: 300;
     letter-spacing: 1px;
     margin-bottom: 0.5rem;
     color: #1a1a1a;
 }
 
+/* 拉丁学名：衬线字体+斜体，突出学术属性 */
 .plantLatin {
-    font-family: "Times New Roman", serif; /* 拉丁名用衬线体，增加学术感 */
+    font-family: "Times New Roman", serif;
     font-style: italic;
     color: #888;
     font-size: 1.1rem;
     margin-bottom: 2rem;
 }
 
+/* 商品价格：底部边框视觉分割，宽度100% */
 .plantPrice {
     font-size: 1.5rem;
     font-weight: 500;
-    color: #2c3e50; /* 深灰蓝，不刺眼 */
+    color: #2c3e50;
     margin-bottom: 2.5rem;
     display: inline-block;
     border-bottom: 1px solid #eee;
@@ -56,6 +60,7 @@
     width: 100%;
 }
 
+/* 区域标签：统一规格/数量等标签样式 */
 .sectionLabel {
     font-size: 0.85rem;
     text-transform: uppercase;
@@ -65,53 +70,52 @@
     display: block;
 }
 
-/* 规格按钮 - 扁平化 */
+/* 规格按钮：基础样式 */
 .sizeBtn {
     border: 1px solid #e0e0e0;
     background: white;
     color: #555;
     padding: 10px 20px;
     margin-right: 10px;
-    margin-bottom: 10px; /* 增加垂直间距 */
+    margin-bottom: 10px;
     cursor: pointer;
     transition: all 0.2s;
-    border-radius: 0; /* 直角 */
+    border-radius: 0;
     font-size: 0.9rem;
 }
 
+/* 规格按钮hover：边框加深 */
 .sizeBtn:hover {
     border-color: #333;
     color: #333;
 }
 
+/* 规格按钮选中：黑底白字 */
 .sizeBtn.active {
-    background: #333; /* 选中变黑 */
+    background: #333;
     color: white;
     border-color: #333;
 }
 
-/* 核心：无货规格按钮置灰样式（强化版） */
+/* 规格按钮无货：置灰+禁用交互 */
 .sizeBtn.disabled {
-    background: #f5f5f5 !important; /* 浅灰背景 */
-    border-color: #d9d9d9 !important; /* 更浅的边框 */
-    color: #999 !important; /* 灰色文字 */
-    cursor: not-allowed !important; /* 禁用光标 */
-    opacity: 0.7; /* 降低透明度 */
-    pointer-events: none; /* 彻底禁用点击（防止穿透） */
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.7;
+    pointer-events: none;
 }
 
-.sizeBtn.disabled:hover {
-    border-color: #d9d9d9 !important; /* hover 不变化 */
-    color: #999 !important;
-}
-
-/* 购买按钮组 */
+/* 操作按钮组：flex布局+间距，响应式换行 */
 .actionButtons {
     margin-top: 3rem;
     display: flex;
     gap: 1.5rem;
+    flex-wrap: wrap;
 }
 
+/* 加入购物车按钮：基础样式 */
 .btnFlatPrimary {
     background: #1a1a1a;
     color: white;
@@ -122,26 +126,25 @@
     border-radius: 0;
     transition: opacity 0.2s;
     flex: 1;
+    min-width: 200px; /* 小屏最小宽度，避免按钮过窄 */
 }
 
+/* 加入购物车按钮hover：降低透明度 */
 .btnFlatPrimary:hover {
     opacity: 0.8;
     color: white;
 }
 
-/* 核心：禁用状态加入购物车按钮 */
+/* 按钮禁用状态：置灰+禁用交互 */
 .btnDisabled {
-    background: #e0e0e0 !important; /* 浅灰背景 */
-    border-color: #d0d0d0 !important; /* 灰色边框 */
-    color: #999 !important; /* 灰色文字 */
-    cursor: not-allowed !important;
+    background: #e0e0e0;
+    border-color: #d0d0d0;
+    color: #999;
+    cursor: not-allowed;
     opacity: 0.8;
 }
 
-.btnDisabled:hover {
-    opacity: 0.8 !important; /* hover 不变化 */
-}
-
+/* 查看购物车按钮：描边样式 */
 .btnFlatOutline {
     background: transparent;
     color: #1a1a1a;
@@ -153,27 +156,45 @@
     flex: 0 0 auto;
 }
 
+/* 查看购物车按钮hover：浅灰背景 */
 .btnFlatOutline:hover {
     background: #f5f5f5;
 }
 
-/* 底部商品介绍 */
+/* 商品介绍区域：顶部边框分割，响应式内边距，移除居中样式 */
 .plantDescriptionSection {
     border-top: 1px solid #eaeaea;
-    padding-top: 3rem;
-    max-width: 800px; /* 限制宽度以提高阅读体验 */
+    padding: 3rem 1rem 5rem; /* 横向内边距适配小屏，避免内容贴边 */
+    width: 100%; /* 占满容器宽度 */
 }
 
+/* 介绍标题：增强层级，响应式字号 */
 .descTitle {
-    font-size: 1.2rem;
-    font-weight: 400;
-    margin-bottom: 1.5rem;
-    color: #333;
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+    font-weight: 500;
+    margin-bottom: 2rem;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 1rem;
 }
 
+/* 介绍标题装饰：底部短横线，强化视觉层级 */
+.descTitle::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 2px;
+    background-color: #333;
+}
+
+/* 介绍文本：优化可读性，响应式行高/字号 */
 .descText {
-    color: #666;
-    font-size: 0.95rem; /* 字体调小 */
-    line-height: 1.8; /* 增加行高，显得透气 */
-    text-align: justify;
+    color: #555;
+    font-size: clamp(0.95rem, 2vw, 1rem);
+    line-height: 1.8; /* 适度降低行高，兼顾阅读性和紧凑度 */
+    letter-spacing: 0.5px;
+    text-align: left;
+    white-space: pre-line; /* 保留换行符，适配文本格式 */
 }

@@ -66,6 +66,23 @@ export default function PlantDetail({plant}) {
         }
     };
 
+    // 处理商品介绍文本（兼容不同格式的换行）
+    const getFormattedDescription = () => {
+        // 先判断plant是否存在，避免后续取值报错
+        if (!plant) return '';
+
+        // 提取基础名称和拉丁名，确保取值安全
+        const plantName = plant.plantName || '';
+        const plantLatinName = plant.plantLatinName || '';
+        const basicInfo = `${plantName}（${plantLatinName}）`;
+
+        // 有详情则拼接详情，无详情则仅返回基础信息
+        if (!plant?.plantDetail) return basicInfo;
+
+        // 拼接基础信息 + 详情，保留原生换行符
+        return `${basicInfo}\n\n${plant.plantDetail}`;
+    };
+
     return (
         <div className={styles.plantDetailContainer}>
             {/* 上半部分：图片与购买信息 */}
@@ -154,15 +171,11 @@ export default function PlantDetail({plant}) {
                 </div>
             </div>
 
-            {/* 下半部分：商品介绍 */}
+            {/* 下半部分：商品介绍 - 优化版 */}
             <div className={styles.plantDescriptionSection}>
                 <h4 className={styles.descTitle}>关于植物</h4>
                 <p className={styles.descText}>
-                    {plant.plantName}（{plant.plantLatinName}）。
-                    <br /><br />
-                    这是一种独特的蚁栖植物，与蚂蚁形成共生关系。其独特的形态结构不仅具有极高的观赏价值，
-                    更是自然界共生智慧的体现。适合室内散射光环境栽培，耐旱性较强，易于养护。
-                    无论是放置于极简风格的客厅，还是作为书桌上的点缀，它都能为空间带来一丝静谧的自然气息。
+                    {getFormattedDescription()}
                 </p>
             </div>
         </div>
