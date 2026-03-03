@@ -1,7 +1,40 @@
+/* ========================== 顶部功能通栏 ========================== */
+.topBar {
+    position: relative;
+    width: 100%;
+    padding: 8px 0;
+    background-color: #000000;
+}
+
+.topBarList {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
+}
+
+.topBarItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.4;
+    white-space: nowrap;
+}
+
+.topBarItem i {
+    font-size: 14px;
+    line-height: 1;
+}
+
+/* ========================== 核心导航头部 ========================== */
 .header {
     padding: 12px 0;
-    border-bottom: 1px solid #e1e4e8;
     background-color: #ffffff;
+    border-bottom: 1px solid #e1e4e8;
 }
 
 .nav {
@@ -18,13 +51,14 @@
     gap: 20px;
 }
 
+/* 品牌 Logo 样式 */
 .brand {
     display: flex;
     align-items: center;
     color: var(--primary-color);
+    font-size: 1.2rem;
     font-weight: bold;
     text-decoration: none;
-    font-size: 1.2rem;
 }
 
 .brandText {
@@ -32,22 +66,23 @@
 }
 
 .logoIcon {
-    height: 32px;
     width: auto;
+    height: 32px;
     border-radius: 4px;
 }
 
+/* 通用图标按钮 */
 .iconBtn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    font-size: 20px;
-    color: #24292e;
-    background-color: transparent;
     border: none;
+    border-radius: 50%;
+    background-color: transparent;
+    color: #24292e;
+    font-size: 20px;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -58,6 +93,7 @@
     color: var(--primary-color);
 }
 
+/* 购物车数量角标 */
 .badgeContainer {
     position: relative;
     display: inline-flex;
@@ -68,20 +104,18 @@
     top: -4px;
     right: -4px;
     padding: 0 6px;
-    font-size: 11px;
-    line-height: 16px;
-    border-radius: 8px;
     background-color: #d1242f;
     color: white;
+    font-size: 11px;
     font-weight: 600;
+    line-height: 16px;
+    border-radius: 8px;
 }
 
-/* ========================== 用户菜单下拉 (核心修复部分) ========================== */
+/* 用户下拉菜单 */
 .userMenu {
     position: relative;
-    /* 确保容器有足够的高度包含 padding-top */
     padding-top: 10px;
-    /* 负 margin 抵消 padding-top 对整体布局的影响 */
     margin-top: -10px;
 }
 
@@ -89,8 +123,8 @@
     position: absolute;
     top: calc(100% - 2px);
     right: 0;
-    padding: 12px;
     min-width: 160px;
+    padding: 12px;
     background-color: white;
     border: 1px solid #e1e4e8;
     border-radius: 8px;
@@ -102,34 +136,31 @@
     transition: all 0.2s ease;
 }
 
-/* 新增：激活状态类 */
+/* 下拉菜单激活态 */
 .userDropdownActive {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
-    display: block; /* 确保显示 */
 }
-
-/* 移除旧的 hover 写法，完全由 React 状态控制更稳妥 */
-/* .userMenu:hover .userDropdown { display: block; } <-- 删除这行 */
 
 .userText {
-    font-size: 14px;
-    color: #24292e;
-    font-weight: 500;
     margin: 0 0 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #24292e;
 }
 
+/* 登录/注册按钮 */
 .authBtn {
     display: flex;
     align-items: center;
     gap: 4px;
     padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
     border: 1px solid #2ea44f;
+    border-radius: 20px;
     background-color: #2ea44f;
     color: white;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -141,17 +172,18 @@
     border-color: #2a8f47;
 }
 
+/* 退出登录按钮 */
 .logoutBtn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 14px;
     border: 1px solid #d0d7de;
+    border-radius: 6px;
     background-color: transparent;
     color: #24292e;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.2s ease;
     text-decoration: none;
@@ -162,8 +194,30 @@
     border-color: #c9d1d9;
 }
 
-/* ========================== 通用手机样式 ========================== */
+/* ========================== 响应式适配（移动端 <768px） ========================== */
 @media (max-width: 767px) {
+    /* 顶部通栏：仅保留第一个优势项，居中展示 */
+    .topBar {
+        padding: 6px 0;
+    }
+
+    .topBarList {
+        justify-content: center;
+    }
+
+    .topBarItem {
+        font-size: 13px;
+    }
+
+    .topBarItem:not(:first-child) {
+        display: none;
+    }
+
+    .topBarItem i {
+        font-size: 16px;
+    }
+
+    /* 核心导航头部：缩小内边距、按钮尺寸 */
     .header {
         padding: 8px 0;
     }
@@ -188,11 +242,11 @@
     }
 
     .badge {
-        font-size: 10px;
-        line-height: 14px;
-        padding: 0 5px;
         top: -3px;
         right: -3px;
+        padding: 0 5px;
+        font-size: 10px;
+        line-height: 14px;
     }
 
     .authBtn {
@@ -200,6 +254,7 @@
         font-size: 13px;
     }
 
+    /* 用户下拉菜单：缩小尺寸和内边距 */
     .userDropdown {
         min-width: 140px;
         padding: 10px;
@@ -210,7 +265,7 @@
     }
 
     .logoutBtn {
-        font-size: 13px;
         padding: 5px 10px;
+        font-size: 13px;
     }
 }
