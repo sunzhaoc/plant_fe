@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {BrowserRouter, Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import {CartProvider} from '/src/context/CartProvider.jsx';
 import Header from '/src/components/Layout/Header.jsx';
@@ -14,6 +14,8 @@ import ProtectedRoute from '/src/components/Auth/ProtectedRoute.jsx';
 import {Toaster} from 'react-hot-toast';
 import {PlantProvider} from '/src/context/PlantProvider.jsx';
 import OrderPage from '/src/pages/OrderPage';
+import TopLevelNav from '/src/components/Plants/TopLevelNav.jsx';
+import {getFirstGenus} from '/src/components/Plants/plantCategories';
 
 function ScrollToTop() {
     const location = useLocation();
@@ -31,6 +33,11 @@ function ScrollToTop() {
 }
 
 function App() {
+    const [selectedGenus, setSelectedGenus] = useState(() => {
+        const defaultGenus = getFirstGenus();
+        return defaultGenus || null;
+    });
+
     return (
         <BrowserRouter>
             <Toaster position="top-center" reverseOrder={false} />
@@ -38,27 +45,44 @@ function App() {
                 <AuthProvider>
                     <CartProvider>
                         <ScrollToTop />
+                        {/* 头部组件 */}
                         <Header />
+
+                        {/* 全局导航栏 */}
+                        <TopLevelNav
+                            selectedGenus={selectedGenus}
+                            onGenusSelect={setSelectedGenus}
+                        />
+
+                        {/* 主内容区 */}
                         <main className="content">
                             <div className="container">
                                 <Routes>
-                                    {/* 将 index.html 强行重定向到根目录 */}
+                                    {/* 重定向 index.html 到根目录 */}
                                     <Route path="/index.html" element={<Navigate to="/" replace />} />
 
-                                    <Route path="/" element={<Home />} />
+                                    {/* 首页 */}
+                                    <Route
+                                        path="/" element={
+                                        <Home
+                                            selectedGenus={selectedGenus}
+                                            setSelectedGenus={setSelectedGenus}
+                                        />
+                                    } />
 
+                                    {/* 详情页 */}
                                     <Route
                                         path="/detail/:plantId"
                                         element={<ProtectedRoute> <Detail /> </ProtectedRoute>}
                                     />
-                                    
-                                    {/*购物车*/}
+
+                                    {/* 购物车 */}
                                     <Route
                                         path="/cart"
                                         element={<ProtectedRoute> <CartPage /> </ProtectedRoute>}
                                     />
 
-                                    {/*订单中心*/}
+                                    {/* 订单中心 */}
                                     <Route
                                         path="/orders"
                                         element={<ProtectedRoute> <OrderPage /> </ProtectedRoute>}
@@ -67,7 +91,6 @@ function App() {
                             </div>
                         </main>
                         <Footer />
-                        {/*<QuickCart />*/}
                         <AuthModal />
                     </CartProvider>
                 </AuthProvider>

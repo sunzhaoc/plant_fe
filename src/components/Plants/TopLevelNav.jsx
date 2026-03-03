@@ -1,7 +1,8 @@
 // TopLevelNav.jsx
-import React, {useMemo, useCallback, useRef} from 'react';
+import React, {useMemo, useCallback, useRef, useState} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
 import styles from '/src/components/Plants/TopLevelNav.module.css';
-import {topLevelCategories, allGenera} from '/src/components/Plants/plantCategories'; // 从共享文件导入
+import {topLevelCategories, allGenera, findTopCategoryForGenus} from '/src/components/Plants/plantCategories'; // 引入 findTopCategoryForGenus
 
 /** 下拉选项组件 */
 const DropdownItem = React.memo(({genus, onClick, active}) => (
@@ -42,29 +43,47 @@ const DropdownGroup = React.memo(({groupName, genera, selectedGenus, onGenusSele
 /** 顶级分类导航栏主组件 */
 const TopLevelNav = ({
                          selectedGenus,
-                         onGenusSelect,
-                         activeCategory,
-                         setActiveCategory,
-                         dropdownVisible,
-                         setDropdownVisible
+                         onGenusSelect
                      }) => {
-    const dropdownTimeoutRef = useRef(null);
+    // 状态内部化：自己管理下拉显示和激活分类
+    const [activeCategory, setActiveCategory] = useState(() => {
+        return selectedGenus ? findTopCategoryForGenus(selectedGenus) : null;
+    });
+    const [dropdownVisible, setDropdownVisible] = useState(false);
 
+    const dropdownTimeoutRef = useRef(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    // 鼠标移入顶级分类：只更新内部状态
     const handleMouseEnterCategory = useCallback((category) => {
         clearTimeout(dropdownTimeoutRef.current);
         setActiveCategory(category);
         setDropdownVisible(true);
-    }, [setActiveCategory, setDropdownVisible]);
+    }, []);
 
+    // 鼠标离开：延迟隐藏下拉
     const handleMouseLeave = useCallback(() => {
         dropdownTimeoutRef.current = setTimeout(() => {
             setDropdownVisible(false);
         }, 200);
-    }, [setDropdownVisible]);
+    }, []);
 
+    // 鼠标进入下拉面板：取消隐藏
     const handlePanelMouseEnter = useCallback(() => {
         clearTimeout(dropdownTimeoutRef.current);
     }, []);
+
+    // 点击子分类：更新全局状态 + 跳转首页
+    const handleGenusSelect = useCallback((genus) => {
+        onGenusSelect(genus); // 更新全局的 selectedGenus
+        setDropdownVisible(false);
+
+        // 如果当前在 Detail 页面，跳转到首页
+        if (location.pathname !== '/') {
+            navigate('/');
+        }
+    }, [onGenusSelect, navigate, location.pathname]);
 
     return (
         <>
@@ -101,7 +120,7 @@ const TopLevelNav = ({
                                 groupName={groupName}
                                 genera={groupGenera}
                                 selectedGenus={selectedGenus}
-                                onGenusSelect={onGenusSelect}
+                                onGenusSelect={handleGenusSelect}
                             />
                         ))}
                     </div>
@@ -111,4 +130,4 @@ const TopLevelNav = ({
     );
 };
 
-export default React.memo(TopLevelNav); // 仅导出组件
+export default React.memo(TopLevelNav);
