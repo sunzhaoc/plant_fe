@@ -1,11 +1,22 @@
-// PlantGrid.jsx
 import PlantCard from 'src/components/Plants/PlantCard';
-import React, {useMemo, useEffect} from 'react';
-import {usePlants} from 'src/context/PlantContext.jsx';
+import {useMemo, useEffect} from 'react';
+import {usePlants} from 'src/context/PlantContext.tsx';
 import styles from 'src/components/Plants/PlantGrid.module.css';
-import LoadingSpinner from "/src/utils/LoadingSpinner.jsx";
+import LoadingSpinner from "src/utils/LoadingSpinner.tsx";
 
-export default function PlantGrid({selectedGenus}) {
+interface Plant {
+    plantId: string | number;
+
+    [key: string]: any;
+}
+
+interface PlantGridProps {
+    selectedGenus: string | undefined;
+}
+
+type PlantCache = Record<string, Plant[]>;
+
+export default function PlantGrid({selectedGenus}: PlantGridProps) {
     const {plantCache, loading, error, fetchPlantsByGenus} = usePlants();
 
     // 根据选中的属获取植物数据
@@ -16,12 +27,15 @@ export default function PlantGrid({selectedGenus}) {
             fetchPlantsByGenus(selectedGenus);
         }, 100);
 
-        return () => clearTimeout(timer); // 清除定时器，避免重复请求
+        return () => clearTimeout(timer);
     }, [selectedGenus, fetchPlantsByGenus]);
 
     // 从缓存获取当前属的植物列表
     const filteredPlants = useMemo(() => {
-        return plantCache[selectedGenus] || [];
+        if (typeof selectedGenus !== 'string') {
+            return [];
+        }
+        return (plantCache as PlantCache)[selectedGenus] || [];
     }, [plantCache, selectedGenus]);
 
     // 异常状态处理
@@ -40,7 +54,7 @@ export default function PlantGrid({selectedGenus}) {
 
             {/* 植物卡片网格 */}
             <div className="row">
-                {filteredPlants?.map(plant => (
+                {filteredPlants?.map((plant: Plant) => (
                     <PlantCard key={plant.plantId} plant={plant} />
                 ))}
             </div>

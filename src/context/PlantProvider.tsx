@@ -1,22 +1,25 @@
-import {useState, useCallback, useRef, useEffect} from 'react'; // 引入 useRef, useEffect
-import api from 'src/utils/api.jsx';
-import {PlantContext} from 'src/context/PlantContext.jsx';
-import {sleep} from 'src/utils/time.jsx';
+import {useState, useCallback, useRef, useEffect, ReactNode} from 'react';
+import api from 'src/utils/api.tsx';
+import {PlantContext, PlantCache, Plant} from 'src/context/PlantContext.tsx';
+import {sleep} from 'src/utils/time.tsx';
 
-export const PlantProvider = ({children}) => {
-    const [plantCache, setPlantCache] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+interface PlantProviderProps {
+    children: ReactNode;
+}
 
-    const plantCacheRef = useRef(plantCache);
+export const PlantProvider = ({children}: PlantProviderProps) => {
+    const [plantCache, setPlantCache] = useState<PlantCache>({});
+    const [loading, setLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const plantCacheRef = useRef<PlantCache>(plantCache);
     useEffect(() => {
         plantCacheRef.current = plantCache;
     }, [plantCache]);
 
-    const fetchPlantsByGenus = useCallback(async (genus) => {
+    const fetchPlantsByGenus = useCallback(async (genus: string) => {
         if (!genus) return;
 
-        // 使用 Ref 检查缓存，而不是 state，这样此函数就不需要依赖 plantCache 了
         if (plantCacheRef.current[genus]) {
             console.log(`Cache hit for: ${genus}`);
             return;
@@ -35,7 +38,7 @@ export const PlantProvider = ({children}) => {
                 throw new Error(response.data.message || "获取植物数据失败");
             }
 
-            const transformedPlants = response.data.data.map(plant => ({
+            const transformedPlants: Plant[] = response.data.data.map((plant: any) => ({
                 plantId: plant.plant_id,
                 plantName: plant.name,
                 plantLatinName: plant.latin_name,
@@ -50,7 +53,11 @@ export const PlantProvider = ({children}) => {
                 [genus]: transformedPlants
             }));
         } catch (err) {
-            setError(err.message || '网络异常，无法获取商品列表');
+            let errorMessage = '网络异常，无法获取商品列表';
+            if (err instanceof Error) {
+                errorMessage = err.message || errorMessage;
+            }
+            setError(errorMessage);
             console.error("获取植物数据失败：", err);
         } finally {
             setLoading(false);

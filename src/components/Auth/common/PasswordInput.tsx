@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
+import type {InputHTMLAttributes} from 'react';
 import {Eye, EyeOff} from 'lucide-react';
 import styles from 'src/components/Auth/AuthModal.module.css';
 
-/**
- * 带显示/隐藏切换功能的密码输入框
- * @param {object} props - 标准 input 属性透传
- */
-export default function PasswordInput(props) {
+interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+}
+
+export default function PasswordInput(props: PasswordInputProps) {
     const [showPassword, setShowPassword] = useState(false);
 
     return (

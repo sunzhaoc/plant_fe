@@ -1,9 +1,10 @@
-import {StrictMode} from 'react'
 import {createRoot} from 'react-dom/client'
-import App from 'src/App.jsx'
+import App from 'src/App.tsx';
 
-createRoot(document.getElementById('root')).render(
-    // <StrictMode>
-        <App />
-    // </StrictMode>,
-)
+const rootElement = document.getElementById('root')
+
+if (rootElement) {
+    createRoot(rootElement).render(<App />)
+} else {
+    console.error('未找到id为root的DOM容器，请检查页面结构')
+}

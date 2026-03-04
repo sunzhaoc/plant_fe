@@ -1,10 +1,31 @@
 import {useParams, Navigate, useLocation} from 'react-router-dom';
 import PlantDetail from 'src/components/Plants/PlantDetail';
-import api from "/src/utils/api.jsx";
-import {useEffect, useState, useRef} from "react"; // 引入 useRef 用于优化依赖
+import api from "src/utils/api.tsx";
+import {useEffect, useState, useRef} from "react";
 import {useAuth} from 'src/context/AuthContext';
-import {sleep} from 'src/utils/time.jsx';
-import LoadingSpinner from "/src/utils/LoadingSpinner.jsx";
+import {sleep} from 'src/utils/time.tsx';
+import LoadingSpinner from "src/utils/LoadingSpinner.tsx";
+
+// 定义 API 返回的原始植物数据类型（蛇形命名）
+interface RawPlantData {
+    plant_name?: string;
+    plant_latin_name?: string;
+    plant_detail?: string;
+    images?: Array<{ url: string; alt?: string }>; // 可根据实际场景细化类型
+    skus?: Array<{ id: string; price: number; stock: number }>; // 可根据实际场景细化类型
+    [key: string]: any;
+}
+
+// 定义转换后的植物数据类型（驼峰命名）
+interface TransformedPlantData {
+    plantName?: string;
+    plantLatinName?: string;
+    plantDetail?: string;
+    plantImages?: Array<{ url: string; alt?: string }>;
+    plantSkus?: Array<{ id: string; price: number; stock: number }>;
+
+    [key: string]: any; // 兼容其他透传字段
+}
 
 /**
  * 植物详情页容器组件
@@ -12,27 +33,29 @@ import LoadingSpinner from "/src/utils/LoadingSpinner.jsx";
  */
 export default function Detail() {
     // --- 1. Hooks 初始化 ---
-    const {plantId} = useParams(); // 获取路由中的植物ID
+    const {plantId} = useParams<{ plantId: string }>(); // 获取路由中的植物ID
     const location = useLocation(); // 获取当前路由位置对象（用于获取 state）
 
     // 从路由 state 中获取可能存在的预览数据（作为缓存/补充，不做主要数据源）
     // 使用 useRef 保存上一次的 mainPlantInfo，避免在依赖数组中引起不必要的重渲染
-    const mainPlantInfoRef = useRef(location.state?.mainPlantInfo);
+    const mainPlantInfoRef = useRef<TransformedPlantData | undefined>(
+        location.state?.mainPlantInfo
+    );
 
     // --- 2. 状态管理 ---
-    const [plant, setPlant] = useState(null);       // 最终处理好的植物详情数据
-    const [loading, setLoading] = useState(true);   // 加载中状态
-    const [error, setError] = useState(null);       // 错误信息状态
+    const [plant, setPlant] = useState<TransformedPlantData | null>(null); // 最终处理好的植物详情数据
+    const [loading, setLoading] = useState<boolean>(true); // 加载中状态
+    const [error, setError] = useState<string | null>(null); // 错误信息状态
 
     const {logout, setAuthModalOpen} = useAuth(); // 认证相关逻辑
 
     // --- 3. 工具函数：数据格式转换 ---
     /**
      * 将 API 返回的蛇形命名数据转换为前端驼峰命名，并构建核心数据结构
-     * @param {object} rawData - API 原始返回数据
-     * @returns {object} 转换后的标准数据结构
+     * @param {RawPlantData | undefined} rawData - API 原始返回数据
+     * @returns {TransformedPlantData} 转换后的标准数据结构
      */
-    const transformPlantData = (rawData) => {
+    const transformPlantData = (rawData: RawPlantData | undefined): TransformedPlantData => {
         if (!rawData) return {};
 
         // 安全解构：为可能不存在的字段提供默认值
@@ -73,7 +96,7 @@ export default function Detail() {
                 const response = await api.get(`/api/plant-detail/${plantId}`);
                 const {success, message, data} = response?.data || {};
 
-                // 人为延迟（可选）：通常用于避免 Loading 闪烁，让用户有感知过渡
+                // 人为延迟（可选）：避免 Loading 闪烁
                 await sleep(300);
 
                 // 业务逻辑错误处理
@@ -82,7 +105,7 @@ export default function Detail() {
                 }
 
                 // 数据清洗与转换
-                const apiCoreData = transformPlantData(data);
+                const apiCoreData = transformPlantData(data as RawPlantData);
 
                 // 获取当前的缓存数据
                 const cachedData = mainPlantInfoRef.current;
@@ -101,14 +124,24 @@ export default function Detail() {
             } catch (err) {
                 console.error("Detail Page Error:", err);
 
-                // 401 权限处理：未登录或 Token 过期
-                if (err.response?.status === 401) {
+                // 处理 unknown 类型的错误对象
+                const baseErrorMessage = "网络异常，无法获取植物数据";
+                let errorMessage = baseErrorMessage;
+
+                // 类型守卫：判断是否为标准 Error 实例
+                if (err instanceof Error) {
+                    errorMessage = err.message || baseErrorMessage;
+                }
+
+                // 检查是否为 401 权限错误（兼容 axios 错误结构）
+                const axiosError = err as { response?: { status?: number } };
+                if (axiosError.response?.status === 401) {
                     logout();
                     setAuthModalOpen(true);
                     setError("登录已过期，请重新登录");
                 } else {
                     // 通用错误提示
-                    setError(err.message || "网络异常，无法获取植物数据");
+                    setError(errorMessage);
                 }
             } finally {
                 // 无论成功或失败，最终都关闭 loading

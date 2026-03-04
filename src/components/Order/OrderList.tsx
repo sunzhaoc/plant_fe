@@ -1,11 +1,35 @@
-import React, {useState, useEffect} from 'react';
+import {useState, useEffect} from 'react';
 import styles from 'src/components/Order/OrderList.module.css';
-import api from "/src/utils/api.jsx";
-import {plantImageApi} from "/src/services/api.jsx";
+import api from "src/utils/api.tsx";
+import {plantImageApi} from "src/services/api.tsx";
 import {useAuth} from 'src/context/AuthContext';
 
+// 订单状态类型定义
+type OrderStatus = 0 | 2 | 3 | 4 | 5;
+
+// 订单商品项类型定义
+interface OrderItem {
+    plant_name?: string;
+    plant_latin_name?: string;
+    sku_size?: string;
+    price: string | number;
+    quantity?: number;
+    main_img_url?: string;
+}
+
+// 订单数据类型定义
+interface Order {
+    order_sn: string;
+    order_status: OrderStatus;
+    create_time: string;
+    order_items: OrderItem[];
+    pay_amount: string | number;
+    total_amount: string | number;
+    main_img_url?: string;
+}
+
 // 订单状态映射
-const orderStatusMap = {
+const orderStatusMap: Record<OrderStatus, { text: string; className: string }> = {
     0: {text: '待付款', className: styles.statusPending},
     2: {text: '已付款', className: styles.statusPaid},
     3: {text: '已发货', className: styles.statusShipped},
@@ -14,17 +38,17 @@ const orderStatusMap = {
 };
 
 const OrderList = () => {
-    // 核心状态管理
-    const [loading, setLoading] = useState(true);
-    const [orders, setOrders] = useState([]);
-    const [imageUrls, setImageUrls] = useState({});
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
-    const [total, setTotal] = useState(0);
+    // 核心状态管理 补充完整类型定义
+    const [loading, setLoading] = useState<boolean>(true);
+    const [orders, setOrders] = useState<Order[]>([]);
+    const [imageUrls, setImageUrls] = useState<Record<string, string>>({});
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(10);
+    const [total, setTotal] = useState<number>(0);
     const {logout, setAuthModalOpen} = useAuth();
 
-    // 获取订单列表（分页版）
-    const fetchOrders = async (page = 1, size = 10) => {
+    // 获取订单列表（分页版）补充参数类型
+    const fetchOrders = async (page: number = 1, size: number = 10) => {
         setLoading(true);
         try {
             const response = await api.get(`/api/order/get-orders?page=${page}&pageSize=${size}`);
@@ -34,22 +58,22 @@ const OrderList = () => {
                 setTotal(0);
                 return;
             }
-
             const {list = [], total = 0} = response.data.data || {};
-            // 格式化订单数据并按创建时间倒序
+            // 格式化订单数据并按创建时间倒序 补充排序参数类型
             const sortedOrders = list
-                .map(order => ({
+                .map((order: Order) => ({
                     ...order,
                     order_items: Array.isArray(order.order_items) ? order.order_items : []
                 }))
-                .sort((a, b) => new Date(b.create_time)?.getTime() - new Date(a.create_time)?.getTime());
-
+                .sort((a: Order, b: Order) => new Date(b.create_time)?.getTime() - new Date(a.create_time)?.getTime());
             setOrders(sortedOrders);
             setTotal(total);
             setCurrentPage(page);
             setPageSize(size);
         } catch (error) {
-            if (error.response?.status === 401) {
+            // 修复error unknown类型问题
+            const axiosError = error as { response?: { status: number } };
+            if (axiosError.response?.status === 401) {
                 logout();
                 setAuthModalOpen(true);
             }
@@ -61,8 +85,8 @@ const OrderList = () => {
         }
     };
 
-    // 图片加载失败降级处理
-    const handleImageError = async (imgKey, originalUrl) => {
+    // 图片加载失败降级处理 补充参数类型
+    const handleImageError = async (imgKey: string, originalUrl: string) => {
         if (imageUrls[imgKey]) return;
         try {
             const newUrl = await plantImageApi.getPlantImage(`${originalUrl}?image_process=resize,h_80,w_80`);
@@ -73,14 +97,14 @@ const OrderList = () => {
         }
     };
 
-    // 格式化金额
-    const formatAmount = (amount) => {
+    // 格式化金额 补充参数类型
+    const formatAmount = (amount: string | number) => {
         const numAmount = Number(amount);
         return `¥${isNaN(numAmount) ? '0.00' : numAmount.toFixed(2)}`;
     };
 
-    // 格式化时间
-    const formatTime = (timeStr) => {
+    // 格式化时间 补充参数类型
+    const formatTime = (timeStr: string) => {
         if (!timeStr) return '未知时间';
         try {
             return new Date(timeStr).toLocaleString('zh-CN', {
@@ -149,33 +173,31 @@ const OrderList = () => {
         </div>
     );
 
-    // 订单列表渲染
+    // 订单列表渲染 补充循环项类型
     const renderOrderList = () => (
         <div className={styles.orderWrapper}>
             {orders.map((order) => (
                 <div key={order.order_sn} className={styles.orderCard}>
                     <div className={styles.orderHeader}>
                         <div className={styles.orderStatus}>
-                            <span
-                                className={`${styles.statusTag} ${orderStatusMap[order.order_status]?.className || styles.statusDefault}`}
-                            >
-                                {orderStatusMap[order.order_status]?.text || '未知状态'}
-                            </span>
+              <span
+                  className={`${styles.statusTag} ${orderStatusMap[order.order_status]?.className || styles.statusDefault}`}
+              >
+                {orderStatusMap[order.order_status]?.text || '未知状态'}
+              </span>
                         </div>
                         <div className={styles.orderBasic}>
                             <p className={styles.orderSn}>订单编号：{order.order_sn || '未知编号'}</p>
                             <p className={styles.orderTime}>{formatTime(order.create_time)}</p>
                         </div>
                     </div>
-
                     <div className={styles.productList}>
                         {order.order_items.length === 0 ? (
                             <div className={styles.emptyProduct}>暂无商品信息</div>
                         ) : (
-                            order.order_items.map((item, index) => {
+                            order.order_items.map((item: OrderItem, index: number) => {
                                 const imgKey = `${order.order_sn}-${index}`;
                                 const imgSrc = imageUrls[imgKey] || item.main_img_url || 'https://picsum.photos/seed/plant/200/200';
-
                                 return (
                                     <div key={imgKey} className={styles.productItem}>
                                         <img
@@ -183,7 +205,7 @@ const OrderList = () => {
                                             alt={item.plant_name || '商品图片'}
                                             className={styles.productImg}
                                             loading="lazy"
-                                            onError={() => handleImageError(imgKey, order.main_img_url || item.main_img_url)}
+                                            onError={() => handleImageError(imgKey, order.main_img_url || item.main_img_url || '')}
                                         />
                                         <div className={styles.productInfo}>
                                             <h4 className={styles.productName} title={item.plant_name || ''}>
@@ -203,7 +225,6 @@ const OrderList = () => {
                             })
                         )}
                     </div>
-
                     <div className={styles.orderAmount}>
                         <div className={styles.amountValue}>
                             <span className={styles.totalLabel}>实付金额：</span>
@@ -222,7 +243,6 @@ const OrderList = () => {
     const renderPagination = () => {
         if (total === 0) return null;
         const maxPage = Math.ceil(total / pageSize);
-
         return (
             <div className={styles.paginationWrapper}>
                 <button
@@ -233,8 +253,8 @@ const OrderList = () => {
                     上一页
                 </button>
                 <span className={styles.paginationInfo}>
-                    第 {currentPage} 页 / 共 {maxPage} 页（总 {total} 条）
-                </span>
+          第 {currentPage} 页 / 共 {maxPage} 页（总 {total} 条）
+        </span>
                 <button
                     className={`${styles.paginationBtn} ${currentPage === maxPage ? styles.disabled : ''}`}
                     onClick={handleNextPage}
@@ -252,7 +272,6 @@ const OrderList = () => {
                 <h1 className={styles.pageTitle}>我的订单</h1>
                 <p className={styles.pageSubtitle}>共 {total} 笔订单</p>
             </div>
-
             {loading ? renderSkeleton() : (
                 orders.length === 0 ? renderEmpty() : (
                     <>

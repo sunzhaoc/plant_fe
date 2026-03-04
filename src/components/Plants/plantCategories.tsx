@@ -1,4 +1,4 @@
-// plantCategories.js
+// plantCategories.tsx
 /** 植物分类体系常量 */
 export const topLevelCategories = {
     'Ant-Rubiaceae & Caudiciforms': {
@@ -24,7 +24,7 @@ export const topLevelCategories = {
  * 工具函数：获取分类体系中第一个有效属名
  * @returns {string|undefined} 第一个属名，无数据时返回undefined
  */
-export const getFirstGenus = () => {
+export const getFirstGenus = (): string | undefined => {
     for (const group of Object.values(topLevelCategories)) {
         for (const generaArray of Object.values(group)) {
             if (generaArray?.length > 0) return generaArray[0];
@@ -38,7 +38,7 @@ export const getFirstGenus = () => {
  * @param {string} targetGenus - 目标属名
  * @returns {string|undefined} 匹配的顶级分类名，未找到返回undefined
  */
-export const findTopCategoryForGenus = (targetGenus) => {
+export const findTopCategoryForGenus = (targetGenus: string): string | undefined => {
     for (const [topCategory, groups] of Object.entries(topLevelCategories)) {
         for (const [, genusList] of Object.entries(groups)) {
             if (genusList.includes(targetGenus)) {
@@ -50,8 +50,8 @@ export const findTopCategoryForGenus = (targetGenus) => {
 };
 
 /** 预先计算所有属名 */
-export const allGenera = (() => {
-    const generaSet = new Set();
+export const allGenera = ((): string[] => {
+    const generaSet = new Set<string>();
     Object.values(topLevelCategories).forEach(group => {
         Object.values(group || {}).forEach(generaList => {
             generaList?.forEach(genus => {

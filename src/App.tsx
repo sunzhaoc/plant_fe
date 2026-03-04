@@ -1,21 +1,22 @@
 import {useEffect, useState} from 'react';
 import {BrowserRouter, Navigate, Route, Routes, useLocation} from 'react-router-dom';
-import {CartProvider} from 'src/context/CartProvider.jsx';
-import Header from 'src/components/Layout/Header.jsx';
-import Footer from 'src/components/Layout/Footer.jsx';
-import Home from 'src/pages/Home.jsx';
-import Detail from 'src/pages/Detail.jsx';
-import CartPage from 'src/pages/CartPage.jsx';
+import {CartProvider} from 'src/context/CartProvider.tsx';
+import Header from 'src/components/Layout/Header.tsx';
+import Footer from 'src/components/Layout/Footer.tsx';
+import Home from 'src/pages/Home.tsx';
+import Detail from 'src/pages/Detail.tsx';
+import CartPage from 'src/pages/CartPage.tsx';
 import '/src/styles/main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {AuthProvider} from 'src/context/AuthProvider.jsx';
+import {AuthProvider} from 'src/context/AuthProvider.tsx';
 import AuthModal from 'src/components/Auth/AuthModal';
-import ProtectedRoute from 'src/components/Auth/ProtectedRoute.jsx';
+import ProtectedRoute from 'src/components/Auth/ProtectedRoute.tsx';
 import {Toaster} from 'react-hot-toast';
-import {PlantProvider} from 'src/context/PlantProvider.jsx';
+import {PlantProvider} from 'src/context/PlantProvider.tsx';
 import OrderPage from 'src/pages/OrderPage';
-import TopLevelNav from 'src/components/Plants/TopLevelNav.jsx';
+import TopLevelNav from 'src/components/Plants/TopLevelNav.tsx';
 import {getFirstGenus} from 'src/components/Plants/plantCategories';
+
 
 function ScrollToTop() {
     const location = useLocation();
@@ -33,9 +34,9 @@ function ScrollToTop() {
 }
 
 function App() {
-    const [selectedGenus, setSelectedGenus] = useState(() => {
+    const [selectedGenus, setSelectedGenus] = useState<string | undefined>(() => {
         const defaultGenus = getFirstGenus();
-        return defaultGenus || null;
+        return defaultGenus || undefined;
     });
 
     return (
@@ -61,14 +62,16 @@ function App() {
                                     {/* 重定向 index.html 到根目录 */}
                                     <Route path="/index.html" element={<Navigate to="/" replace />} />
 
-                                    {/* 首页 */}
+                                    {/* 首页 - 类型匹配修复 */}
                                     <Route
-                                        path="/" element={
-                                        <Home
-                                            selectedGenus={selectedGenus}
-                                            setSelectedGenus={setSelectedGenus}
-                                        />
-                                    } />
+                                        path="/"
+                                        element={
+                                            <Home
+                                                selectedGenus={selectedGenus}
+                                                setSelectedGenus={setSelectedGenus}
+                                            />
+                                        }
+                                    />
 
                                     {/* 详情页 */}
                                     <Route

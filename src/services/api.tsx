@@ -2,8 +2,8 @@ import api from 'src/utils/api';
 import md5 from 'md5';
 
 export const plantApi = {
-    imageCache: {},
-    getPlantImage: async (imgUrl) => {
+    imageCache: {} as Record<string, { url: string; expire: number }>,
+    getPlantImage: async (imgUrl: string) => {
         if (!imgUrl) return '/src/assets/images/default-plant.jpg';
         const cache = plantApi.imageCache[imgUrl];
         if (cache && Date.now() < cache.expire) {
@@ -39,7 +39,7 @@ export const plantImageApi = {
      * @param {string} url - 原始路径 (例如: /test.jpg 或 test.jpg?x-oss-process=...)
      * @param {number} [validSeconds=3600] - 有效期（秒），默认 1 小时
      */
-    getPlantImage: (url, validSeconds = 3600) => {
+    getPlantImage: (url: string, validSeconds: number = 3600) => {
         const CONFIG = {
             domain: 'image.antplant.store',
             authKey: 'sunzhaochuan',

@@ -1,10 +1,42 @@
 import QuantitySelector from 'src/components/UI/QuantitySelector';
 import {useEffect, useState} from 'react';
-import {plantImageApi} from 'src/services/api.jsx';
+import {plantImageApi} from 'src/services/api.tsx';
 import styles from 'src/components/Cart/CartItem.module.css';
 
-export default function CartItem({item, onUpdate, onRemove}) {
-    const [imageUrl, setImageUrl] = useState('');
+// 定义购物车商品项的类型
+interface CartItemType {
+    id: string | number;
+    name: string;
+    latinName: string;
+    size: string;
+    price: number;
+    quantity: number;
+    imgUrl: string;
+}
+
+// 定义 QuantitySelector 组件的 Props 类型
+interface QuantitySelectorProps {
+    quantity: number;
+    onIncrease: () => void;
+    onDecrease: () => void;
+    size?: 'sm' | 'md' | 'lg'; // 支持尺寸类型，可根据实际需求扩展
+}
+
+// 重新定义 QuantitySelector 组件（如果原组件未定义类型，需补充类型）
+// 注：如果项目中已有 QuantitySelector 独立文件，需将上述 Props 类型移至该文件
+const TypedQuantitySelector: React.FC<QuantitySelectorProps> = (props) => {
+    return <QuantitySelector {...props} />;
+};
+
+// 定义 CartItem 组件的 Props 类型
+interface CartItemProps {
+    item: CartItemType;
+    onUpdate: (id: string | number, size: string, quantity: number) => void;
+    onRemove: (id: string | number, size: string) => void;
+}
+
+const CartItem: React.FC<CartItemProps> = ({item, onUpdate, onRemove}) => {
+    const [imageUrl, setImageUrl] = useState<string>('');
 
     const handleIncrease = () => {
         onUpdate(item.id, item.size, item.quantity + 1);
@@ -63,7 +95,7 @@ export default function CartItem({item, onUpdate, onRemove}) {
 
                 {/* 数量选择器列 */}
                 <div className={styles.quantityColumn}>
-                    <QuantitySelector
+                    <TypedQuantitySelector
                         quantity={item.quantity}
                         onIncrease={handleIncrease}
                         onDecrease={handleDecrease}
@@ -107,7 +139,7 @@ export default function CartItem({item, onUpdate, onRemove}) {
                         <p className={styles.sizeText}>规格: {item.size}</p>
                         <div className={styles.mobilePriceQuantity}>
                             <span className={styles.priceText}>¥ {item.price}</span>
-                            <QuantitySelector
+                            <TypedQuantitySelector
                                 quantity={item.quantity}
                                 onIncrease={handleIncrease}
                                 onDecrease={handleDecrease}
@@ -116,7 +148,8 @@ export default function CartItem({item, onUpdate, onRemove}) {
                         </div>
                         <div className={styles.mobileSubtotalDelete}>
                             <span
-                                className={styles.subtotalText}>小计: ¥ {(item.price * item.quantity).toFixed(2)}</span>
+                                className={styles.subtotalText}>小计: ¥ {(item.price * item.quantity).toFixed(2)}
+                            </span>
                             <button
                                 className={styles.deleteButton}
                                 onClick={() => onRemove(item.id, item.size)}
@@ -129,4 +162,6 @@ export default function CartItem({item, onUpdate, onRemove}) {
             </div>
         </div>
     );
-}
+};
+
+export default CartItem;

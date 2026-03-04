@@ -1,32 +1,55 @@
 import {useState, useEffect} from 'react';
+import type {ChangeEvent} from 'react';
 import styles from 'src/components/Cart/Address.module.css';
 import toast from 'react-hot-toast';
 import {useAuth} from 'src/context/AuthContext';
 
 /**
+ * 地址信息类型定义
+ */
+interface AddressInfo {
+    receiver: string;       // 收货人姓名
+    phone: string;          // 联系电话
+    province: string;       // 省
+    city: string;           // 市
+    area: string;           // 区/县
+    detailAddress: string;  // 详细地址
+}
+
+/**
+ * 组件 Props 类型定义
+ */
+interface AddressProps {
+    onAddressChange?: (address: AddressInfo) => void;
+}
+
+/**
  * 默认地址对象初始值
  */
-const DEFAULT_ADDRESS = {
-    receiver: '',       // 收货人姓名
-    phone: '',          // 联系电话
-    province: '',       // 省
-    city: '',           // 市
-    area: '',           // 区/县
-    detailAddress: '',  // 详细地址
+const DEFAULT_ADDRESS: AddressInfo = {
+    receiver: '',
+    phone: '',
+    province: '',
+    city: '',
+    area: '',
+    detailAddress: '',
 };
 
 /**
  * 地址管理组件
  * @param {Function} onAddressChange - 当地址保存成功时触发的回调，通知父组件地址已更新
  */
-export default function Address({onAddressChange}) {
+export default function Address({onAddressChange}: AddressProps) {
     const {user} = useAuth();
 
-    const getInitialAddress = () => {
+    const getInitialAddress = (): AddressInfo => {
+        // 处理 user 可能为 null 的情况
+        if (!user) return DEFAULT_ADDRESS;
+
         const saved = localStorage.getItem(`userShippingAddress_${user.id}`);
         if (saved) {
             try {
-                return JSON.parse(saved);
+                return JSON.parse(saved) as AddressInfo;
             } catch (e) {
                 console.error("地址解析失败", e);
                 return DEFAULT_ADDRESS;
@@ -36,9 +59,9 @@ export default function Address({onAddressChange}) {
     };
 
     // address: 已经确认并保存的地址（展示态使用）
-    const [address, setAddress] = useState(getInitialAddress);
+    const [address, setAddress] = useState<AddressInfo>(getInitialAddress);
     // tempAddress: 在输入框中修改但尚未保存的中间值（编辑态使用）
-    const [tempAddress, setTempAddress] = useState(address);
+    const [tempAddress, setTempAddress] = useState<AddressInfo>(address);
     // 控制组件是“展示态”还是“编辑态”
     const [isEditing, setIsEditing] = useState(false);
 
@@ -52,16 +75,16 @@ export default function Address({onAddressChange}) {
      * 统一处理所有 Input 框的变更
      * 使用 computed property name 语法动态更新 tempAddress
      */
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
-        setTempAddress(prev => ({...prev, [name]: value}));
+        setTempAddress((prev: AddressInfo) => ({...prev, [name]: value}));
     };
 
     /**
      * 保存逻辑
      */
     const handleSave = () => {
-        const {receiver, phone, province, city, area, detailAddress} = tempAddress;
+        const {receiver, phone, province, detailAddress} = tempAddress;
 
         // 1. 非空校验
         if (!receiver || !phone || !detailAddress || !province) {
@@ -74,14 +97,18 @@ export default function Address({onAddressChange}) {
             return;
         }
 
-        // 3. 更新持久化状态
-        setAddress(tempAddress);
-        localStorage.setItem(`userShippingAddress_${user.id}`, JSON.stringify(tempAddress));
+        // 3. 更新持久化状态（处理 user 可能为 null 的情况）
+        if (user) {
+            setAddress(tempAddress);
+            localStorage.setItem(`userShippingAddress_${user.id}`, JSON.stringify(tempAddress));
 
-        // 4. 退出编辑态并通知父组件
-        setIsEditing(false);
-        onAddressChange?.(tempAddress);
-        toast.success('收货地址已更新');
+            // 4. 退出编辑态并通知父组件
+            setIsEditing(false);
+            onAddressChange?.(tempAddress);
+            toast.success('收货地址已更新');
+        } else {
+            toast.error('用户信息异常，请重新登录');
+        }
     };
 
     /**
@@ -97,6 +124,20 @@ export default function Address({onAddressChange}) {
         setTempAddress(address);
         setIsEditing(false);
     };
+
+    // 处理用户未登录的兜底展示
+    if (!user) {
+        return (
+            <div className={styles.addressContainer}>
+                <div className={styles.header}>
+                    <h3 className={styles.title}>收货人信息</h3>
+                </div>
+                <div className={styles.displayWrapper}>
+                    <span className={styles.content}>请先登录后填写收货地址</span>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.addressContainer}>

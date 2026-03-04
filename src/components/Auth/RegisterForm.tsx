@@ -1,11 +1,26 @@
 import React from 'react';
-import PasswordInput from 'src/components/Auth/common/PasswordInput.jsx';
+import PasswordInput from 'src/components/Auth/common/PasswordInput.tsx';
 import styles from 'src/components/Auth/AuthModal.module.css';
+
+// 定义表单数据类型
+interface RegisterFormData {
+    username: string;
+    phone: string;
+    email: string;
+    password: string;
+}
+
+// 定义组件属性类型
+interface RegisterFormProps {
+    formData: RegisterFormData;
+    onChange: React.ChangeEventHandler<HTMLInputElement>;
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
+}
 
 /**
  * 注册表单组件
  */
-export default function RegisterForm({formData, onChange, onSubmit}) {
+export default function RegisterForm({formData, onChange, onSubmit}: RegisterFormProps) {
     return (
         <form onSubmit={onSubmit} className={styles.authForm} key="register-form">
             {/* 用户名 */}
@@ -25,15 +40,19 @@ export default function RegisterForm({formData, onChange, onSubmit}) {
                     autoComplete="username"
                     pattern="[a-zA-Z_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5]{2,19}"
                     onInvalid={(e) => {
-                        if (e.target.validity.valueMissing) {
-                            e.target.setCustomValidity('请输入用户名');
-                        } else if (e.target.validity.patternMismatch || e.target.validity.tooShort) {
-                            e.target.setCustomValidity("3-20位，支持中文/字母/数字/下划线");
+                        const target = e.target as HTMLInputElement;
+                        if (target.validity.valueMissing) {
+                            target.setCustomValidity('请输入用户名');
+                        } else if (target.validity.patternMismatch || target.validity.tooShort) {
+                            target.setCustomValidity("3-20位，支持中文/字母/数字/下划线");
                         } else {
-                            e.target.setCustomValidity('');
+                            target.setCustomValidity('');
                         }
                     }}
-                    onInput={(e) => e.target.setCustomValidity("")}
+                    onInput={(e) => {
+                        const target = e.target as HTMLInputElement;
+                        target.setCustomValidity("");
+                    }}
                 />
             </div>
 
@@ -47,22 +66,26 @@ export default function RegisterForm({formData, onChange, onSubmit}) {
                     value={formData.phone}
                     onChange={onChange}
                     required
-                    maxLength="11"
-                    minLength="11"
+                    maxLength={11}
+                    minLength={11}
                     className={styles.formInput}
                     placeholder="请输入手机号"
                     pattern="^1[3-9]\d{9}$"
                     inputMode="numeric"
                     onInvalid={(e) => {
-                        if (e.target.validity.valueMissing) {
-                            e.target.setCustomValidity('请输入手机号');
-                        } else if (e.target.validity.patternMismatch) {
-                            e.target.setCustomValidity("请输入正确的11位手机号");
+                        const target = e.target as HTMLInputElement;
+                        if (target.validity.valueMissing) {
+                            target.setCustomValidity('请输入手机号');
+                        } else if (target.validity.patternMismatch) {
+                            target.setCustomValidity("请输入正确的11位手机号");
                         } else {
-                            e.target.setCustomValidity('');
+                            target.setCustomValidity('');
                         }
                     }}
-                    onInput={(e) => e.target.setCustomValidity("")}
+                    onInput={(e) => {
+                        const target = e.target as HTMLInputElement;
+                        target.setCustomValidity("");
+                    }}
                 />
             </div>
 
@@ -78,19 +101,23 @@ export default function RegisterForm({formData, onChange, onSubmit}) {
                     required
                     className={styles.formInput}
                     placeholder="请输入邮箱地址"
-                    maxLength="255"
+                    maxLength={255}
                     pattern="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$"
                     autoComplete="email"
                     onInvalid={(e) => {
-                        if (e.target.validity.valueMissing) {
-                            e.target.setCustomValidity('请输入邮箱地址');
-                        } else if (e.target.validity.patternMismatch) {
-                            e.target.setCustomValidity("请输入正确的邮箱格式");
+                        const target = e.target as HTMLInputElement;
+                        if (target.validity.valueMissing) {
+                            target.setCustomValidity('请输入邮箱地址');
+                        } else if (target.validity.patternMismatch) {
+                            target.setCustomValidity("请输入正确的邮箱格式");
                         } else {
-                            e.target.setCustomValidity('');
+                            target.setCustomValidity('');
                         }
                     }}
-                    onInput={(e) => e.target.setCustomValidity("")}
+                    onInput={(e) => {
+                        const target = e.target as HTMLInputElement;
+                        target.setCustomValidity("");
+                    }}
                 />
             </div>
 

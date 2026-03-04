@@ -7,6 +7,44 @@ import LoginForm from 'src/components/Auth/LoginForm';
 import RegisterForm from 'src/components/Auth/RegisterForm';
 import ForgotPasswordForm from 'src/components/Auth/ForgotPasswordForm';
 
+interface FormData {
+    account: string;
+    username: string;
+    email: string;
+    password: string;
+    phone: string;
+    verificationCode: string;
+    newPassword: string;
+}
+
+interface LoginFormProps {
+    formData: FormData;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    error: string;
+}
+
+interface RegisterFormProps {
+    formData: FormData;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    error: string;
+}
+
+interface ForgotPasswordFormProps {
+    formData: FormData;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    onSendCode: () => Promise<void>;
+    error: string;
+    countdown: number;
+}
+
+// 类型断言确保导入的组件匹配Props类型
+const TypedLoginForm = LoginForm as React.FC<LoginFormProps>;
+const TypedRegisterForm = RegisterForm as React.FC<RegisterFormProps>;
+const TypedForgotPasswordForm = ForgotPasswordForm as React.FC<ForgotPasswordFormProps>;
+
 export default function AuthModal() {
     const {
         authModalOpen, setAuthModalOpen,
@@ -16,11 +54,11 @@ export default function AuthModal() {
         sendVerificationCode, resetPassword
     } = useAuth();
 
-    const [countdown, setCountdown] = useState(0); // 验证码倒计时
-    const [error, setError] = useState('');
+    const [countdown, setCountdown] = useState<number>(0); // 验证码倒计时
+    const [error, setError] = useState<string>('');
 
     // 初始化表单数据
-    const initialFormData = {
+    const initialFormData: FormData = {
         account: '', // 用于登录（用户名/手机/邮箱）
         username: '', // 用于注册
         email: '', // 用于注册
@@ -29,7 +67,7 @@ export default function AuthModal() {
         verificationCode: '', // 忘记密码验证码
         newPassword: '' // 新密码
     };
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState<FormData>(initialFormData);
 
     // 背景滚动锁定
     useEffect(() => {
@@ -44,7 +82,7 @@ export default function AuthModal() {
             body.style.top = `-${scrollTop}px`;
 
             body.dataset.originalOverflow = originalOverflow;
-            body.dataset.scrollTop = scrollTop;
+            body.dataset.scrollTop = scrollTop.toString();
         } else {
             const originalOverflow = body.dataset.originalOverflow || '';
             const scrollTop = parseInt(body.dataset.scrollTop || '0', 10);
@@ -74,12 +112,17 @@ export default function AuthModal() {
 
     // 倒计时 Effect
     useEffect(() => {
-        let timer;
-        if (countdown > 0) timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-        return () => clearTimeout(timer);
+        let timer: NodeJS.Timeout | undefined; // 显式声明timer类型
+        if (countdown > 0) {
+            timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
     }, [countdown]);
 
-    const handleChange = (e) => {
+    // 处理输入变化 - 显式声明事件类型
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
 
@@ -117,8 +160,8 @@ export default function AuthModal() {
         }
     };
 
-    // 处理重置密码提交
-    const handleResetSubmit = async (e) => {
+    // 处理重置密码提交 - 显式声明事件类型
+    const handleResetSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
 
@@ -144,7 +187,8 @@ export default function AuthModal() {
         }
     };
 
-    const handleSubmit = async (e) => {
+    // 处理登录/注册提交 - 显式声明事件类型
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError('');
 
@@ -195,7 +239,7 @@ export default function AuthModal() {
     const renderContent = () => {
         if (isForgotPasswordMode) {
             return (
-                <ForgotPasswordForm
+                <TypedForgotPasswordForm
                     formData={formData}
                     onChange={handleChange}
                     onSubmit={handleResetSubmit}
@@ -207,14 +251,14 @@ export default function AuthModal() {
         }
 
         return isLoginMode ? (
-            <LoginForm
+            <TypedLoginForm
                 formData={formData}
                 onChange={handleChange}
                 onSubmit={handleSubmit}
                 error={error}
             />
         ) : (
-            <RegisterForm
+            <TypedRegisterForm
                 formData={formData}
                 onChange={handleChange}
                 onSubmit={handleSubmit}

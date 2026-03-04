@@ -1,23 +1,35 @@
 import {useState, useEffect, useMemo, useCallback, useRef} from 'react';
+import type {PropsWithChildren} from 'react';
 import {useAuth} from 'src/context/AuthContext';
-import {CartContext} from 'src/context/CartContext'
-import {debounce} from "/src/utils/debounce.jsx";
-import api from "/src/utils/api.jsx";
+import {CartContext, type CartItem} from 'src/context/CartContext';
+import {debounce} from "src/utils/debounce.tsx";
+import api from "src/utils/api.tsx";
 import toast from 'react-hot-toast';
 
-export const CartProvider = ({children}) => {
-    const {user} = useAuth();
-    const lastSyncedItemsRef = useRef([]); // 保存上一次购物车状态，用于对比增量
-    const [quickCartOpen, setQuickCartOpen] = useState(false); // TODO 快速购物车（后续开发）
+type DebouncedFunction<T extends (...args: any[]) => Promise<any>> = T & {
+    cancel?: () => void;
+};
 
-    // 初始化购物车（从本地存储读取）
-    const [cartItems, setCartItems] = useState(() => {
+type CartProviderProps = PropsWithChildren<{}>;
+
+type DeltaCartItems = {
+    addedOrUpdatedItems: Pick<CartItem, 'id' | 'size' | 'quantity'>[];
+    deletedItems: Pick<CartItem, 'id' | 'size'>[];
+};
+
+export const CartProvider = ({children}: CartProviderProps) => {
+    const {user} = useAuth();
+    const lastSyncedItemsRef = useRef<CartItem[]>([]);
+    const [quickCartOpen, setQuickCartOpen] = useState(false);
+
+    // 初始化购物车
+    const [cartItems, setCartItems] = useState<CartItem[]>(() => {
         if (user === null || !user?.id) {
-            return []
+            return [];
         }
         try {
-            const saved = localStorage.getItem(`cart_${user.id}`); // 获取该用户的购物车数据
-            return saved ? JSON.parse(saved) : [];
+            const saved = localStorage.getItem(`cart_${user.id}`);  // 获取该用户的购物车数据
+            return saved ? (JSON.parse(saved) as CartItem[]) : [];
         } catch (error) {
             console.error('读取本地购物车失败', error);
             localStorage.removeItem(`cart_${user.id}`); // 清除损坏的数据
@@ -27,13 +39,13 @@ export const CartProvider = ({children}) => {
 
     // 防抖后的购物车同步到服务端函数
     const syncCartToServer = useMemo(
-        () => debounce(async (deltaCartItems) => {
+        () => debounce(async (deltaCartItems: DeltaCartItems) => {
             try {
                 await api.post(`/api/cart/sync-redis`, deltaCartItems);
             } catch (error) {
                 console.error('购物车同步到服务端失败', error);
             }
-        }, 500),
+        }, 500) as DebouncedFunction<(deltaCartItems: DeltaCartItems) => Promise<void>>,
         []
     );
 
@@ -41,13 +53,12 @@ export const CartProvider = ({children}) => {
     useEffect(() => {
         if (user === null || !user?.id) return;
 
-        // 本地存储（带用户ID前缀）
         localStorage.setItem(`cart_${user.id}`, JSON.stringify(cartItems));
 
         const prevCartItems = lastSyncedItemsRef.current;
         const currentCartItems = cartItems;
 
-        // 新增/修改的项（当前有，或与上一次数量不一致）
+        // 新增/修改的项
         const addedOrUpdatedItems = currentCartItems.filter(currentItem => {
             const prevItem = prevCartItems.find(
                 p => p.id === currentItem.id && p.size === currentItem.size
@@ -59,7 +70,7 @@ export const CartProvider = ({children}) => {
             quantity: _.quantity
         }));
 
-        // 删除的项（上一次有，当前没有）
+        // 删除的项
         const deletedItems = prevCartItems.filter(prevItem => {
             return !currentCartItems.find(
                 c => c.id === prevItem.id && c.size === prevItem.size
@@ -71,26 +82,31 @@ export const CartProvider = ({children}) => {
 
         // 增量同步到服务端
         if (addedOrUpdatedItems.length > 0 || deletedItems.length > 0) {
-            syncCartToServer({
-                addedOrUpdatedItems, // 新增/修改项
-                deletedItems        // 删除项
-            });
+            syncCartToServer({addedOrUpdatedItems, deletedItems});
         }
 
-        // 更新上一次购物车状态（当前状态变为下一次的上一次状态）
         lastSyncedItemsRef.current = [...currentCartItems];
 
-        return () => syncCartToServer.cancel?.(); // 清理函数。如果组件卸载，取消挂起的防抖调用
+        // 3. 安全调用cancel方法（增加可选链，避免运行时错误
+        return () => syncCartToServer.cancel?.();
     }, [cartItems, user, user?.id, syncCartToServer]);
 
-    // 添加商品到购物车（增加库存校验）
-    const addToCart = useCallback((plant) => {
-        // 查找购物车中已有该规格商品的数量
+    // 添加商品到购物车
+    const addToCart = useCallback((plant: {
+        plantId: string | number;
+        plantSku: string;
+        plantQuantity: number;
+        stock: number;
+        plantName: string;
+        plantLatinName: string;
+        plantPrice: number;
+        plantMainImgUrl: string;
+        plantSkuId: string | number;
+    }) => {
         const existingItem = cartItems.find(
             _ => _.id === plant.plantId && _.size === plant.plantSku
         );
         const existingQuantity = existingItem ? existingItem.quantity : 0;
-
         // 校验库存
         if (existingQuantity + plant.plantQuantity > plant.stock) {
             toast.error(`库存不足！当前规格仅剩 ${plant.stock} 件，最多还可加入 ${plant.stock - existingQuantity} 件`);
@@ -118,21 +134,19 @@ export const CartProvider = ({children}) => {
                 skuId: plant.plantSkuId,
                 size: plant.plantSku,
                 quantity: plant.plantQuantity,
-                stock: plant.stock, // 保存库存信息用于后续校验
+                stock: plant.stock,
             }];
         });
         toast.success('已添加到购物车');
     }, [cartItems]);
 
     // 更新商品数量（适配增/减的情况，增加库存校验）
-    const updateQuantity = useCallback((id, size, newQuantity) => {
+    const updateQuantity = useCallback((id: string | number, size: string, newQuantity: number) => {
         // 查找该商品规格的库存
         const targetItem = cartItems.find(item => item.id === id && item.size === size);
         if (!targetItem) return;
-
         // 限制最大数量为库存
         const finalQuantity = Math.min(Math.max(1, newQuantity), targetItem.stock);
-
         // 如果用户输入的数量超过库存，给出提示
         if (newQuantity > targetItem.stock) {
             toast.error(`库存不足！该规格仅剩${targetItem.stock}件`);
@@ -146,7 +160,7 @@ export const CartProvider = ({children}) => {
     }, [cartItems]);
 
     // 删除购物车商品
-    const removeFromCart = useCallback((id, size) => {
+    const removeFromCart = useCallback((id: string | number, size: string) => {
         setCartItems(prev => prev.filter(item => !(item.id === id && item.size === size)));
     }, []);
 
@@ -168,7 +182,7 @@ export const CartProvider = ({children}) => {
                 addToCart,
                 updateQuantity,
                 removeFromCart,
-                clearCart: () => setCartItems([]), // 清空购物车
+                clearCart: () => setCartItems([]),
                 totalPrice,
                 totalItems,
                 quickCartOpen,
