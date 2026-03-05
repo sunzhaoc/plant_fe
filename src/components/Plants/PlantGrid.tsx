@@ -4,10 +4,15 @@ import {usePlants} from 'src/context/PlantContext.tsx';
 import styles from 'src/components/Plants/PlantGrid.module.css';
 import LoadingSpinner from "src/utils/LoadingSpinner.tsx";
 
+// 完善 Plant 接口，补充 PlantCard 所需的所有必选属性
 interface Plant {
     plantId: string | number;
-
-    [key: string]: any;
+    plantName: string; // 植物名称
+    plantLatinName: string; // 植物拉丁名
+    plantMinPrice: number; // 最低价格
+    plantStock: number; // 库存数量
+    plantMainImgUrl: string; // 主图URL
+    [key: string]: any; // 保留任意属性的灵活性
 }
 
 interface PlantGridProps {

@@ -14,6 +14,9 @@ export const topLevelCategories = {
     'Apocynaceae & Climbers': {
         "Asclepiads 萝藦亚科群": ["Hoya", "Dischidia", "Phyllanthera"]
     },
+    "Orchids": {
+        "Orchidaceae 兰科": ["Bulbophyllum", "Phalaenopsis"]
+    },
     "Miscellaneous": {
         "Rainforest Understory 雨林底层与附生综合群": ["Medinilla", "Pachycentria", "Poikilogyne", "Tococa", "Peperomia", "Begonia"],
         "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Tacca", "Tigridiopalma", "Lycianthes", "Cecropia", "Macaranga"]
