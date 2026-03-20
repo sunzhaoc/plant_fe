@@ -16,7 +16,7 @@ import {PlantProvider} from 'src/context/PlantProvider.tsx';
 import OrderPage from 'src/pages/OrderPage';
 import TopLevelNav from 'src/components/Plants/TopLevelNav.tsx';
 import {getFirstGenus} from 'src/components/Plants/plantCategories';
-
+import PlantManagement from "src/pages/ProductsPage.tsx";
 
 function ScrollToTop() {
     const location = useLocation();
@@ -89,6 +89,12 @@ function App() {
                                     <Route
                                         path="/orders"
                                         element={<ProtectedRoute> <OrderPage /> </ProtectedRoute>}
+                                    />
+
+                                    {/* 商品管理 */}
+                                    <Route
+                                        path="/admin/products"
+                                        element={<ProtectedRoute> <PlantManagement /> </ProtectedRoute>}
                                     />
                                 </Routes>
                             </div>

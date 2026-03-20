@@ -40,7 +40,7 @@ export default function Header() {
                             <span>Own Propagation Nursery</span>
                         </div>
                         <div className={styles.topBarItem}>
-                            <i className="bi bi-house-door"></i>
+                            <i className="bi-house-door"></i>
                             <span>Directly from the producer</span>
                         </div>
                     </div>
@@ -64,7 +64,7 @@ export default function Header() {
                         {/* 右侧功能按钮组：根据登录状态展示不同内容 */}
                         <div className={styles.navGroup}>
                             {user ? (
-                                // 已登录状态：我的订单 + 购物车（带数量角标） + 用户菜单
+                                // 已登录状态：我的订单 + 购物车（带数量角标） + 设置按钮 + 用户菜单
                                 <>
                                     <Link to="/orders" className={styles.iconBtn} title="我的订单">
                                         <i className="bi bi-list-check"></i>
@@ -79,6 +79,17 @@ export default function Header() {
                                             <span className={styles.badge}>{totalItems}</span>
                                         )}
                                     </div>
+
+                                    {/* 设置按钮 */}
+                                    {['御品汤包'].includes(user.username as string) && (
+                                        <Link
+                                            to="/admin/products"
+                                            className={styles.iconBtn}
+                                            title="设置"
+                                        >
+                                            <i className="bi bi-gear"></i>
+                                        </Link>
+                                    )}
 
                                     {/* 用户菜单：鼠标悬浮展开下拉框 */}
                                     <div
