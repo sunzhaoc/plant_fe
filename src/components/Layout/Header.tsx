@@ -81,7 +81,7 @@ export default function Header() {
                                     </div>
 
                                     {/* 设置按钮 */}
-                                    {['御品汤包'].includes(user.username as string) && (
+                                    {['御品汤包', 'Utsugi'].includes(user.username as string) && (
                                         <Link
                                             to="/admin/products"
                                             className={styles.iconBtn}
