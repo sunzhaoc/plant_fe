@@ -12,7 +12,7 @@ export const topLevelCategories = {
         'Polypodiaceae & Myrmecophytic Ferns 水龙骨与蚁蕨群': ['Lecanopteris', 'Solanopteris', 'Microgramma', 'Pneumatopteris', 'Serpocaulon', 'Lepisorus', 'Drynaria', 'Doodia'],
     },
     'Apocynaceae & Climbers': {
-        "Asclepiads 萝藦亚科群": ["Hoya", "Dischidia", "Phyllanthera"]
+        "Asclepiads 萝藦亚科群": ["Dischidia", "Hoya", "Phyllanthera"]
     },
     "Orchids": {
         "Orchidaceae 兰科": ["Bulbophyllum", "Dendrobium", "Phalaenopsis"]
