@@ -15,7 +15,7 @@ export const topLevelCategories = {
         "Asclepiads 萝藦亚科群": ["Hoya", "Dischidia", "Phyllanthera"]
     },
     "Orchids": {
-        "Orchidaceae 兰科": ["Bulbophyllum", "Phalaenopsis"]
+        "Orchidaceae 兰科": ["Bulbophyllum", "Dendrobium", "Phalaenopsis"]
     },
     "Miscellaneous": {
         "Rainforest Understory 雨林底层与附生综合群": ["Medinilla", "Pachycentria", "Poikilogyne", "Tococa", "Peperomia", "Begonia"],
