@@ -1,9 +1,10 @@
-/* 植物卡片容器 - 新增relative定位，作为标签的定位父级 */
-.plantCardContainer {
+/* 植物卡片容器 - 作为徽章定位父级 */
+.plantCardWrapper {
     padding: 0 8px;
-    position: relative; /* 关键修改：新增定位，用于SOLD OUT标签 */
+    position: relative;
 }
 
+/* 卡片主体 */
 .plantCard {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: none;
@@ -21,24 +22,23 @@
 
 .plantCard:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-    border-color: #d8d8d8;
     transform: translateY(-2px);
 }
 
 /* 图片容器 */
-.plantImgContainer {
+.plantImgWrapper {
     position: relative;
     height: 260px;
     width: 100%;
     flex-shrink: 0;
     display: flex;
-    align-items: stretch; /* 关键：交叉轴改为拉伸，子元素高度才能填满 */
+    align-items: stretch;
     justify-content: center;
-    box-sizing: border-box; /* 可选：避免 padding/border 撑大容器 */
+    box-sizing: border-box;
 }
 
 /* 卡片内容区 */
-.plantCardBody {
+.plantCardContent {
     padding: 12px 14px;
     flex: 1;
     display: flex;
@@ -51,7 +51,7 @@
 }
 
 /* 卡片标题 */
-.plantCardTitle {
+.plantCardName {
     font-size: 15px;
     font-weight: 600;
     color: #444;
@@ -59,12 +59,12 @@
     line-height: 1.3;
 }
 
-.plantNameLink:hover .plantCardTitle {
+.plantNameLink:hover .plantCardName {
     color: var(--primary-color);
 }
 
 /* 拉丁学名 */
-.latinNameText {
+.plantLatinName {
     font-size: 12px;
     font-style: italic;
     color: #666;
@@ -77,17 +77,18 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: auto; /* 自动靠底，强化竖向感 */
+    margin-top: auto;
 }
 
-.plantCardFooterPurchaseButton {
+/* 价格文本 */
+.plantPriceText {
     font-size: 16px;
     font-weight: 600;
     color: var(--primary-color);
 }
 
-/* 购买按钮 */
-.addToCartBtn {
+/* 操作按钮（购买/补货） */
+.plantActionBtn {
     background: #407d64;
     color: white;
     padding: 4px 10px;
@@ -99,15 +100,16 @@
     border: none;
 }
 
-.addToCartBtn:hover {
+.plantActionBtn:hover {
     background: var(--dark-color);
     color: white;
-    transform: none; /* 完全无位移，扁平 */
+    transform: none;
 }
 
-.tagBadge {
+/* 普通标签徽章 */
+.plantTagBadge {
     position: absolute;
-    top: 8px; /* 微调位置，适配容器层级 */
+    top: 8px;
     left: 8px;
     background-color: green;
     color: #ffffff;
@@ -115,14 +117,14 @@
     font-size: 14px;
     font-weight: 700;
     z-index: 10;
-    pointer-events: none; /* 允许点击穿透 */
+    pointer-events: none;
     border-bottom-right-radius: 6px;
 }
 
-/* Sold Out 标签 - 相对于plantCardContainer */
-.soldOutBadge {
+/* 售罄标签徽章 */
+.plantSoldOutBadge {
     position: absolute;
-    top: 8px; /* 微调位置，适配容器层级 */
+    top: 8px;
     left: 8px;
     background-color: #f44336;
     color: #ffffff;
@@ -130,30 +132,30 @@
     font-size: 14px;
     font-weight: 700;
     z-index: 10;
-    pointer-events: none; /* 允许点击穿透 */
+    pointer-events: none;
     border-bottom-right-radius: 6px;
 }
 
-/* 无库存时卡片置灰样式 */
-.outOfStock {
-    filter: grayscale(80%); /* 80%灰度 */
-    opacity: 0.9; /* 轻微降低不透明度，增强置灰感 */
+/* 无库存卡片样式 */
+.plantOutOfStock {
+    filter: grayscale(80%);
+    opacity: 0.9;
     pointer-events: none;
 }
 
-/* 恢复详情链接的点击功能（覆盖outOfStock的pointer-events） */
-.outOfStock a {
+/* 恢复详情链接点击（覆盖无库存样式） */
+.plantOutOfStock a {
     pointer-events: auto;
 }
 
-/* 禁用状态的按钮 */
-.disabledBtn {
+/* 禁用状态按钮 */
+.plantDisabledBtn {
     background-color: #cccccc;
     cursor: not-allowed;
     pointer-events: none;
 }
 
-/* 文本截断（通用样式迁移） */
+/* 文本截断通用样式 */
 .textTruncate {
     white-space: nowrap;
     overflow: hidden;
@@ -162,20 +164,19 @@
 
 /* 响应式适配 */
 @media (max-width: 768px) {
-    .plantImgContainer {
+    .plantImgWrapper {
         height: 220px;
     }
 
-    .plantCardBody {
+    .plantCardContent {
         padding: 10px 12px;
     }
 
-    .plantCardFooterPurchaseButton {
+    .plantPriceText {
         font-size: 15px;
     }
 
-    /* 移动端标签适配 */
-    .soldOutBadge {
+    .plantSoldOutBadge {
         padding: 5px 12px;
         font-size: 13px;
     }
