@@ -1,11 +1,14 @@
 import PlantGrid from 'src/components/Plants/PlantGrid';
+import {Dispatch, SetStateAction} from "react";
 
 interface HomeProps {
-    selectedGenus?: string;
-    setSelectedGenus: (selectedGenus: string) => void;
+    selectedGenus: string | undefined;
+    selectedIsNew: boolean;
+    setSelectedGenus: (genus: string) => void;
+    setSelectedIsNew: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Home({selectedGenus}: HomeProps) {
+export default function Home({selectedGenus, selectedIsNew}: HomeProps) {
     return (
         <div>
             <div className="mb-5 text-center">
@@ -16,6 +19,7 @@ export default function Home({selectedGenus}: HomeProps) {
 
             <PlantGrid
                 selectedGenus={selectedGenus}
+                selectedIsNew={selectedIsNew}
             />
         </div>
     );

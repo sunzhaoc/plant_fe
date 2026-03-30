@@ -81,7 +81,7 @@ const DropdownItem = React.memo(({ genus, onClick, active }: DropdownItemProps) 
 const DropdownGroup = React.memo(({ groupName, genera, selectedGenus, onGenusSelect }: DropdownGroupProps) => {
     // 记忆化处理：过滤出存在于全局allGenera中的有效属名，避免重复计算
     const availableGenera = useMemo(() =>
-            genera.filter(genus => allGenera.includes(genus)),
+        genera.filter(genus => allGenera.includes(genus)),
         [genera] // 仅当genera变化时重新计算
     );
 
@@ -116,11 +116,11 @@ const DropdownGroup = React.memo(({ groupName, genera, selectedGenus, onGenusSel
  * @returns ReactElement 顶级导航栏+下拉面板组合
  */
 const TopLevelNav = ({
-                         selectedGenus, // 当前选中的属名
-                         selectedIsNew, // 是否选中"新品"
-                         onGenusSelect, // 选择属名的回调
-                         onNewProductSelect // 选择新品的回调
-                     }: TopLevelNavProps) => {
+    selectedGenus, // 当前选中的属名
+    selectedIsNew, // 是否选中"新品"
+    onGenusSelect, // 选择属名的回调
+    onNewProductSelect // 选择新品的回调
+}: TopLevelNavProps) => {
     // 定时器Ref：用于控制下拉面板显隐的延迟（避免快速移开/移入时闪烁）
     const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     // 路由导航钩子：用于跳转至首页

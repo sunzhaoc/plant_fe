@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {BrowserRouter, Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import {CartProvider} from 'src/context/CartProvider.tsx';
 import Header from 'src/components/Layout/Header.tsx';
@@ -15,7 +15,6 @@ import {Toaster} from 'react-hot-toast';
 import {PlantProvider} from 'src/context/PlantProvider.tsx';
 import OrderPage from 'src/pages/OrderPage';
 import TopLevelNav from 'src/components/Plants/TopLevelNav.tsx';
-import {getFirstGenus} from 'src/components/Plants/plantCategories';
 import PlantManagement from "src/pages/ProductsPage.tsx";
 
 function ScrollToTop() {
@@ -34,10 +33,22 @@ function ScrollToTop() {
 }
 
 function App() {
-    const [selectedGenus, setSelectedGenus] = useState<string | undefined>(() => {
-        const defaultGenus = getFirstGenus();
-        return defaultGenus || undefined;
-    });
+    // 新品选中状态（默认显示新品）
+    const [selectedIsNew, setSelectedIsNew] = useState<boolean>(true);
+    // 植物属选中状态
+    const [selectedGenus, setSelectedGenus] = useState<string | undefined>(undefined);
+
+    // 处理植物属选择（同时取消新品选中）
+    const handleGenusSelect = useCallback((genus: string) => {
+        setSelectedGenus(genus);
+        setSelectedIsNew(false);
+    }, []);
+
+    // 处理新品选择（同时清空植物属选中）
+    const handleNewProductSelect = useCallback(() => {
+        setSelectedIsNew(true);
+        setSelectedGenus(undefined);
+    }, []);
 
     return (
         <BrowserRouter>
@@ -52,7 +63,9 @@ function App() {
                         {/* 全局导航栏 */}
                         <TopLevelNav
                             selectedGenus={selectedGenus}
-                            onGenusSelect={setSelectedGenus}
+                            selectedIsNew={selectedIsNew} // 传递新品选中状态
+                            onGenusSelect={handleGenusSelect} // 传递属选择回调
+                            onNewProductSelect={handleNewProductSelect} // 传递新品选择回调
                         />
 
                         {/* 主内容区 */}
@@ -62,13 +75,15 @@ function App() {
                                     {/* 重定向 index.html 到根目录 */}
                                     <Route path="/index.html" element={<Navigate to="/" replace />} />
 
-                                    {/* 首页 - 类型匹配修复 */}
+                                    {/* 首页 - 传递新品状态给 Home 页面 */}
                                     <Route
                                         path="/"
                                         element={
                                             <Home
                                                 selectedGenus={selectedGenus}
-                                                setSelectedGenus={setSelectedGenus}
+                                                selectedIsNew={selectedIsNew}
+                                                setSelectedGenus={handleGenusSelect}
+                                                setSelectedIsNew={setSelectedIsNew}
                                             />
                                         }
                                     />

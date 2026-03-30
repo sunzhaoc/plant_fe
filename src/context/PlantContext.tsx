@@ -6,7 +6,7 @@ export interface Plant {
     plantName: string;
     plantLatinName: string;
     plantMainImgUrl: string;
-    plantMinPrice: number | string;
+    plantMinPrice: number;
     plantStock: number;
     plantTag: string | string[];
 }
@@ -19,9 +19,12 @@ export type PlantCache = {
 // 定义Context值的类型
 export interface PlantContextValue {
     plantCache: PlantCache;
+    newPlantProductCache: Plant[];
     loading: boolean;
     error: string | null;
     fetchPlantsByGenus: (genus: string) => Promise<void>;
+    fetchNewProducts: () => Promise<void>;
+    fetchPlants: (params: { genus?: string; isNew?: boolean }) => Promise<void>;
 }
 
 // 创建Context并指定类型，默认值为undefined
