@@ -37,6 +37,20 @@ interface LotteryDrawRes {
 }
 
 const WINNING_PROBABILITY = 0.01;
+const LAST_TRIGGER_DATETIME_KEY = 'lastLotteryTriggerDateTime';
+
+/**
+ * 工具函数：获取当前「日期+小时」标识（格式：YYYYMMDD-HH）
+ * 作用：精准区分不同日期的同一小时（如20250523-14 和 20250524-14）
+ */
+const getCurrentDateHour = (): string => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // 月份补零（1月→01）
+    const day = String(now.getDate()).padStart(2, '0'); // 日期补零（5号→05）
+    const hour = String(now.getHours()).padStart(2, '0'); // 小时补零（9点→09）
+    return `日常抽奖活动260331-${year}${month}${day}${hour}`;
+};
 
 /**
  * 请求抽奖结果接口
@@ -107,11 +121,19 @@ export default function PrizeModal({onClose}: PrizeModalProps) {
         const initModalData = async () => {
             let lotteryResult: LotteryDrawRes | null = null;
 
-            // 注：原逻辑为100%调用后端接口，如需按概率触发可修改 randomRate <= 0.1（10%概率）
+            // 生成随机数
             const randomRate = Math.random();
-            if (randomRate <= WINNING_PROBABILITY) {
+            const currentDateHour = getCurrentDateHour(); // 获取当前的日期+小时 2026033123
+            const lastTriggerDateHour = localStorage.getItem(LAST_TRIGGER_DATETIME_KEY);
+
+            // 核心逻辑：触发接口的两个条件
+            // - 条件1：随机数命中1%概率
+            // - 条件2：本自然小时（日期+小时）内未触发过接口
+            const canTriggerApi = randomRate <= WINNING_PROBABILITY && lastTriggerDateHour !== currentDateHour;
+            if (canTriggerApi) {
                 // 调用抽奖接口获取结果
                 lotteryResult = await fetchLotteryResult();
+                localStorage.setItem(LAST_TRIGGER_DATETIME_KEY, currentDateHour);
             } else {
                 // 本地模拟未中奖结果（用于测试）
                 lotteryResult = {
@@ -120,7 +142,7 @@ export default function PrizeModal({onClose}: PrizeModalProps) {
                     message: '未中奖',
                     today_count: 0,
                     hour_count: 0,
-                    current_hour: '',
+                    current_hour: currentDateHour,
                     win_code: ''
                 };
             }
