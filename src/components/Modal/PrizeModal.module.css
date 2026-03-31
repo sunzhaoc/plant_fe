@@ -1,0 +1,243 @@
+/* src/components/Modal/PrizeModal.module.css */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6); /* 加深遮罩，聚焦弹窗 */
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(2px); /* 增加模糊，提升质感 */
+}
+
+.modal {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px; /* 更大圆角，更现代 */
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15); /* 更柔和的阴影 */
+    animation: fadeIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* 更丝滑的动画曲线 */
+    position: relative;
+    overflow: hidden; /* 防止内容溢出 */
+}
+
+/* 关闭按钮优化：交互反馈更强 */
+.modalCloseBtn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f8f9fa;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #666;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%; /* 圆形按钮 */
+    transition: all 0.2s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalCloseBtn:hover {
+    color: #ff4d4f; /* 醒目红色 */
+    background-color: #fef0f0;
+    transform: scale(1.1); /* 轻微放大 */
+}
+
+.title {
+    color: #e6a800; /* 金色更贴合中奖氛围 */
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    text-shadow: 0 1px 2px rgba(230, 168, 0, 0.2); /* 文字阴影增强质感 */
+}
+
+.tipText {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 2rem; /* 增加间距，区分模块 */
+    line-height: 1.5;
+}
+
+/* 中奖码区域优化：突出核心信息 */
+.winCodeSection {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: linear-gradient(120deg, #fff8e6, #fffdf5); /* 渐变背景 */
+    border-radius: 12px;
+    border: 1px solid #ffe8b4;
+}
+
+.winCodeLabel {
+    color: #8a6d3b;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.winCodeValue {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #e6a800;
+    letter-spacing: 2px; /* 字符间距，易读 */
+    padding: 0.8rem 1.2rem;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #ffe8b4;
+    margin-bottom: 0.8rem;
+    display: inline-block;
+    animation: pulse 2s infinite; /* 轻微闪烁动效 */
+}
+
+.winCodeTip {
+    color: #999;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.qrcodeSection {
+    margin: 1.5rem 0 0;
+    width: 100%;
+}
+
+.qrcodeTip {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.qrcodeWrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+/* 二维码卡片优化：hover动效 + 更精致的边框 */
+.qrcodeCard {
+    max-width: 280px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid #f5f5f5;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: transform 0.3s ease;
+}
+
+.qrcodeCard:hover {
+    transform: translateY(-4px); /* 轻微上浮 */
+}
+
+.qrcodeImgBox {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #fafafa;
+    margin-bottom: 1rem;
+    border: 1px solid #f0f0f0;
+}
+
+.qrcodeImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    /* 图片加载失败兜底 */
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ddd'%3E%3Cpath d='M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z'/%3E%3Cpath d='M14.85 13.41l-1.41-1.41-2.12 2.12-1.41-1.41-1.41 1.41 2.83 2.83 3.54-3.54zM12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'/%3E%3C/svg%3E") center/30% no-repeat;
+}
+
+.qrcodeLabel {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.qrcodeLabel i {
+    font-size: 1.1rem;
+    color: #07c160;
+}
+
+/* 加载状态骨架屏 */
+.skeleton {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeletonLoading 1.5s infinite;
+    border-radius: 16px;
+}
+
+/* 动画优化 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95); /* 增加缩放，更自然 */
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes skeletonLoading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 响应式优化：覆盖更多设备 */
+@media (max-width: 576px) {
+    .modal {
+        padding: 1.5rem 1.25rem;
+        max-width: 380px;
+    }
+    .qrcodeCard {
+        max-width: 240px;
+        padding: 1.25rem;
+    }
+    .winCodeValue {
+        font-size: 1.2rem;
+        padding: 0.6rem 1rem;
+    }
+    .title {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 375px) {
+    .modal {
+        padding: 1.25rem 1rem;
+        width: 95%;
+    }
+    .qrcodeCard {
+        max-width: 200px;
+    }
+}
