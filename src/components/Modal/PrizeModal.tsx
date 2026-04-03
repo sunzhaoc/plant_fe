@@ -133,7 +133,6 @@ export default function PrizeModal({onClose}: PrizeModalProps) {
             if (canTriggerApi) {
                 // 调用抽奖接口获取结果
                 lotteryResult = await fetchLotteryResult();
-                localStorage.setItem(LAST_TRIGGER_DATETIME_KEY, currentDateHour);
             } else {
                 // 本地模拟未中奖结果（用于测试）
                 lotteryResult = {
@@ -146,6 +145,7 @@ export default function PrizeModal({onClose}: PrizeModalProps) {
                     win_code: ''
                 };
             }
+            localStorage.setItem(LAST_TRIGGER_DATETIME_KEY, currentDateHour);
 
             // 接口请求失败时的兜底处理
             if (!lotteryResult) {
