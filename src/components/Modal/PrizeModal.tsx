@@ -36,7 +36,7 @@ interface LotteryDrawRes {
     win_code: string;
 }
 
-const WINNING_PROBABILITY = 0.9;
+const WINNING_PROBABILITY = 0.1;
 const LAST_TRIGGER_DATETIME_KEY = 'lastLotteryTriggerDateTime';
 
 /**
