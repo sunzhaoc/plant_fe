@@ -2,24 +2,24 @@
 /** 植物分类体系常量 */
 export const topLevelCategories = {
     'Ant-Rubiaceae & Caudiciforms': {
-        'Myrmecophytic Rubiaceae 蚁栖茜草群': ['Squamellaria', 'Anthorrhiza', 'Hydnophytum', 'Myrmecodia', 'Myrmephytum'],
+        'Myrmecophytic Rubiaceae 蚁栖茜草群': ['Anthorrhiza', 'Hydnophytum', 'Myrmecodia', 'Myrmephytum', 'Squamellaria'],
     },
     'Episodic Gesneriads & Ericads': {
-        'Epiphytic Gesneriads 附生苦苣苔群': ['Columnea', 'Aeschynanthus', 'Agalmyla', 'Drymonia', 'Glossoloma', 'Trichodrymonia', 'Codonanthopsis', 'Nautilocalyx', 'Pachycaulos', 'Pearcea'],
+        'Epiphytic Gesneriads 附生苦苣苔群': ['Aeschynanthus', 'Agalmyla', 'Codonanthopsis', 'Columnea', 'Drymonia', 'Glossoloma', 'Nautilocalyx', 'Pachycaulos', 'Pearcea', 'Trichodrymonia'],
         'Epiphytic Ericaceae 附生杜鹃群': ['Ceratostema', 'Disterigma', 'Macleania', 'Agapetes', 'Plutarchia', 'Semiramisia', 'Themistoclesia'],
     },
     'Epiphytic Ferns': {
         'Polypodiaceae & Ferns 水龙骨与蕨群': ['Blechnum', 'Doodia', 'Drynaria', 'Lecanopteris', 'Lepisorus', 'Microgramma', 'Pneumatopteris', 'Selaginella', 'Serpocaulon', 'Solanopteris', 'Tectaria'],
     },
     'Apocynaceae & Climbers': {
-        "Asclepiads 萝藦亚科群": ["Hoya", "Dischidia", "Phyllanthera"]
+        "Asclepiads 萝藦亚科群": ["Dischidia", "Hoya", "Phyllanthera"]
     },
     "Orchids": {
         "Orchidaceae 兰科": ["Bulbophyllum", "Dendrobium", "Phalaenopsis"]
     },
     "Miscellaneous": {
-        "Rainforest Understory 雨林底层与附生综合群": ["Medinilla", "Pachycentria", "Poikilogyne", "Tococa", "Peperomia", "Begonia"],
-        "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Tacca", "Lycianthes", "Cecropia", "Macaranga"]
+        "Rainforest Understory 雨林底层与附生综合群": ["Begonia", "Medinilla", "Pachycentria", "Peperomia", "Poikilogyne", "Tococa"],
+        "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Cecropia", "Lycianthes", "Macaranga", "Tacca"]
     }
 };
 
