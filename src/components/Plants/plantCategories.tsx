@@ -9,7 +9,7 @@ export const topLevelCategories = {
         'Epiphytic Ericaceae 附生杜鹃群': ['Ceratostema', 'Disterigma', 'Macleania', 'Agapetes', 'Plutarchia', 'Semiramisia', 'Themistoclesia'],
     },
     'Epiphytic Ferns': {
-        'Polypodiaceae & Myrmecophytic Ferns 水龙骨与蚁蕨群': ['Blechnum', 'Lecanopteris', 'Solanopteris', 'Microgramma', 'Pneumatopteris', 'Serpocaulon', 'Lepisorus', 'Drynaria', 'Doodia'],
+        'Polypodiaceae & Ferns 水龙骨与蕨群': ['Blechnum', 'Doodia', 'Drynaria', 'Lecanopteris', 'Lepisorus', 'Microgramma', 'Pneumatopteris', 'Selaginella', 'Serpocaulon', 'Solanopteris', 'Tectaria'],
     },
     'Apocynaceae & Climbers': {
         "Asclepiads 萝藦亚科群": ["Hoya", "Dischidia", "Phyllanthera"]
@@ -19,7 +19,7 @@ export const topLevelCategories = {
     },
     "Miscellaneous": {
         "Rainforest Understory 雨林底层与附生综合群": ["Medinilla", "Pachycentria", "Poikilogyne", "Tococa", "Peperomia", "Begonia"],
-        "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Tacca", "Tigridiopalma", "Lycianthes", "Cecropia", "Macaranga"]
+        "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Tacca", "Lycianthes", "Cecropia", "Macaranga"]
     }
 };
 
