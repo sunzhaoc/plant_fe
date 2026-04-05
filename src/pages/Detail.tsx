@@ -5,6 +5,7 @@ import {useEffect, useState, useRef} from "react";
 import {useAuth} from 'src/context/AuthContext';
 import {sleep} from 'src/utils/time.tsx';
 import LoadingSpinner from "src/utils/LoadingSpinner.tsx";
+import {getDeviceInfo} from "src/utils/deviceInfo.tsx";
 
 // 定义 API 返回的原始植物数据类型（蛇形命名）
 interface RawPlantData {
@@ -92,8 +93,15 @@ export default function Detail() {
                 setLoading(true);
                 setError(null); // 重置错误状态
 
+                const deviceInfo = getDeviceInfo(); // 获取设备信息
+                console.log(encodeURIComponent(JSON.stringify(deviceInfo) || '{}'));
+
                 // 发起 API 请求
-                const response = await api.get(`/api/plant-detail/${plantId}`);
+                const response = await api.get(`/api/plant-detail/${plantId}`, {
+                    headers: {
+                        'X-Device-Info': encodeURIComponent(JSON.stringify(deviceInfo) || '{}')
+                    }
+                });
                 const {success, message, data} = response?.data || {};
 
                 // 人为延迟（可选）：避免 Loading 闪烁
