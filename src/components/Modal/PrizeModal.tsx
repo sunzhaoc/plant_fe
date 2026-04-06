@@ -36,7 +36,9 @@ interface LotteryDrawRes {
     win_code: string;
 }
 
-const WINNING_PROBABILITY = 0.1;
+const WINNING_PROBABILITY = 1;
+// const WINNING_START_TIME = new Date('2026-04-06T16:58:00+08:00');
+const WINNING_START_TIME = new Date('2026-04-06T18:00:00+08:00');
 const LAST_TRIGGER_DATETIME_KEY = 'lastLotteryTriggerDateTime';
 
 /**
@@ -129,7 +131,7 @@ export default function PrizeModal({onClose}: PrizeModalProps) {
             // 核心逻辑：触发接口的两个条件
             // - 条件1：随机数命中1%概率
             // - 条件2：本自然小时（日期+小时）内未触发过接口
-            const canTriggerApi = randomRate <= WINNING_PROBABILITY && lastTriggerDateHour !== currentDateHour;
+            const canTriggerApi = randomRate <= WINNING_PROBABILITY && lastTriggerDateHour !== currentDateHour && new Date() >= WINNING_START_TIME;
             if (canTriggerApi) {
                 // 调用抽奖接口获取结果
                 lotteryResult = await fetchLotteryResult();
