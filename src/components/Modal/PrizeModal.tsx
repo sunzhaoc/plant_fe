@@ -36,7 +36,7 @@ interface LotteryDrawRes {
     win_code: string;
 }
 
-const WINNING_PROBABILITY = 1;
+const WINNING_PROBABILITY = 0.01;
 // const WINNING_START_TIME = new Date('2026-04-06T16:58:00+08:00');
 const WINNING_START_TIME = new Date('2026-04-06T18:00:00+08:00');
 const LAST_TRIGGER_DATETIME_KEY = 'lastLotteryTriggerDateTime';
