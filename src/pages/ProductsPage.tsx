@@ -168,7 +168,8 @@ const PlantManagement: React.FC = () => {
 
     // 拖拽开始处理
     const handleDragStart = (e: React.DragEvent<HTMLDivElement>, image: DraggableImage) => {
-        e.dataTransfer.setData('draggableImage', JSON.stringify(image));
+        e.dataTransfer.setData('draggedId', image.id.toString());
+        e.dataTransfer.setData('draggedType', image.type);
         e.currentTarget.style.opacity = '0.5';
         e.currentTarget.style.transform = 'scale(1.1)';
         e.currentTarget.style.zIndex = '10';
@@ -191,18 +192,27 @@ const PlantManagement: React.FC = () => {
     const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetImage: DraggableImage) => {
         e.preventDefault();
 
-        const draggedImageStr = e.dataTransfer.getData('draggableImage');
-        if (!draggedImageStr) return;
+        const draggedIdStr = e.dataTransfer.getData('draggedId');
+        const draggedType = e.dataTransfer.getData('draggedType') as 'uploaded' | 'local';
 
-        const draggedImage = JSON.parse(draggedImageStr) as DraggableImage;
+        if (!draggedIdStr || !draggedType) return;
+        const draggedId = Number(draggedIdStr);
 
         // 拖到自己身上不处理
-        if (draggedImage.id === targetImage.id && draggedImage.type === targetImage.type) return;
+        if (draggedId === targetImage.id && draggedType === targetImage.type) return;
 
         // 获取当前合并列表并重新排序
         const mergedImages = getMergedDraggableImages();
+
+        // 修复点：从当前已有的合并列表中找到被拖拽的原始对象（包含完整的 File 引用）
+        const draggedImage = mergedImages.find(
+            img => img.id === draggedId && img.type === draggedType
+        );
+
+        if (!draggedImage) return;
+
         const draggedIndex = mergedImages.findIndex(
-            img => img.id === draggedImage.id && img.type === draggedImage.type
+            img => img.id === draggedId && img.type === draggedType
         );
         const targetIndex = mergedImages.findIndex(
             img => img.id === targetImage.id && img.type === targetImage.type
@@ -528,6 +538,13 @@ const PlantManagement: React.FC = () => {
 
             for (const localImg of sortedLocalImages) {
                 const {file} = localImg;
+
+                // 这里如果报错，说明 file 对象被之前的代码弄坏了
+                if (!(file instanceof File)) {
+                    console.error("检测到非法文件对象：", localImg);
+                    throw new Error("图片文件已失效，请重新上传后再试");
+                }
+
                 const originalFileName = file.name || '';
                 const ext = originalFileName.split('.').pop() || 'jpg';
                 const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${ext}`;
@@ -596,9 +613,9 @@ const PlantManagement: React.FC = () => {
                 URL.revokeObjectURL(img.previewUrl);
             });
 
-        } catch (err) {
+        } catch (err: any) {
             console.error('保存植物失败:', err);
-            toast.error('保存失败，请重试');
+            toast.error(err.message || '保存失败，请重试');
             toast.dismiss('upload');
         }
     };
