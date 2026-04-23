@@ -18,7 +18,7 @@ export const topLevelCategories = {
         "Orchidaceae 兰科": ["Bulbophyllum", "Dendrobium", "Phalaenopsis"]
     },
     "Miscellaneous": {
-        "Rainforest Understory 雨林底层与附生综合群": ["Begonia", "Medinilla", "Pachycentria", "Peperomia", "Poikilogyne", "Tococa"],
+        "Rainforest Understory 雨林底层与附生综合群": ["Begonia", "Medinilla", "Pachycentria", "Peperomia", "Poikilogyne", "Pseudorhipsalis", "Tococa"],
         "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Cecropia", "Lycianthes", "Macaranga", "Tacca"]
     }
 };
