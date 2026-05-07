@@ -2,7 +2,7 @@
 /** 植物分类体系常量 */
 export const topLevelCategories = {
     'Cactaceae': {
-        'Cactaceae 仙人掌科': ['Leuenbergeria', 'Opuntia', 'Pereskia', 'Schlumbergera', 'Weberocereus'],
+        'Cactaceae 仙人掌科': ['Leuenbergeria', 'Opuntia', 'Pereskia', 'Schlumbergera', "Strophocactus", 'Weberocereus'],
     },
     'Ant-Rubiaceae & Caudiciforms': {
         'Myrmecophytic Rubiaceae 蚁栖茜草群': ['Anthorrhiza', 'Hydnophytum', 'Myrmecodia', 'Myrmephytum', 'Squamellaria'],
