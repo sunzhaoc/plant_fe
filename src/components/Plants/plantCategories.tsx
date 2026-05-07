@@ -12,16 +12,16 @@ export const topLevelCategories = {
         'Epiphytic Ericaceae 附生杜鹃群': ['Ceratostema', 'Disterigma', 'Macleania', 'Agapetes', 'Plutarchia', 'Semiramisia', 'Themistoclesia'],
     },
     'Epiphytic Ferns': {
-        'Polypodiaceae & Ferns 水龙骨与蕨群': ['Blechnum', 'Doodia', 'Drynaria', 'Lecanopteris', 'Lepisorus', 'Microgramma', 'Pneumatopteris', 'Selaginella', 'Serpocaulon', 'Solanopteris', 'Tectaria'],
+        'Polypodiaceae & Ferns 水龙骨与蕨群': ["Asplenium", 'Blechnum', "Davallia", "Dendroconche", 'Doodia', 'Drynaria', 'Lecanopteris', 'Lepisorus', 'Microgramma', "Niphidium", "Phlegmariurus", "Pleopeltis", 'Pneumatopteris', 'Selaginella', 'Serpocaulon', 'Solanopteris', 'Tectaria'],
     },
     'Apocynaceae': {
         "Asclepiads 萝藦亚科群": ["Dischidia", "Hoya", "Phyllanthera"]
     },
     "Orchids": {
-        "Orchidaceae 兰科": ["Bulbophyllum", "Dendrobium", "Phalaenopsis"]
+        "Orchidaceae 兰科": ["Acianthera", "Bulbophyllum", "Dendrobium", "Maxillaria", "Phalaenopsis", "Pleurothallis", "Vanilla", "Zootrophion"]
     },
     "Miscellaneous": {
-        "Rainforest Understory 雨林底层与附生综合群": ["Begonia", "Medinilla", "Pachycentria", "Peperomia", "Poikilogyne", "Pseudorhipsalis", "Tococa"],
+        "Rainforest Understory 雨林底层与附生综合群": ["Begonia", "Elatostema", "Marcgravia", "Medinilla", "Pachycentria", "Peperomia", "Poikilogyne", "Pseudorhipsalis", "Sonerila", "Tococa"],
         "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Cecropia", "Lycianthes", "Macaranga", "Tacca"]
     }
 };
