@@ -1,6 +1,9 @@
 // plantCategories.tsx
 /** 植物分类体系常量 */
 export const topLevelCategories = {
+    'Cactaceae': {
+        'Cactaceae 仙人掌科': ['Leuenbergeria', 'Opuntia', 'Pereskia', 'Schlumbergera', 'Weberocereus'],
+    },
     'Ant-Rubiaceae & Caudiciforms': {
         'Myrmecophytic Rubiaceae 蚁栖茜草群': ['Anthorrhiza', 'Hydnophytum', 'Myrmecodia', 'Myrmephytum', 'Squamellaria'],
     },
@@ -11,7 +14,7 @@ export const topLevelCategories = {
     'Epiphytic Ferns': {
         'Polypodiaceae & Ferns 水龙骨与蕨群': ['Blechnum', 'Doodia', 'Drynaria', 'Lecanopteris', 'Lepisorus', 'Microgramma', 'Pneumatopteris', 'Selaginella', 'Serpocaulon', 'Solanopteris', 'Tectaria'],
     },
-    'Apocynaceae & Climbers': {
+    'Apocynaceae': {
         "Asclepiads 萝藦亚科群": ["Dischidia", "Hoya", "Phyllanthera"]
     },
     "Orchids": {
