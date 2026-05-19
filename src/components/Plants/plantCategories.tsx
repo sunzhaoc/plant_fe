@@ -2,7 +2,7 @@
 /** 植物分类体系常量 */
 export const topLevelCategories = {
     'Cactaceae': {
-        'Cactaceae 仙人掌科': ['Leuenbergeria', 'Opuntia', 'Pereskia', 'Schlumbergera', "Strophocactus", 'Weberocereus'],
+        'Cactaceae 仙人掌科': ['Leuenbergeria', 'Opuntia', 'Pereskia', 'Pseudorhipsalis', 'Schlumbergera', "Strophocactus", 'Weberocereus'],
     },
     'Ant-Rubiaceae & Caudiciforms': {
         'Myrmecophytic Rubiaceae 蚁栖茜草群': ['Anthorrhiza', 'Hydnophytum', 'Myrmecodia', 'Myrmephytum', 'Squamellaria'],
@@ -21,7 +21,7 @@ export const topLevelCategories = {
         "Orchidaceae 兰科": ["Acianthera", "Bulbophyllum", "Dendrobium", "Maxillaria", "Phalaenopsis", "Pleurothallis", "Vanilla", "Zootrophion"]
     },
     "Miscellaneous": {
-        "Rainforest Understory 雨林底层与附生综合群": ["Begonia", "Elatostema", "Marcgravia", "Medinilla", "Pachycentria", "Peperomia", "Poikilogyne", "Pseudorhipsalis", "Sonerila", "Tococa"],
+        "Rainforest Understory 雨林底层与附生综合群": ["Begonia", "Elatostema", "Marcgravia", "Medinilla", "Pachycentria", "Peperomia", "Poikilogyne", "Sonerila", "Tococa"],
         "Terrestrial & Shrubby 地生与灌木群": ["Arthropodium", "Cecropia", "Lycianthes", "Macaranga", "Tacca"]
     }
 };
