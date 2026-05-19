@@ -17,8 +17,8 @@ export default function Home({selectedGenus, selectedIsNew}: HomeProps) {
             <PrizeModal />
 
             <div className="mb-5 text-center">
-                {/*<h1 className="mb-3">🌿探索非凡，分享不寻常的绿意🍃</h1>*/}
-                <h1 className="mb-3">🌿05月10日截单，欲购从速🍃</h1>
+                <h1 className="mb-3">🌿探索非凡，分享不寻常的绿意🍃</h1>
+                {/*<h1 className="mb-3">🌿05月10日截单，欲购从速🍃</h1>*/}
 
                 {/*<p className="text-muted">🌿探索非凡，分享不寻常的绿意🍃</p>*/}
             </div>
